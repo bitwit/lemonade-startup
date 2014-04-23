@@ -1,0 +1,6 @@
+.sass-cache
+.git
+.idea
+.vagrant
+node_modules/*
+app/*
