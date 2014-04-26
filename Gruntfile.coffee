@@ -98,3 +98,4 @@ module.exports = (grunt) ->
 
   # Default task.
   grunt.registerTask 'default', ['copy', 'jade', 'compass', 'coffee', 'watch']
+  grunt.registerTask 'robert', ['jade', 'coffee', 'watch']
