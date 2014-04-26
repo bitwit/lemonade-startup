@@ -110,7 +110,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("Current Stats:")
     console.log("average demand:",stats.averageDemand)
     console.log("fixed costs:",stats.fixedCostPerDay)
-    console.log("variable costs:".stats.variableCostPerDay)
+    console.log("variable costs:",stats.variableCostPerDay)
     #set modifiers
     marketingModifier = stats.marketing + 1
     developmentModifier = stats.development + 1
