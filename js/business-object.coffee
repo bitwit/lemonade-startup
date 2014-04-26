@@ -86,6 +86,9 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
     return didTriggerEvent
 
+  businessObject.sprintComplete = (sprintNumber) ->
+    console.log("Sprint #{sprintNumber} completed")
+
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
       shuffle(weatherCards)

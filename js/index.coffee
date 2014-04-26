@@ -82,6 +82,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
     if $scope.currentDay >= 14
       console.log 'sprint simulation complete'
+      bizObj.sprintComplete $scope.sprint
       $scope.nextSprint()
     else
       if didCompleteDay

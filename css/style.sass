@@ -1,6 +1,5 @@
 @import 'compass'
 @import 'compass/reset'
-
 @import 'open-iconic'
 
 $font-size: 16
@@ -8,16 +7,25 @@ $font-size: 16
 $em: $font-size / 1em
 // Shorthand for outputting ems
 
-$color-blue-light: rgb(128, 168, 204)
-$color-blue-medium: rgb(102, 144, 180)
-$color-blue-dark: rgb(2, 72, 131)
-$color-orange-dark: rgb(240, 120, 72)
-$color-orange-light: rgb(240, 205, 192)
-
 $color-grey-dark: #333
 $color-grey: #888
 $color-grey-light: #CDCDCD
 $color-grey-ultra-light: #EDEDED
+
+//Color Scheme, new
+$color-pink: #e7b8e1
+$color-blue: #b9dcee
+$color-yellow: #fbdd8e
+$color-red: #d77167
+$color-green: #cad68a
+$color-green-dark: #b0ad64
+$color-beige: #dcd095
+$color-brown: #cda575
+$color-orange-medium: #d99c77
+$color-red-medium: #d48567
+
+$color-orange-light: rgb(240, 205, 192)
+$color-orange-dark: rgb(240, 120, 72)
 
 $font-dir: "../fonts/comic-neue/"
 //
@@ -70,14 +78,14 @@ h3
 
 h1.main-title
   text-align: left
-  color: goldenrod
+  color: $color-yellow
 
 div.jobs
   box-sizing: border-box
   width: 15%
   float: left
   height: 500/$em
-  border: 1/$em solid $color-blue-medium
+  border: 1/$em solid $color-blue
 
 div.task, div.job
   cursor: move
@@ -85,7 +93,7 @@ div.task, div.job
   padding: 6/$em
   +border-radius(3/$em)
   height: 24/$em
-  color: white
+  color: $color-grey-dark
   line-height: 24/$em
   -webkit-touch-callout: none
   -webkit-user-select: none
@@ -97,20 +105,20 @@ div.task, div.job
   white-space: nowrap
   overflow: hidden
   &.type-dev
-    background: $color-orange-dark
+    background: $color-orange-medium
   &.type-res
-    background: $color-blue-light
+    background: $color-blue
   &.type-mkt
-    background: $color-blue-dark
+    background: $color-yellow
   &.type-sal
-    background: red
+    background: $color-red
   &.type-des
-    background: purple
+    background: $color-pink
   &.type-fun
-    background: green
+    background: $color-green
 
   &:hover
-    color: $color-blue-medium
+    color: $color-orange-dark
     background: $color-orange-light
 
 div.days
@@ -135,7 +143,7 @@ div.price
 div.day
   box-sizing: border-box
   position: relative
-  border: 1/$em solid $color-blue-light
+  border: 1/$em solid $color-blue
   width: 14%
   height: 120/$em
   float: left
@@ -174,7 +182,7 @@ div.day-progress-meter
   top: 0
   left: 0
   height: 100%
-  background-color: lightgreen
+  background-color: $color-green
 
 h5.day-name
   position: relative
@@ -182,7 +190,7 @@ h5.day-name
 
 div.assets
   box-sizing: border-box
-  border: 1/$em solid $color-blue-medium
+  border: 1/$em solid $color-blue
   width: 15%
   height: 500/$em
   float: left
