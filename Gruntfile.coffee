@@ -8,6 +8,18 @@ module.exports = (grunt) ->
     banner: '/* Copyright (c) <%= grunt.template.today("yyyy") %> ' + 'Kyle Newsome Licensed MIT */\n'
   # Task configuration.
 
+    gitclone:
+      mousetrap:
+        options:
+          repository: 'https://github.com/ccampbell/mousetrap.git'
+          branch: 'master'
+          directory: 'app/other_components/mousetrap'
+      hotkeys:
+        options:
+          repository: 'https://github.com/chieffancypants/angular-hotkeys.git'
+          branch: 'master'
+          directory: 'app/other_components/hotkeys'
+
     copy:
       dist:
         files: [
@@ -42,6 +54,30 @@ module.exports = (grunt) ->
             cwd: 'app/bower_components'
             dest: 'js/vendor/angularjs'
             src: 'angular-dragdrop/src/*.min.js*'
+          },
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/other_components/hotkeys/build'
+            dest: 'js/vendor/angularjs'
+            src: 'hotkeys.min.js'
+          },
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/other_components/hotkeys/build'
+            dest: 'css'
+            src: 'hotkeys.min.css'
+          },
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/other_components/mousetrap'
+            dest: 'js/vendor/mousetrap'
+            src: 'mousetrap.min.js'
           }
         ]
 
@@ -95,6 +131,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-compass'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-git'
 
   # Default task.
   grunt.registerTask 'default', ['copy', 'jade', 'compass', 'coffee', 'watch']

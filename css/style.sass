@@ -96,6 +96,7 @@ div.jobs
   border: 1/$em solid $color-blue
 
 div.task, div.job
+  position: relative
   cursor: move
   margin: 10/$em
   padding: 6/$em
@@ -123,6 +124,43 @@ div.task, div.job
     color: $color-orange-dark
     background: $color-orange-light
 
+div.job
+  left: 0
+  &.selected-true-add, &.selected-false-add
+    +single-transition(all, 0.16s, linear, 0s !important)
+    position: relative
+  &.selected-true, &.selected-true-add-active
+    position: relative
+    left: 20/$em
+  &.selected-false, &.selected-false-add-active
+    position: relative
+    left: 0
+
+  &.ui-draggable-dragging
+    -webkit-transition: none !important
+    transition: none !important
+
+  .hotkey-button
+    float: right
+
+div.task
+  span.title
+    font-size: 14/$em
+    text-transform: capitalize
+  span.delete
+    display: block
+    position: absolute
+    height: 100%
+    width: 20/$em
+    line-height: 36/$em
+    top: 0
+    right: 0
+    cursor: pointer
+    text-align: center
+    &:hover
+      font-weight: bold
+
+
 div.days
   float: left
   box-sizing: border-box
@@ -143,6 +181,9 @@ div.price
   text-align: right
 
 div.day
+  cursor: cell
+  &.full-true
+    cursor: pointer
   box-sizing: border-box
   position: relative
   border: 1/$em solid $color-blue
@@ -234,3 +275,23 @@ div.announcement
       font-size: 28/$em
     &:hover
       opacity: 0.85
+
+.hotkey-button
+  line-height: 24/$em
+  border: 1px solid gray
+  padding: 0 5px
+  margin: 0 5px
+  font-size: 0.8em
+  text-transform: uppercase
+  -webkit-box-shadow: 1px 0 1px 0 #fff, 0 2px 0 2px lightGray, 0 2px 0 3px #333
+  -moz-box-shadow: 1px 0 1px 0 #fff, 0 2px 0 2px lightGray, 0 2px 0 3px #333
+  box-shadow: 1px 0 1px 0 #fff, 0 2px 0 2px lightGray, 0 2px 0 3px #333
+  -webkit-border-radius: 3px
+  -moz-border-radius: 3px
+  border-radius: 3px
+  background: -moz-linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(25%, #e2e2e2))
+  background: -webkit-linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
+  background: -o-linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
+  background: -ms-linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
+  background: linear-gradient(left, #ffffff 0%, #e2e2e2 25%)

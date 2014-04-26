@@ -1,4 +1,32 @@
 ###
+  Convenience Functions
+###
+
+#Clone @ http://stackoverflow.com/questions/11060631/how-do-i-clone-copy-an-instance-of-an-object-in-coffeescript
+clone = (obj) ->
+  return obj  if obj is null or typeof (obj) isnt "object"
+  temp = new obj.constructor()
+  for key of obj
+    temp[key] = clone(obj[key])
+  temp
+
+#Suffle @ http://jsfromhell.com/array/shuffle [v1.0]
+shuffle = (array) ->
+  counter = array.length;
+  #While there are elements in the array
+  while (counter > 0)
+    #Pick a random index
+    index = Math.floor(Math.random() * counter)
+    #Decrease counter by 1
+    counter--
+    #And swap the last element with it
+    temp = array[counter]
+    array[counter] = array[index]
+    array[index] = temp
+  return array;
+
+
+###
   Device setup
 ###
 user_agent = navigator.userAgent;
@@ -10,10 +38,34 @@ Device.isMobile = Device.isAndroid or Device.isIOS
 ###
   Begin Angular
 ###
-appModule = angular.module 'appModule', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']
+appModule = angular.module 'appModule', ['cfp.hotkeys', 'ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']
 
-appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', ($scope, $rootScope,$timeout, bizObj) ->
+appModule.config ['hotkeysProvider', (hotkeysProvider) ->
+  console.log 'configuring cheat sheet to no'
+  hotkeysProvider.includeCheatSheet = no
+]
+
+appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, bizObj, hotkeys) ->
   $scope.testMessage = "Successfully using AngularJS!"
+
+  hotkeys.add "1", "Development", -> $scope.selectedTaskIndex = 0
+  hotkeys.add "2", "Research", -> $scope.selectedTaskIndex = 1
+  hotkeys.add "3", "Marketing", -> $scope.selectedTaskIndex = 2
+  hotkeys.add "4", "Design", -> $scope.selectedTaskIndex = 3
+  hotkeys.add "5", "Sales", -> $scope.selectedTaskIndex = 4
+  hotkeys.add "6", "Fundraising", -> $scope.selectedTaskIndex = 5
+  hotkeys.add "space", "Resume/Confirm", ->
+    console.log "resume simulation"
+    $scope.resumeSimulation()
+
+  $scope.selectedTaskIndex = 0
+
+  $scope.setSelectedTaskIndex = (index) ->
+    $scope.selectedTaskIndex = index
+
+  $scope.getCurrentSelectedTask = ->
+    task = $scope.tasks[$scope.selectedTaskIndex] #$scope.tasks.slice $scope.selectedTaskIndex, 1
+    return clone task
 
   $scope.taskListOptions =
     accept: (dragEl) ->
@@ -40,16 +92,16 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   ]
 
   $scope.prices =[
-    "0.00"
-    "0.50"
-    "1.00"
-    "1.50"
-    "2.00"
-    "3.00"
-    "4.00"
-    "5.00"
-    "7.00"
-    "10.00"
+    0
+    0.5
+    1
+    1.5
+    2
+    3
+    4
+    5
+    7
+    10
   ]
 
   $scope.price = 3
@@ -58,18 +110,21 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.progress = 0
   $scope.currentDay = -1
   $scope.timerPromise = null
+  $scope.hasStarted = no
 
   $scope.getDayPlan = ->
     console.log $scope.sprintDays
 
   $scope.startSimulation = ->
+    $scope.hasStarted = yes
     $scope.currentDay = 0
     $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price]
     $scope.tick()
 
   $scope.resumeSimulation = ->
-    $scope.announcements = []
-    $scope.tick()
+    if $scope.hasStarted and !$scope.timerPromise?
+      $scope.announcements = []
+      $scope.tick()
 
   $scope.tick = ->
     $scope.progress += 0.1
@@ -89,6 +144,8 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
         $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price]
       if !shouldPause
         $scope.timerPromise = $timeout $scope.tick, 40
+      else
+        $scope.timerPromise = null
 
   $scope.nextSprint = ->
     $scope.sprint++
@@ -112,7 +169,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.$on 'taskMoved', ($e, task) ->
     console.log 'main controller task moved'
-    $scope.setTasks()
+    #$scope.setTasks()
 
   $scope.setTasks()
 ]
@@ -121,15 +178,24 @@ appModule.directive 'lsDay', [ ->
   replace: true
   link: (scope, element, attrs, ctrl) ->
     console.log 'sprint day link'
+    element.dayObject = scope.day
 
   controller: [ "$scope", "$rootScope", "$timeout", ($scope, $rootScope, $timeout) ->
     $scope.sprintDayDraggableOut = (e, el) ->
       #console.log 'draggable out', e, el, $scope.day
 
     $scope.taskOnDrop = (e, el, a) ->
-      #console.log 'task on drop', e, el, $scope.day, a
+      task = el.draggable[0].taskObject
+      console.log 'new task for', $scope.day.name, task
+      $rootScope.$broadcast 'newTaskForDay', task, $scope.day
 
     $scope.message = null
+
+    $scope.addSelectedTask = ->
+      if $scope.day.tasks.length < 2
+        task = $scope.getCurrentSelectedTask()
+        $scope.day.tasks.push task
+        $rootScope.$broadcast 'newTaskForDay', task, $scope.day
 
     $scope.sprintDayOptions = (index) ->
       accept: (dragEl) ->
@@ -161,25 +227,35 @@ appModule.directive 'lsDay', [ ->
           $scope.message = null
       , 1000)
 
-
-    $scope.$on 'taskMoved', ($e, task) ->
-      console.log 'task is moving', task, $scope.day.tasks
+    $scope.removeTask = (e, task) ->
+      if e?
+        e.stopPropagation()
+        e.preventDefault()
       leftOverTasks = []
       for dayTask in $scope.day.tasks
-        console.log dayTask
         if task != dayTask
           leftOverTasks.push dayTask
       $scope.day.tasks = leftOverTasks
 
+    $scope.$on 'newTaskForDay', ($e, task, day) ->
+      if day is $scope.day
+        return
+      $scope.removeTask null, task
+
+    $scope.$on 'taskMoved', ($e, task) ->
+      ###
+      console.log 'task is moving', task, $scope.day.tasks
+      ###
+
   ]
   template: """
-    <div data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}" class="day">
+    <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
         <div class="message showing-{{(message != null)}}">
           <span class="value">{{message}}</span>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
-        <div ng-repeat="task in day.tasks track by $id(task)" ls-task></div>
+        <div ng-repeat="task in day.tasks track by $index" ls-task></div>
     </div>
   """
 ]
@@ -187,15 +263,19 @@ appModule.directive 'lsDay', [ ->
 appModule.directive 'lsJob', [ ->
   replace: true
   link: (scope, element, attrs, ctrl) ->
-    console.log 'task link'
+    element[0].taskObject = scope.task
 
   controller: [ "$scope", "$rootScope", ($scope, $rootScope) ->
     $scope.dragStop = ->
       $scope.$emit 'taskMoved', $scope.task
+
+    $scope.selected = (index) ->
+      $scope.setSelectedTaskIndex index
   ]
   template: """
-  <div class="job type-{{task.id}} oi" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert:'invalid'}" ng-model="task" jqyoui-draggable="{index: {{$index}}, onStop: 'dragStop', placeholder:'keep'}">
-    <span>{{task.name}}</span>
+  <div class="job type-{{task.id}} selected-{{selectedTaskIndex == $index}} oi" ng-click="selected($index)" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert:'invalid'}" ng-model="task" jqyoui-draggable="{index: {{$index}}, onStop: 'dragStop', placeholder:'keep'}">
+    <span class="title">{{task.name}}</span>
+    <span class="hotkey-button">{{$index + 1}}</span>
   </div>
   """
 ]
@@ -203,7 +283,7 @@ appModule.directive 'lsJob', [ ->
 appModule.directive 'lsTask', [ ->
   replace: true
   link: (scope, element, attrs, ctrl) ->
-    console.log 'task link'
+    element[0].taskObject = scope.task
 
   controller: [ "$scope", "$rootScope", ($scope, $rootScope) ->
     $scope.dragStop = ->
@@ -212,7 +292,8 @@ appModule.directive 'lsTask', [ ->
   ]
   template: """
   <div class="task type-{{task.id}} oi" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert: 'invalid', placeholder:true}" ng-model="task" jqyoui-draggable="{index: {{$index}}, placeholder:'keep', onStop: 'dragStop'}">
-    <span>{{task.name}}</span>
+    <span class="title">{{task.id}}</span>
+    <span ng-click="removeTask($event, task)" class="delete">X</span>
   </div>
   """
 ]

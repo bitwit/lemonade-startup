@@ -1,8 +1,38 @@
 /*
+  Convenience Functions
+*/
+
+var Device, appModule, clone, shuffle, user_agent;
+
+clone = function(obj) {
+  var key, temp;
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  }
+  temp = new obj.constructor();
+  for (key in obj) {
+    temp[key] = clone(obj[key]);
+  }
+  return temp;
+};
+
+shuffle = function(array) {
+  var counter, index, temp;
+  counter = array.length;
+  while (counter > 0) {
+    index = Math.floor(Math.random() * counter);
+    counter--;
+    temp = array[counter];
+    array[counter] = array[index];
+    array[index] = temp;
+  }
+  return array;
+};
+
+/*
   Device setup
 */
 
-var Device, appModule, user_agent;
 
 user_agent = navigator.userAgent;
 
@@ -18,11 +48,49 @@ Device.isMobile = Device.isAndroid || Device.isIOS;
 */
 
 
-appModule = angular.module('appModule', ['ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']);
+appModule = angular.module('appModule', ['cfp.hotkeys', 'ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']);
+
+appModule.config([
+  'hotkeysProvider', function(hotkeysProvider) {
+    console.log('configuring cheat sheet to no');
+    return hotkeysProvider.includeCheatSheet = false;
+  }
+]);
 
 appModule.controller('MainController', [
-  '$scope', '$rootScope', '$timeout', 'BusinessObject', function($scope, $rootScope, $timeout, bizObj) {
+  '$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', function($scope, $rootScope, $timeout, bizObj, hotkeys) {
     $scope.testMessage = "Successfully using AngularJS!";
+    hotkeys.add("1", "Development", function() {
+      return $scope.selectedTaskIndex = 0;
+    });
+    hotkeys.add("2", "Research", function() {
+      return $scope.selectedTaskIndex = 1;
+    });
+    hotkeys.add("3", "Marketing", function() {
+      return $scope.selectedTaskIndex = 2;
+    });
+    hotkeys.add("4", "Design", function() {
+      return $scope.selectedTaskIndex = 3;
+    });
+    hotkeys.add("5", "Sales", function() {
+      return $scope.selectedTaskIndex = 4;
+    });
+    hotkeys.add("6", "Fundraising", function() {
+      return $scope.selectedTaskIndex = 5;
+    });
+    hotkeys.add("space", "Resume/Confirm", function() {
+      console.log("resume simulation");
+      return $scope.resumeSimulation();
+    });
+    $scope.selectedTaskIndex = 0;
+    $scope.setSelectedTaskIndex = function(index) {
+      return $scope.selectedTaskIndex = index;
+    };
+    $scope.getCurrentSelectedTask = function() {
+      var task;
+      task = $scope.tasks[$scope.selectedTaskIndex];
+      return clone(task);
+    };
     $scope.taskListOptions = {
       accept: function(dragEl) {
         return false;
@@ -74,23 +142,27 @@ appModule.controller('MainController', [
         tasks: []
       }
     ];
-    $scope.prices = ["0.00", "0.50", "1.00", "1.50", "2.00", "3.00", "4.00", "5.00", "7.00", "10.00"];
+    $scope.prices = [0, 0.5, 1, 1.5, 2, 3, 4, 5, 7, 10];
     $scope.price = 3;
     $scope.sprint = 1;
     $scope.progress = 0;
     $scope.currentDay = -1;
     $scope.timerPromise = null;
+    $scope.hasStarted = false;
     $scope.getDayPlan = function() {
       return console.log($scope.sprintDays);
     };
     $scope.startSimulation = function() {
+      $scope.hasStarted = true;
       $scope.currentDay = 0;
       $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price];
       return $scope.tick();
     };
     $scope.resumeSimulation = function() {
-      $scope.announcements = [];
-      return $scope.tick();
+      if ($scope.hasStarted && ($scope.timerPromise == null)) {
+        $scope.announcements = [];
+        return $scope.tick();
+      }
     };
     $scope.tick = function() {
       var didCompleteDay, shouldPause;
@@ -112,6 +184,8 @@ appModule.controller('MainController', [
         }
         if (!shouldPause) {
           return $scope.timerPromise = $timeout($scope.tick, 40);
+        } else {
+          return $scope.timerPromise = null;
         }
       }
     };
@@ -135,8 +209,7 @@ appModule.controller('MainController', [
       return $rootScope.announcements = [event];
     };
     $scope.$on('taskMoved', function($e, task) {
-      console.log('main controller task moved');
-      return $scope.setTasks();
+      return console.log('main controller task moved');
     });
     return $scope.setTasks();
   }
@@ -147,13 +220,27 @@ appModule.directive('lsDay', [
     return {
       replace: true,
       link: function(scope, element, attrs, ctrl) {
-        return console.log('sprint day link');
+        console.log('sprint day link');
+        return element.dayObject = scope.day;
       },
       controller: [
         "$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
           $scope.sprintDayDraggableOut = function(e, el) {};
-          $scope.taskOnDrop = function(e, el, a) {};
+          $scope.taskOnDrop = function(e, el, a) {
+            var task;
+            task = el.draggable[0].taskObject;
+            console.log('new task for', $scope.day.name, task);
+            return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
+          };
           $scope.message = null;
+          $scope.addSelectedTask = function() {
+            var task;
+            if ($scope.day.tasks.length < 2) {
+              task = $scope.getCurrentSelectedTask();
+              $scope.day.tasks.push(task);
+              return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
+            }
+          };
           $scope.sprintDayOptions = function(index) {
             return {
               accept: function(dragEl) {
@@ -190,23 +277,37 @@ appModule.directive('lsDay', [
               return $scope.message = null;
             }, 1000);
           };
-          return $scope.$on('taskMoved', function($e, task) {
+          $scope.removeTask = function(e, task) {
             var dayTask, leftOverTasks, _i, _len, _ref;
-            console.log('task is moving', task, $scope.day.tasks);
+            if (e != null) {
+              e.stopPropagation();
+              e.preventDefault();
+            }
             leftOverTasks = [];
             _ref = $scope.day.tasks;
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               dayTask = _ref[_i];
-              console.log(dayTask);
               if (task !== dayTask) {
                 leftOverTasks.push(dayTask);
               }
             }
             return $scope.day.tasks = leftOverTasks;
+          };
+          $scope.$on('newTaskForDay', function($e, task, day) {
+            if (day === $scope.day) {
+              return;
+            }
+            return $scope.removeTask(null, task);
+          });
+          return $scope.$on('taskMoved', function($e, task) {
+            /*
+            console.log 'task is moving', task, $scope.day.tasks
+            */
+
           });
         }
       ],
-      template: "<div data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\" class=\"day\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $id(task)\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -216,16 +317,19 @@ appModule.directive('lsJob', [
     return {
       replace: true,
       link: function(scope, element, attrs, ctrl) {
-        return console.log('task link');
+        return element[0].taskObject = scope.task;
       },
       controller: [
         "$scope", "$rootScope", function($scope, $rootScope) {
-          return $scope.dragStop = function() {
+          $scope.dragStop = function() {
             return $scope.$emit('taskMoved', $scope.task);
+          };
+          return $scope.selected = function(index) {
+            return $scope.setSelectedTaskIndex(index);
           };
         }
       ],
-      template: "<div class=\"job type-{{task.id}} oi\" data-glyph=\"{{task.icon}}\" data-drag=\"{{true}}\" data-day=\"{{day.$$hashKey}}\" data-jqyoui-options=\"{revert:'invalid'}\" ng-model=\"task\" jqyoui-draggable=\"{index: {{$index}}, onStop: 'dragStop', placeholder:'keep'}\">\n  <span>{{task.name}}</span>\n</div>"
+      template: "<div class=\"job type-{{task.id}} selected-{{selectedTaskIndex == $index}} oi\" ng-click=\"selected($index)\" data-glyph=\"{{task.icon}}\" data-drag=\"{{true}}\" data-day=\"{{day.$$hashKey}}\" data-jqyoui-options=\"{revert:'invalid'}\" ng-model=\"task\" jqyoui-draggable=\"{index: {{$index}}, onStop: 'dragStop', placeholder:'keep'}\">\n  <span class=\"title\">{{task.name}}</span>\n  <span class=\"hotkey-button\">{{$index + 1}}</span>\n</div>"
     };
   }
 ]);
@@ -235,7 +339,7 @@ appModule.directive('lsTask', [
     return {
       replace: true,
       link: function(scope, element, attrs, ctrl) {
-        return console.log('task link');
+        return element[0].taskObject = scope.task;
       },
       controller: [
         "$scope", "$rootScope", function($scope, $rootScope) {
@@ -245,7 +349,7 @@ appModule.directive('lsTask', [
           };
         }
       ],
-      template: "<div class=\"task type-{{task.id}} oi\" data-glyph=\"{{task.icon}}\" data-drag=\"{{true}}\" data-day=\"{{day.$$hashKey}}\" data-jqyoui-options=\"{revert: 'invalid', placeholder:true}\" ng-model=\"task\" jqyoui-draggable=\"{index: {{$index}}, placeholder:'keep', onStop: 'dragStop'}\">\n  <span>{{task.name}}</span>\n</div>"
+      template: "<div class=\"task type-{{task.id}} oi\" data-glyph=\"{{task.icon}}\" data-drag=\"{{true}}\" data-day=\"{{day.$$hashKey}}\" data-jqyoui-options=\"{revert: 'invalid', placeholder:true}\" ng-model=\"task\" jqyoui-draggable=\"{index: {{$index}}, placeholder:'keep', onStop: 'dragStop'}\">\n  <span class=\"title\">{{task.id}}</span>\n  <span ng-click=\"removeTask($event, task)\" class=\"delete\">X</span>\n</div>"
     };
   }
 ]);
@@ -524,21 +628,6 @@ ColdWeatherCard = (function(_super) {
 
 })(WeatherCard);
 
-var shuffle;
-
-shuffle = function(array) {
-  var counter, index, temp;
-  counter = array.length;
-  while (counter > 0) {
-    index = Math.floor(Math.random() * counter);
-    counter--;
-    temp = array[counter];
-    array[counter] = array[index];
-    array[index] = temp;
-  }
-  return array;
-};
-
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
     var businessObject, eventCards, weatherCards;
@@ -591,10 +680,10 @@ appModule.service("BusinessObject", [
       cashDelta = 0;
       cashDelta -= stats.fixedCostPerDay;
       cashDelta -= stats.averageDemand * weather.averageDemand * stats.variableCostPerDay;
-      cashDelta += stats.averageDemand * weather.averageDemand * parseFloat(day.price);
-      cashDelta = parseFloat(cashDelta).toFixed(2);
-      stats.cash = (Number(stats.cash) + Number(cashDelta)).toFixed(2);
+      cashDelta += stats.averageDemand * weather.averageDemand * day.price;
+      stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
+      console.log(businessObject.dailyRevenueHistory);
       day.announce("$" + cashDelta);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
@@ -618,18 +707,20 @@ appModule.service("BusinessObject", [
       return stats.projectedValue = newValue;
     };
     businessObject.getRevenueHistory = function(interval) {
-      var entry, runningTotal, _i, _len, _ref;
+      var entry, i, runningTotal, _i, _j, _len, _ref;
       runningTotal = 0;
       if (businessObject.dailyRevenueHistory.length >= interval) {
-        while (i < interval) {
-          runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length(-1 - i)];
+        for (i = _i = 0; 0 <= interval ? _i < interval : _i > interval; i = 0 <= interval ? ++_i : --_i) {
+          console.log("entry", i);
+          runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - 1 - (interval - i)];
         }
-      } else if (businessObject.dailyRevenueHistory.length = 0) {
+      } else if (businessObject.dailyRevenueHistory.length === 0) {
         console.log("No entries in Daily Revenue History");
       } else {
+        console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length);
         _ref = businessObject.dailyRevenueHistory;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          entry = _ref[_i];
+        for (_j = 0, _len = _ref.length; _j < _len; _j++) {
+          entry = _ref[_j];
           runningTotal += entry;
         }
       }

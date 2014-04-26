@@ -1,19 +1,3 @@
-#+ Jonas Raoni Soares Silva
-#@ http://jsfromhell.com/array/shuffle [v1.0]
-shuffle = (array) ->
-  counter = array.length;
-  #While there are elements in the array
-  while (counter > 0)
-      #Pick a random index
-      index = Math.floor(Math.random() * counter)
-      #Decrease counter by 1
-      counter--
-      #And swap the last element with it
-      temp = array[counter]
-      array[counter] = array[index]
-      array[index] = temp
-  return array;
-
 appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   eventCards = [
     new PRAgentEventCard()
@@ -78,12 +62,10 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     cashDelta = 0
     cashDelta -= stats.fixedCostPerDay
     cashDelta -= stats.averageDemand * weather.averageDemand * stats.variableCostPerDay
-    cashDelta += stats.averageDemand * weather.averageDemand * parseFloat(day.price)
-    cashDelta = parseFloat(cashDelta).toFixed(2)
-    stats.cash = (Number(stats.cash) + Number(cashDelta)).toFixed(2)
-    fCashDelta = Number(cashDelta).toFixed(2)
+    cashDelta += stats.averageDemand * weather.averageDemand * day.price
+    stats.cash = stats.cash + cashDelta
 
-    businessObject.dailyRevenueHistory.push fCashDelta
+    businessObject.dailyRevenueHistory.push cashDelta
     console.log(businessObject.dailyRevenueHistory)
 
     day.announce "$" + cashDelta
@@ -117,7 +99,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     if businessObject.dailyRevenueHistory.length >= interval
       for i in [0...interval]
         console.log("entry", i)
-        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length -1 - (interval - i)]
+        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - 1 - (interval - i)]
     else if businessObject.dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else

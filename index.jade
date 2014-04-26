@@ -6,6 +6,7 @@ html
 		// WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 --
 		meta(name="viewport",content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi")
 		link(rel="stylesheet", type="text/css", href="css/style.css")
+		link(rel="stylesheet", type="text/css", href="css/hotkeys.min.css")
 		title Lemonade Startup
 	body(id="document-body", ng-controller="MainController")
 		div.container
@@ -55,7 +56,7 @@ html
 
 		h3 Options
 		div.debug-buttons(style="text-align: center;")
-			button(ng-click="startSimulation()")
+			button.hotkey(ng-click="startSimulation()")
 				span Start Simulation
 
 		div.announcements(ng-cloak)
@@ -74,6 +75,7 @@ html
 		script(src='js/vendor/angularjs/angular-touch.min.js')
 		script(src='js/vendor/angularjs/angular-animate.min.js')
 		script(src='js/vendor/angularjs/angular-dragdrop.min.js')
+		script(src='js/vendor/angularjs/hotkeys.min.js')
 		script(src='js/index.js')
 		script.
 			angular.element(document).ready( function(){
