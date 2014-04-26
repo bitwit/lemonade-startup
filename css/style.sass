@@ -50,6 +50,14 @@ $font-dir: "../fonts/comic-neue/"
   font-weight: bold
   font-style: normal
 
+*
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+
 body
   font:
     family: Helvetica Neue, Helvetica, Arial, sans-serif
@@ -95,12 +103,6 @@ div.task, div.job
   height: 24/$em
   color: $color-grey-dark
   line-height: 24/$em
-  -webkit-touch-callout: none
-  -webkit-user-select: none
-  -khtml-user-select: none
-  -moz-user-select: none
-  -ms-user-select: none
-  user-select: none
   text-overflow: ellipsis
   white-space: nowrap
   overflow: hidden

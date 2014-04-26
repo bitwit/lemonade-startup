@@ -385,7 +385,8 @@ EventCard = (function() {
       research: 0,
       sales: 0,
       fundraising: 0,
-      productivity: 0
+      productivity: 0,
+      cash: 0
     };
   }
 
@@ -559,7 +560,8 @@ appModule.service("BusinessObject", [
         variableCostPerDay: 0.20,
         averageDemand: 200
       },
-      assets: []
+      assets: [],
+      dailyRevenueHistory: []
     };
     businessObject.dayComplete = function(day) {
       var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, stats, weather, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
@@ -592,7 +594,9 @@ appModule.service("BusinessObject", [
       cashDelta += stats.averageDemand * weather.averageDemand * parseFloat(day.price);
       cashDelta = parseFloat(cashDelta).toFixed(2);
       stats.cash = (Number(stats.cash) + Number(cashDelta)).toFixed(2);
+      businessObject.dailyRevenueHistory.push(cashDelta);
       day.announce("$" + cashDelta);
+      businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
     };
@@ -605,6 +609,32 @@ appModule.service("BusinessObject", [
         businessObject.forecast.push(weatherCards.pop());
       }
       return weatherCards = weatherCards.concat(businessObject.forecast);
+    };
+    businessObject.predictBusinessValue = function() {
+      var newValue, stats;
+      newValue = 0;
+      stats = businessObject.stats;
+      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * stats.marketing * stats.development) - (stats.fundraising * -0.1);
+      return stats.projectedValue = newValue;
+    };
+    businessObject.getRevenueHistory = function(interval) {
+      var entry, runningTotal, _i, _len, _ref;
+      runningTotal = 0;
+      if (businessObject.dailyRevenueHistory.length >= interval) {
+        while (i < interval) {
+          runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length(-1 - i)];
+        }
+      } else if (businessObject.dailyRevenueHistory.length = 0) {
+        console.log("No entries in Daily Revenue History");
+      } else {
+        _ref = businessObject.dailyRevenueHistory;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          entry = _ref[_i];
+          runningTotal += entry;
+        }
+      }
+      console.log("runningtotal", runningTotal);
+      return runningTotal;
     };
     businessObject.generateForecast();
     $rootScope.game = businessObject;

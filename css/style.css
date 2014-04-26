@@ -1002,41 +1002,50 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-style: normal; }
 
 /* line 53, style.sass */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+/* line 61, style.sass */
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 300; }
 
-/* line 58, style.sass */
+/* line 66, style.sass */
 h1, h2, h3, h4, h5, h6 {
   font-family: "Comic Neue Angular", sans-serif;
   font-weight: bold;
   text-align: center; }
 
-/* line 64, style.sass */
+/* line 72, style.sass */
 h1 {
   margin: 1.25em 0;
   font-size: 2em; }
 
-/* line 68, style.sass */
+/* line 76, style.sass */
 h2 {
   margin: 1.25em 0;
   font-size: 2em; }
 
-/* line 72, style.sass */
+/* line 80, style.sass */
 h3 {
   margin: 0.625em 0;
   font-size: 1.5em; }
 
-/* line 76, style.sass */
+/* line 84, style.sass */
 .ng-cloak {
   display: none; }
 
-/* line 79, style.sass */
+/* line 87, style.sass */
 h1.main-title {
   text-align: left;
   color: #fbdd8e; }
 
-/* line 83, style.sass */
+/* line 91, style.sass */
 div.jobs {
   box-sizing: border-box;
   width: 15%;
@@ -1044,7 +1053,7 @@ div.jobs {
   height: 31.25em;
   border: 0.0625em solid #b9dcee; }
 
-/* line 90, style.sass */
+/* line 98, style.sass */
 div.task, div.job {
   cursor: move;
   margin: 0.625em;
@@ -1057,62 +1066,56 @@ div.task, div.job {
   height: 1.5em;
   color: #333333;
   line-height: 1.5em;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
-  /* line 107, style.sass */
+  /* line 109, style.sass */
   div.task.type-dev, div.job.type-dev {
     background: #d99c77; }
-  /* line 109, style.sass */
+  /* line 111, style.sass */
   div.task.type-res, div.job.type-res {
     background: #b9dcee; }
-  /* line 111, style.sass */
+  /* line 113, style.sass */
   div.task.type-mkt, div.job.type-mkt {
     background: #fbdd8e; }
-  /* line 113, style.sass */
+  /* line 115, style.sass */
   div.task.type-sal, div.job.type-sal {
     background: #d77167; }
-  /* line 115, style.sass */
+  /* line 117, style.sass */
   div.task.type-des, div.job.type-des {
     background: #e7b8e1; }
-  /* line 117, style.sass */
+  /* line 119, style.sass */
   div.task.type-fun, div.job.type-fun {
     background: #cad68a; }
-  /* line 120, style.sass */
+  /* line 122, style.sass */
   div.task:hover, div.job:hover {
     color: #f07848;
     background: #f0cdc0; }
 
-/* line 124, style.sass */
+/* line 126, style.sass */
 div.days {
   float: left;
   box-sizing: border-box;
   width: 70%;
   padding: 0 0 0 1%; }
 
-/* line 130, style.sass */
+/* line 132, style.sass */
 div.price-selector {
   width: 80%;
   margin: 0 10%; }
 
-/* line 134, style.sass */
+/* line 136, style.sass */
 input.price-input {
   width: 100%;
   display: inline-block; }
 
-/* line 138, style.sass */
+/* line 140, style.sass */
 div.price {
   float: left;
   width: 10%;
   text-align: right; }
 
-/* line 143, style.sass */
+/* line 145, style.sass */
 div.day {
   box-sizing: border-box;
   position: relative;
@@ -1120,13 +1123,13 @@ div.day {
   width: 14%;
   height: 7.5em;
   float: left; }
-  /* line 150, style.sass */
+  /* line 152, style.sass */
   div.day:hover {
     background-color: #ededed; }
-  /* line 152, style.sass */
+  /* line 154, style.sass */
   div.day:nth-child(7n+1) {
     clear: left; }
-  /* line 155, style.sass */
+  /* line 157, style.sass */
   div.day div.message {
     position: absolute;
     z-index: 20;
@@ -1142,24 +1145,24 @@ div.day {
     -moz-transition: all 0.34s linear 0s !important;
     -o-transition: all 0.34s linear 0s !important;
     transition: all 0.34s linear 0s !important; }
-    /* line 166, style.sass */
+    /* line 168, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1;
       top: -2.1875em; }
-    /* line 169, style.sass */
+    /* line 171, style.sass */
     div.day div.message.showing-false {
       opacity: 0;
       top: 0; }
-    /* line 172, style.sass */
+    /* line 174, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important;
       top: 0 !important; }
-    /* line 175, style.sass */
+    /* line 177, style.sass */
     div.day div.message span.value {
       font-weight: bold;
       font-size: 1.5em; }
 
-/* line 180, style.sass */
+/* line 182, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
@@ -1167,12 +1170,12 @@ div.day-progress-meter {
   height: 100%;
   background-color: #cad68a; }
 
-/* line 187, style.sass */
+/* line 189, style.sass */
 h5.day-name {
   position: relative;
   z-index: 1; }
 
-/* line 191, style.sass */
+/* line 193, style.sass */
 div.assets {
   box-sizing: border-box;
   border: 0.0625em solid #b9dcee;
@@ -1180,7 +1183,7 @@ div.assets {
   height: 31.25em;
   float: left; }
 
-/* line 198, style.sass */
+/* line 200, style.sass */
 div.announcement {
   position: absolute;
   z-index: 10;
@@ -1194,19 +1197,19 @@ div.announcement {
   height: 80%;
   background-color: white;
   text-align: center; }
-  /* line 212, style.sass */
+  /* line 214, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: #f0cdc0;
     border: 0.0625em solid #f07848; }
-  /* line 217, style.sass */
+  /* line 219, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: #f07848; }
-  /* line 221, style.sass */
+  /* line 223, style.sass */
   div.announcement p.description {
     font-size: 1.75em; }
-  /* line 224, style.sass */
+  /* line 226, style.sass */
   div.announcement button.confirm {
     cursor: pointer;
     margin: 1.25em 0;
@@ -1214,9 +1217,9 @@ div.announcement {
     font-size: 1em;
     border: 0.0625em solid #f07848;
     background: #f0cdc0; }
-    /* line 231, style.sass */
+    /* line 233, style.sass */
     div.announcement button.confirm span {
       font-size: 1.75em; }
-    /* line 233, style.sass */
+    /* line 235, style.sass */
     div.announcement button.confirm:hover {
       opacity: 0.85; }
