@@ -25,7 +25,6 @@ shuffle = (array) ->
     array[index] = temp
   return array;
 
-
 ###
   Device setup
 ###
@@ -184,7 +183,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log 'main controller task moved'
 
   $scope.setTasks()
-  $scope.startSimulation()
+  #$scope.startSimulation()
 
 ]
 
