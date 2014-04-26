@@ -53,3 +53,1169 @@ a img {
 /* line 116, ../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block; }
+
+@font-face {
+  font-family: 'Icons';
+  src: url("../fonts/iconic/open-iconic.eot");
+  src: url("../fonts/iconic/open-iconic.eot?#iconic-sm") format("embedded-opentype"), url("../fonts/iconic/open-iconic.woff") format("woff"), url("../fonts/iconic/open-iconic.ttf") format("truetype"), url("../fonts/iconic/open-iconic.otf") format("opentype"), url("../fonts/iconic/open-iconic.svg#iconic-sm") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/* line 11, open-iconic.scss */
+.oi[data-glyph].oi-text-replace {
+  font-size: 0;
+  line-height: 0; }
+
+/* line 16, open-iconic.scss */
+.oi[data-glyph].oi-text-replace:before {
+  width: 1em;
+  text-align: center; }
+
+/* line 22, open-iconic.scss */
+.oi[data-glyph]:before {
+  position: relative;
+  top: 1px;
+  font-family: 'Icons';
+  display: inline-block;
+  speak: none;
+  line-height: 1;
+  vertical-align: baseline;
+  font-weight: normal;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-right: 2px; }
+/* line 37, open-iconic.scss */
+.oi[data-glyph]:empty:before {
+  width: 1em;
+  text-align: center;
+  box-sizing: content-box; }
+/* line 43, open-iconic.scss */
+.oi[data-glyph].oi-align-left:before {
+  text-align: left; }
+/* line 46, open-iconic.scss */
+.oi[data-glyph].oi-align-right:before {
+  text-align: right; }
+/* line 49, open-iconic.scss */
+.oi[data-glyph].oi-align-center:before {
+  text-align: center; }
+/* line 53, open-iconic.scss */
+.oi[data-glyph].oi-flip-horizontal:before {
+  -webkit-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1); }
+/* line 59, open-iconic.scss */
+.oi[data-glyph].oi-flip-vertical:before {
+  -webkit-transform: scale(1, -1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(1, -1); }
+/* line 65, open-iconic.scss */
+.oi[data-glyph].oi-flip-horizontal-vertical:before {
+  -webkit-transform: scale(-1, -1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, -1); }
+
+/* line 73, open-iconic.scss */
+.oi[data-glyph=account-login]:before {
+  content: '\e000'; }
+
+/* line 77, open-iconic.scss */
+.oi[data-glyph=account-logout]:before {
+  content: '\e001'; }
+
+/* line 81, open-iconic.scss */
+.oi[data-glyph=action-redo]:before {
+  content: '\e002'; }
+
+/* line 85, open-iconic.scss */
+.oi[data-glyph=action-undo]:before {
+  content: '\e003'; }
+
+/* line 89, open-iconic.scss */
+.oi[data-glyph=align-center]:before {
+  content: '\e004'; }
+
+/* line 93, open-iconic.scss */
+.oi[data-glyph=align-left]:before {
+  content: '\e005'; }
+
+/* line 97, open-iconic.scss */
+.oi[data-glyph=align-right]:before {
+  content: '\e006'; }
+
+/* line 101, open-iconic.scss */
+.oi[data-glyph=aperture]:before {
+  content: '\e007'; }
+
+/* line 105, open-iconic.scss */
+.oi[data-glyph=arrow-bottom]:before {
+  content: '\e008'; }
+
+/* line 109, open-iconic.scss */
+.oi[data-glyph=arrow-circle-bottom]:before {
+  content: '\e009'; }
+
+/* line 113, open-iconic.scss */
+.oi[data-glyph=arrow-circle-left]:before {
+  content: '\e00a'; }
+
+/* line 117, open-iconic.scss */
+.oi[data-glyph=arrow-circle-right]:before {
+  content: '\e00b'; }
+
+/* line 121, open-iconic.scss */
+.oi[data-glyph=arrow-circle-top]:before {
+  content: '\e00c'; }
+
+/* line 125, open-iconic.scss */
+.oi[data-glyph=arrow-left]:before {
+  content: '\e00d'; }
+
+/* line 129, open-iconic.scss */
+.oi[data-glyph=arrow-right]:before {
+  content: '\e00e'; }
+
+/* line 133, open-iconic.scss */
+.oi[data-glyph=arrow-thick-bottom]:before {
+  content: '\e00f'; }
+
+/* line 137, open-iconic.scss */
+.oi[data-glyph=arrow-thick-left]:before {
+  content: '\e010'; }
+
+/* line 141, open-iconic.scss */
+.oi[data-glyph=arrow-thick-right]:before {
+  content: '\e011'; }
+
+/* line 145, open-iconic.scss */
+.oi[data-glyph=arrow-thick-top]:before {
+  content: '\e012'; }
+
+/* line 149, open-iconic.scss */
+.oi[data-glyph=arrow-top]:before {
+  content: '\e013'; }
+
+/* line 153, open-iconic.scss */
+.oi[data-glyph=audio-spectrum]:before {
+  content: '\e014'; }
+
+/* line 157, open-iconic.scss */
+.oi[data-glyph=badge]:before {
+  content: '\e015'; }
+
+/* line 161, open-iconic.scss */
+.oi[data-glyph=ban]:before {
+  content: '\e016'; }
+
+/* line 165, open-iconic.scss */
+.oi[data-glyph=bar-chart]:before {
+  content: '\e017'; }
+
+/* line 169, open-iconic.scss */
+.oi[data-glyph=basket]:before {
+  content: '\e018'; }
+
+/* line 173, open-iconic.scss */
+.oi[data-glyph=battery-empty]:before {
+  content: '\e019'; }
+
+/* line 177, open-iconic.scss */
+.oi[data-glyph=battery-full]:before {
+  content: '\e01a'; }
+
+/* line 181, open-iconic.scss */
+.oi[data-glyph=beaker]:before {
+  content: '\e01b'; }
+
+/* line 185, open-iconic.scss */
+.oi[data-glyph=bell]:before {
+  content: '\e01c'; }
+
+/* line 189, open-iconic.scss */
+.oi[data-glyph=bluetooth]:before {
+  content: '\e01d'; }
+
+/* line 193, open-iconic.scss */
+.oi[data-glyph=bold]:before {
+  content: '\e01e'; }
+
+/* line 197, open-iconic.scss */
+.oi[data-glyph=bolt]:before {
+  content: '\e01f'; }
+
+/* line 201, open-iconic.scss */
+.oi[data-glyph=book]:before {
+  content: '\e020'; }
+
+/* line 205, open-iconic.scss */
+.oi[data-glyph=bookmark]:before {
+  content: '\e021'; }
+
+/* line 209, open-iconic.scss */
+.oi[data-glyph=box]:before {
+  content: '\e022'; }
+
+/* line 213, open-iconic.scss */
+.oi[data-glyph=briefcase]:before {
+  content: '\e023'; }
+
+/* line 217, open-iconic.scss */
+.oi[data-glyph=british-pound]:before {
+  content: '\e024'; }
+
+/* line 221, open-iconic.scss */
+.oi[data-glyph=browser]:before {
+  content: '\e025'; }
+
+/* line 225, open-iconic.scss */
+.oi[data-glyph=brush]:before {
+  content: '\e026'; }
+
+/* line 229, open-iconic.scss */
+.oi[data-glyph=bug]:before {
+  content: '\e027'; }
+
+/* line 233, open-iconic.scss */
+.oi[data-glyph=bullhorn]:before {
+  content: '\e028'; }
+
+/* line 237, open-iconic.scss */
+.oi[data-glyph=calculator]:before {
+  content: '\e029'; }
+
+/* line 241, open-iconic.scss */
+.oi[data-glyph=calendar]:before {
+  content: '\e02a'; }
+
+/* line 245, open-iconic.scss */
+.oi[data-glyph=camera-slr]:before {
+  content: '\e02b'; }
+
+/* line 249, open-iconic.scss */
+.oi[data-glyph=caret-bottom]:before {
+  content: '\e02c'; }
+
+/* line 253, open-iconic.scss */
+.oi[data-glyph=caret-left]:before {
+  content: '\e02d'; }
+
+/* line 257, open-iconic.scss */
+.oi[data-glyph=caret-right]:before {
+  content: '\e02e'; }
+
+/* line 261, open-iconic.scss */
+.oi[data-glyph=caret-top]:before {
+  content: '\e02f'; }
+
+/* line 265, open-iconic.scss */
+.oi[data-glyph=cart]:before {
+  content: '\e030'; }
+
+/* line 269, open-iconic.scss */
+.oi[data-glyph=chat]:before {
+  content: '\e031'; }
+
+/* line 273, open-iconic.scss */
+.oi[data-glyph=check]:before {
+  content: '\e032'; }
+
+/* line 277, open-iconic.scss */
+.oi[data-glyph=chevron-bottom]:before {
+  content: '\e033'; }
+
+/* line 281, open-iconic.scss */
+.oi[data-glyph=chevron-left]:before {
+  content: '\e034'; }
+
+/* line 285, open-iconic.scss */
+.oi[data-glyph=chevron-right]:before {
+  content: '\e035'; }
+
+/* line 289, open-iconic.scss */
+.oi[data-glyph=chevron-top]:before {
+  content: '\e036'; }
+
+/* line 293, open-iconic.scss */
+.oi[data-glyph=circle-check]:before {
+  content: '\e037'; }
+
+/* line 297, open-iconic.scss */
+.oi[data-glyph=circle-x]:before {
+  content: '\e038'; }
+
+/* line 301, open-iconic.scss */
+.oi[data-glyph=clock]:before {
+  content: '\e039'; }
+
+/* line 305, open-iconic.scss */
+.oi[data-glyph=cloud-download]:before {
+  content: '\e03a'; }
+
+/* line 309, open-iconic.scss */
+.oi[data-glyph=cloud-upload]:before {
+  content: '\e03b'; }
+
+/* line 313, open-iconic.scss */
+.oi[data-glyph=cloud]:before {
+  content: '\e03c'; }
+
+/* line 317, open-iconic.scss */
+.oi[data-glyph=cloudy]:before {
+  content: '\e03d'; }
+
+/* line 321, open-iconic.scss */
+.oi[data-glyph=code]:before {
+  content: '\e03e'; }
+
+/* line 325, open-iconic.scss */
+.oi[data-glyph=cog]:before {
+  content: '\e03f'; }
+
+/* line 329, open-iconic.scss */
+.oi[data-glyph=collapse-down]:before {
+  content: '\e040'; }
+
+/* line 333, open-iconic.scss */
+.oi[data-glyph=collapse-left]:before {
+  content: '\e041'; }
+
+/* line 337, open-iconic.scss */
+.oi[data-glyph=collapse-right]:before {
+  content: '\e042'; }
+
+/* line 341, open-iconic.scss */
+.oi[data-glyph=collapse-up]:before {
+  content: '\e043'; }
+
+/* line 345, open-iconic.scss */
+.oi[data-glyph=comment-square]:before {
+  content: '\e044'; }
+
+/* line 349, open-iconic.scss */
+.oi[data-glyph=compass]:before {
+  content: '\e045'; }
+
+/* line 353, open-iconic.scss */
+.oi[data-glyph=contrast]:before {
+  content: '\e046'; }
+
+/* line 357, open-iconic.scss */
+.oi[data-glyph=copywriting]:before {
+  content: '\e047'; }
+
+/* line 361, open-iconic.scss */
+.oi[data-glyph=credit-card]:before {
+  content: '\e048'; }
+
+/* line 365, open-iconic.scss */
+.oi[data-glyph=crop]:before {
+  content: '\e049'; }
+
+/* line 369, open-iconic.scss */
+.oi[data-glyph=dashboard]:before {
+  content: '\e04a'; }
+
+/* line 373, open-iconic.scss */
+.oi[data-glyph=data-transfer-download]:before {
+  content: '\e04b'; }
+
+/* line 377, open-iconic.scss */
+.oi[data-glyph=data-transfer-upload]:before {
+  content: '\e04c'; }
+
+/* line 381, open-iconic.scss */
+.oi[data-glyph=delete]:before {
+  content: '\e04d'; }
+
+/* line 385, open-iconic.scss */
+.oi[data-glyph=dial]:before {
+  content: '\e04e'; }
+
+/* line 389, open-iconic.scss */
+.oi[data-glyph=document]:before {
+  content: '\e04f'; }
+
+/* line 393, open-iconic.scss */
+.oi[data-glyph=dollar]:before {
+  content: '\e050'; }
+
+/* line 397, open-iconic.scss */
+.oi[data-glyph=double-quote-sans-left]:before {
+  content: '\e051'; }
+
+/* line 401, open-iconic.scss */
+.oi[data-glyph=double-quote-sans-right]:before {
+  content: '\e052'; }
+
+/* line 405, open-iconic.scss */
+.oi[data-glyph=double-quote-serif-left]:before {
+  content: '\e053'; }
+
+/* line 409, open-iconic.scss */
+.oi[data-glyph=double-quote-serif-right]:before {
+  content: '\e054'; }
+
+/* line 413, open-iconic.scss */
+.oi[data-glyph=droplet]:before {
+  content: '\e055'; }
+
+/* line 417, open-iconic.scss */
+.oi[data-glyph=eject]:before {
+  content: '\e056'; }
+
+/* line 421, open-iconic.scss */
+.oi[data-glyph=elevator]:before {
+  content: '\e057'; }
+
+/* line 425, open-iconic.scss */
+.oi[data-glyph=ellipses]:before {
+  content: '\e058'; }
+
+/* line 429, open-iconic.scss */
+.oi[data-glyph=envelope-closed]:before {
+  content: '\e059'; }
+
+/* line 433, open-iconic.scss */
+.oi[data-glyph=envelope-open]:before {
+  content: '\e05a'; }
+
+/* line 437, open-iconic.scss */
+.oi[data-glyph=euro]:before {
+  content: '\e05b'; }
+
+/* line 441, open-iconic.scss */
+.oi[data-glyph=excerpt]:before {
+  content: '\e05c'; }
+
+/* line 445, open-iconic.scss */
+.oi[data-glyph=expand-down]:before {
+  content: '\e05d'; }
+
+/* line 449, open-iconic.scss */
+.oi[data-glyph=expand-left]:before {
+  content: '\e05e'; }
+
+/* line 453, open-iconic.scss */
+.oi[data-glyph=expand-right]:before {
+  content: '\e05f'; }
+
+/* line 457, open-iconic.scss */
+.oi[data-glyph=expand-up]:before {
+  content: '\e060'; }
+
+/* line 461, open-iconic.scss */
+.oi[data-glyph=external-link]:before {
+  content: '\e061'; }
+
+/* line 465, open-iconic.scss */
+.oi[data-glyph=eye]:before {
+  content: '\e062'; }
+
+/* line 469, open-iconic.scss */
+.oi[data-glyph=eyedropper]:before {
+  content: '\e063'; }
+
+/* line 473, open-iconic.scss */
+.oi[data-glyph=file]:before {
+  content: '\e064'; }
+
+/* line 477, open-iconic.scss */
+.oi[data-glyph=fire]:before {
+  content: '\e065'; }
+
+/* line 481, open-iconic.scss */
+.oi[data-glyph=flag]:before {
+  content: '\e066'; }
+
+/* line 485, open-iconic.scss */
+.oi[data-glyph=flash]:before {
+  content: '\e067'; }
+
+/* line 489, open-iconic.scss */
+.oi[data-glyph=folder]:before {
+  content: '\e068'; }
+
+/* line 493, open-iconic.scss */
+.oi[data-glyph=fork]:before {
+  content: '\e069'; }
+
+/* line 497, open-iconic.scss */
+.oi[data-glyph=fullscreen-enter]:before {
+  content: '\e06a'; }
+
+/* line 501, open-iconic.scss */
+.oi[data-glyph=fullscreen-exit]:before {
+  content: '\e06b'; }
+
+/* line 505, open-iconic.scss */
+.oi[data-glyph=globe]:before {
+  content: '\e06c'; }
+
+/* line 509, open-iconic.scss */
+.oi[data-glyph=graph]:before {
+  content: '\e06d'; }
+
+/* line 513, open-iconic.scss */
+.oi[data-glyph=grid-four-up]:before {
+  content: '\e06e'; }
+
+/* line 517, open-iconic.scss */
+.oi[data-glyph=grid-three-up]:before {
+  content: '\e06f'; }
+
+/* line 521, open-iconic.scss */
+.oi[data-glyph=grid-two-up]:before {
+  content: '\e070'; }
+
+/* line 525, open-iconic.scss */
+.oi[data-glyph=hard-drive]:before {
+  content: '\e071'; }
+
+/* line 529, open-iconic.scss */
+.oi[data-glyph=headphones]:before {
+  content: '\e072'; }
+
+/* line 533, open-iconic.scss */
+.oi[data-glyph=heart]:before {
+  content: '\e073'; }
+
+/* line 537, open-iconic.scss */
+.oi[data-glyph=home]:before {
+  content: '\e074'; }
+
+/* line 541, open-iconic.scss */
+.oi[data-glyph=image]:before {
+  content: '\e075'; }
+
+/* line 545, open-iconic.scss */
+.oi[data-glyph=inbox]:before {
+  content: '\e076'; }
+
+/* line 549, open-iconic.scss */
+.oi[data-glyph=infinity]:before {
+  content: '\e077'; }
+
+/* line 553, open-iconic.scss */
+.oi[data-glyph=info]:before {
+  content: '\e078'; }
+
+/* line 557, open-iconic.scss */
+.oi[data-glyph=italic]:before {
+  content: '\e079'; }
+
+/* line 561, open-iconic.scss */
+.oi[data-glyph=justify-center]:before {
+  content: '\e07a'; }
+
+/* line 565, open-iconic.scss */
+.oi[data-glyph=justify-left]:before {
+  content: '\e07b'; }
+
+/* line 569, open-iconic.scss */
+.oi[data-glyph=justify-right]:before {
+  content: '\e07c'; }
+
+/* line 573, open-iconic.scss */
+.oi[data-glyph=key]:before {
+  content: '\e07d'; }
+
+/* line 577, open-iconic.scss */
+.oi[data-glyph=laptop]:before {
+  content: '\e07e'; }
+
+/* line 581, open-iconic.scss */
+.oi[data-glyph=layers]:before {
+  content: '\e07f'; }
+
+/* line 585, open-iconic.scss */
+.oi[data-glyph=lightbulb]:before {
+  content: '\e080'; }
+
+/* line 589, open-iconic.scss */
+.oi[data-glyph=link-broken]:before {
+  content: '\e081'; }
+
+/* line 593, open-iconic.scss */
+.oi[data-glyph=link-intact]:before {
+  content: '\e082'; }
+
+/* line 597, open-iconic.scss */
+.oi[data-glyph=list-rich]:before {
+  content: '\e083'; }
+
+/* line 601, open-iconic.scss */
+.oi[data-glyph=list]:before {
+  content: '\e084'; }
+
+/* line 605, open-iconic.scss */
+.oi[data-glyph=location]:before {
+  content: '\e085'; }
+
+/* line 609, open-iconic.scss */
+.oi[data-glyph=lock-locked]:before {
+  content: '\e086'; }
+
+/* line 613, open-iconic.scss */
+.oi[data-glyph=lock-unlocked]:before {
+  content: '\e087'; }
+
+/* line 617, open-iconic.scss */
+.oi[data-glyph=loop-circular]:before {
+  content: '\e088'; }
+
+/* line 621, open-iconic.scss */
+.oi[data-glyph=loop-square]:before {
+  content: '\e089'; }
+
+/* line 625, open-iconic.scss */
+.oi[data-glyph=loop]:before {
+  content: '\e08a'; }
+
+/* line 629, open-iconic.scss */
+.oi[data-glyph=magnifying-glass]:before {
+  content: '\e08b'; }
+
+/* line 633, open-iconic.scss */
+.oi[data-glyph=map-marker]:before {
+  content: '\e08c'; }
+
+/* line 637, open-iconic.scss */
+.oi[data-glyph=map]:before {
+  content: '\e08d'; }
+
+/* line 641, open-iconic.scss */
+.oi[data-glyph=media-pause]:before {
+  content: '\e08e'; }
+
+/* line 645, open-iconic.scss */
+.oi[data-glyph=media-play]:before {
+  content: '\e08f'; }
+
+/* line 649, open-iconic.scss */
+.oi[data-glyph=media-record]:before {
+  content: '\e090'; }
+
+/* line 653, open-iconic.scss */
+.oi[data-glyph=media-skip-backward]:before {
+  content: '\e091'; }
+
+/* line 657, open-iconic.scss */
+.oi[data-glyph=media-skip-forward]:before {
+  content: '\e092'; }
+
+/* line 661, open-iconic.scss */
+.oi[data-glyph=media-step-backward]:before {
+  content: '\e093'; }
+
+/* line 665, open-iconic.scss */
+.oi[data-glyph=media-step-forward]:before {
+  content: '\e094'; }
+
+/* line 669, open-iconic.scss */
+.oi[data-glyph=media-stop]:before {
+  content: '\e095'; }
+
+/* line 673, open-iconic.scss */
+.oi[data-glyph=medical-cross]:before {
+  content: '\e096'; }
+
+/* line 677, open-iconic.scss */
+.oi[data-glyph=menu]:before {
+  content: '\e097'; }
+
+/* line 681, open-iconic.scss */
+.oi[data-glyph=microphone]:before {
+  content: '\e098'; }
+
+/* line 685, open-iconic.scss */
+.oi[data-glyph=minus]:before {
+  content: '\e099'; }
+
+/* line 689, open-iconic.scss */
+.oi[data-glyph=monitor]:before {
+  content: '\e09a'; }
+
+/* line 693, open-iconic.scss */
+.oi[data-glyph=moon]:before {
+  content: '\e09b'; }
+
+/* line 697, open-iconic.scss */
+.oi[data-glyph=move]:before {
+  content: '\e09c'; }
+
+/* line 701, open-iconic.scss */
+.oi[data-glyph=musical-note]:before {
+  content: '\e09d'; }
+
+/* line 705, open-iconic.scss */
+.oi[data-glyph=paperclip]:before {
+  content: '\e09e'; }
+
+/* line 709, open-iconic.scss */
+.oi[data-glyph=pencil]:before {
+  content: '\e09f'; }
+
+/* line 713, open-iconic.scss */
+.oi[data-glyph=people]:before {
+  content: '\e0a0'; }
+
+/* line 717, open-iconic.scss */
+.oi[data-glyph=person]:before {
+  content: '\e0a1'; }
+
+/* line 721, open-iconic.scss */
+.oi[data-glyph=phone]:before {
+  content: '\e0a2'; }
+
+/* line 725, open-iconic.scss */
+.oi[data-glyph=pie-chart]:before {
+  content: '\e0a3'; }
+
+/* line 729, open-iconic.scss */
+.oi[data-glyph=pin]:before {
+  content: '\e0a4'; }
+
+/* line 733, open-iconic.scss */
+.oi[data-glyph=play-circle]:before {
+  content: '\e0a5'; }
+
+/* line 737, open-iconic.scss */
+.oi[data-glyph=plus]:before {
+  content: '\e0a6'; }
+
+/* line 741, open-iconic.scss */
+.oi[data-glyph=power-standby]:before {
+  content: '\e0a7'; }
+
+/* line 745, open-iconic.scss */
+.oi[data-glyph=print]:before {
+  content: '\e0a8'; }
+
+/* line 749, open-iconic.scss */
+.oi[data-glyph=project]:before {
+  content: '\e0a9'; }
+
+/* line 753, open-iconic.scss */
+.oi[data-glyph=pulse]:before {
+  content: '\e0aa'; }
+
+/* line 757, open-iconic.scss */
+.oi[data-glyph=puzzle-piece]:before {
+  content: '\e0ab'; }
+
+/* line 761, open-iconic.scss */
+.oi[data-glyph=question-mark]:before {
+  content: '\e0ac'; }
+
+/* line 765, open-iconic.scss */
+.oi[data-glyph=rain]:before {
+  content: '\e0ad'; }
+
+/* line 769, open-iconic.scss */
+.oi[data-glyph=random]:before {
+  content: '\e0ae'; }
+
+/* line 773, open-iconic.scss */
+.oi[data-glyph=reload]:before {
+  content: '\e0af'; }
+
+/* line 777, open-iconic.scss */
+.oi[data-glyph=resize-both]:before {
+  content: '\e0b0'; }
+
+/* line 781, open-iconic.scss */
+.oi[data-glyph=resize-height]:before {
+  content: '\e0b1'; }
+
+/* line 785, open-iconic.scss */
+.oi[data-glyph=resize-width]:before {
+  content: '\e0b2'; }
+
+/* line 789, open-iconic.scss */
+.oi[data-glyph=rss-alt]:before {
+  content: '\e0b3'; }
+
+/* line 793, open-iconic.scss */
+.oi[data-glyph=rss]:before {
+  content: '\e0b4'; }
+
+/* line 797, open-iconic.scss */
+.oi[data-glyph=script]:before {
+  content: '\e0b5'; }
+
+/* line 801, open-iconic.scss */
+.oi[data-glyph=share-boxed]:before {
+  content: '\e0b6'; }
+
+/* line 805, open-iconic.scss */
+.oi[data-glyph=share]:before {
+  content: '\e0b7'; }
+
+/* line 809, open-iconic.scss */
+.oi[data-glyph=shield]:before {
+  content: '\e0b8'; }
+
+/* line 813, open-iconic.scss */
+.oi[data-glyph=signal]:before {
+  content: '\e0b9'; }
+
+/* line 817, open-iconic.scss */
+.oi[data-glyph=signpost]:before {
+  content: '\e0ba'; }
+
+/* line 821, open-iconic.scss */
+.oi[data-glyph=sort-ascending]:before {
+  content: '\e0bb'; }
+
+/* line 825, open-iconic.scss */
+.oi[data-glyph=sort-descending]:before {
+  content: '\e0bc'; }
+
+/* line 829, open-iconic.scss */
+.oi[data-glyph=spreadsheet]:before {
+  content: '\e0bd'; }
+
+/* line 833, open-iconic.scss */
+.oi[data-glyph=star]:before {
+  content: '\e0be'; }
+
+/* line 837, open-iconic.scss */
+.oi[data-glyph=sun]:before {
+  content: '\e0bf'; }
+
+/* line 841, open-iconic.scss */
+.oi[data-glyph=tablet]:before {
+  content: '\e0c0'; }
+
+/* line 845, open-iconic.scss */
+.oi[data-glyph=tag]:before {
+  content: '\e0c1'; }
+
+/* line 849, open-iconic.scss */
+.oi[data-glyph=tags]:before {
+  content: '\e0c2'; }
+
+/* line 853, open-iconic.scss */
+.oi[data-glyph=target]:before {
+  content: '\e0c3'; }
+
+/* line 857, open-iconic.scss */
+.oi[data-glyph=task]:before {
+  content: '\e0c4'; }
+
+/* line 861, open-iconic.scss */
+.oi[data-glyph=terminal]:before {
+  content: '\e0c5'; }
+
+/* line 865, open-iconic.scss */
+.oi[data-glyph=text]:before {
+  content: '\e0c6'; }
+
+/* line 869, open-iconic.scss */
+.oi[data-glyph=thumb-down]:before {
+  content: '\e0c7'; }
+
+/* line 873, open-iconic.scss */
+.oi[data-glyph=thumb-up]:before {
+  content: '\e0c8'; }
+
+/* line 877, open-iconic.scss */
+.oi[data-glyph=timer]:before {
+  content: '\e0c9'; }
+
+/* line 881, open-iconic.scss */
+.oi[data-glyph=transfer]:before {
+  content: '\e0ca'; }
+
+/* line 885, open-iconic.scss */
+.oi[data-glyph=trash]:before {
+  content: '\e0cb'; }
+
+/* line 889, open-iconic.scss */
+.oi[data-glyph=vertical-align-bottom]:before {
+  content: '\e0cc'; }
+
+/* line 893, open-iconic.scss */
+.oi[data-glyph=vertical-align-center]:before {
+  content: '\e0cd'; }
+
+/* line 897, open-iconic.scss */
+.oi[data-glyph=vertical-align-top]:before {
+  content: '\e0ce'; }
+
+/* line 901, open-iconic.scss */
+.oi[data-glyph=video]:before {
+  content: '\e0cf'; }
+
+/* line 905, open-iconic.scss */
+.oi[data-glyph=volume-high]:before {
+  content: '\e0d0'; }
+
+/* line 909, open-iconic.scss */
+.oi[data-glyph=volume-low]:before {
+  content: '\e0d1'; }
+
+/* line 913, open-iconic.scss */
+.oi[data-glyph=volume-off]:before {
+  content: '\e0d2'; }
+
+/* line 917, open-iconic.scss */
+.oi[data-glyph=warning]:before {
+  content: '\e0d3'; }
+
+/* line 921, open-iconic.scss */
+.oi[data-glyph=wifi]:before {
+  content: '\e0d4'; }
+
+/* line 925, open-iconic.scss */
+.oi[data-glyph=wrench]:before {
+  content: '\e0d5'; }
+
+/* line 929, open-iconic.scss */
+.oi[data-glyph=x]:before {
+  content: '\e0d6'; }
+
+/* line 933, open-iconic.scss */
+.oi[data-glyph=yen]:before {
+  content: '\e0d7'; }
+
+/* line 937, open-iconic.scss */
+.oi[data-glyph=zoom-in]:before {
+  content: '\e0d8'; }
+
+/* line 941, open-iconic.scss */
+.oi[data-glyph=zoom-out]:before {
+  content: '\e0d9'; }
+
+@font-face {
+  font-family: "Comic Neue Angular";
+  src: url("../fonts/comic-neue/ComicNeue-Angular-Regular.eot");
+  src: url("../fonts/comic-neue/ComicNeue-Angular-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/comic-neue/ComicNeue-Angular-Regular.woff") format("woff"), url("../fonts/comic-neue/ComicNeue-Angular-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Comic Neue Angular";
+  src: url("../fonts/comic-neue/ComicNeue-Angular-Bold.eot");
+  src: url("../fonts/comic-neue/ComicNeue-Angular-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/comic-neue/ComicNeue-Angular-Bold.woff") format("woff"), url("../fonts/comic-neue/ComicNeue-Angular-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal; }
+
+/* line 45, style.sass */
+body {
+  font-family: "Comic Neue Angular", sans-serif;
+  font-weight: normal; }
+
+/* line 50, style.sass */
+h1, h2, h3 {
+  font-weight: bold;
+  text-align: center; }
+
+/* line 55, style.sass */
+h1 {
+  margin: 1.25em 0;
+  font-size: 2em; }
+
+/* line 59, style.sass */
+h2 {
+  margin: 1.25em 0;
+  font-size: 2em; }
+
+/* line 63, style.sass */
+h3 {
+  margin: 0.625em 0;
+  font-size: 1.5em; }
+
+/* line 67, style.sass */
+.ng-cloak {
+  display: none; }
+
+/* line 70, style.sass */
+h1.main-title {
+  text-align: left;
+  color: goldenrod; }
+
+/* line 74, style.sass */
+div.jobs {
+  box-sizing: border-box;
+  width: 15%;
+  float: left;
+  height: 31.25em;
+  border: 0.0625em solid #6690b4; }
+
+/* line 81, style.sass */
+div.task, div.job {
+  cursor: move;
+  margin: 0.625em;
+  padding: 0.375em;
+  -webkit-border-radius: 0.1875em;
+  -moz-border-radius: 0.1875em;
+  -ms-border-radius: 0.1875em;
+  -o-border-radius: 0.1875em;
+  border-radius: 0.1875em;
+  height: 1.5em;
+  color: white;
+  line-height: 1.5em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden; }
+  /* line 98, style.sass */
+  div.task.type-dev, div.job.type-dev {
+    background: #f07848; }
+  /* line 100, style.sass */
+  div.task.type-res, div.job.type-res {
+    background: #80a8cc; }
+  /* line 102, style.sass */
+  div.task.type-mkt, div.job.type-mkt {
+    background: #024883; }
+  /* line 104, style.sass */
+  div.task.type-sal, div.job.type-sal {
+    background: red; }
+  /* line 106, style.sass */
+  div.task.type-des, div.job.type-des {
+    background: purple; }
+  /* line 108, style.sass */
+  div.task.type-fun, div.job.type-fun {
+    background: green; }
+  /* line 111, style.sass */
+  div.task:hover, div.job:hover {
+    color: #6690b4;
+    background: #f0cdc0; }
+
+/* line 115, style.sass */
+div.days {
+  float: left;
+  box-sizing: border-box;
+  width: 70%;
+  padding: 0 0 0 1%; }
+
+/* line 121, style.sass */
+div.price-selector {
+  width: 80%;
+  margin: 0 10%; }
+
+/* line 125, style.sass */
+input.price-input {
+  width: 100%;
+  display: inline-block; }
+
+/* line 129, style.sass */
+div.price {
+  float: left;
+  width: 10%;
+  text-align: right; }
+
+/* line 134, style.sass */
+div.day {
+  box-sizing: border-box;
+  position: relative;
+  border: 0.0625em solid #80a8cc;
+  width: 14%;
+  height: 7.5em;
+  float: left; }
+  /* line 141, style.sass */
+  div.day:hover {
+    background-color: #ededed; }
+  /* line 143, style.sass */
+  div.day:nth-child(7n+1) {
+    clear: left; }
+  /* line 146, style.sass */
+  div.day div.message {
+    position: absolute;
+    z-index: 20;
+    width: 100%;
+    height: 2em;
+    background: white;
+    border: 0.0625em solid #f0cdc0;
+    opacity: 0.8;
+    text-align: center;
+    line-height: 2em;
+    -webkit-transition: all 0.34s linear;
+    -webkit-transition-delay: 0s !important;
+    -moz-transition: all 0.34s linear 0s !important;
+    -o-transition: all 0.34s linear 0s !important;
+    transition: all 0.34s linear 0s !important; }
+    /* line 157, style.sass */
+    div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
+      opacity: 1;
+      top: -2.1875em; }
+    /* line 160, style.sass */
+    div.day div.message.showing-false {
+      opacity: 0;
+      top: 0; }
+    /* line 163, style.sass */
+    div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
+      opacity: 0 !important;
+      top: 0 !important; }
+    /* line 166, style.sass */
+    div.day div.message span.value {
+      font-weight: bold;
+      font-size: 1.5em; }
+
+/* line 171, style.sass */
+div.day-progress-meter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: lightgreen; }
+
+/* line 178, style.sass */
+h5.day-name {
+  position: relative;
+  z-index: 1; }
+
+/* line 182, style.sass */
+div.assets {
+  box-sizing: border-box;
+  border: 0.0625em solid #6690b4;
+  width: 15%;
+  height: 31.25em;
+  float: left; }
+
+/* line 189, style.sass */
+div.announcement {
+  position: absolute;
+  z-index: 10;
+  box-sizing: border-box;
+  top: 0;
+  left: 30%;
+  margin-top: 2%;
+  border: 0.625em solid #f07848;
+  padding: 0 2.5em;
+  width: 40%;
+  height: 80%;
+  background-color: white;
+  text-align: center; }
+  /* line 203, style.sass */
+  div.announcement h2.event-title {
+    padding: 0.625em 0;
+    background-color: #f0cdc0;
+    border: 0.0625em solid #f07848; }
+  /* line 208, style.sass */
+  div.announcement div.oi {
+    font-size: 16em;
+    color: #f07848; }
+  /* line 212, style.sass */
+  div.announcement p.description {
+    font-size: 1.75em; }
+  /* line 215, style.sass */
+  div.announcement button.confirm {
+    cursor: pointer;
+    margin: 1.25em 0;
+    width: 30%;
+    font-size: 1em;
+    border: 0.0625em solid #f07848;
+    background: #f0cdc0; }
+    /* line 222, style.sass */
+    div.announcement button.confirm span {
+      font-size: 1.75em; }
+    /* line 224, style.sass */
+    div.announcement button.confirm:hover {
+      opacity: 0.85; }

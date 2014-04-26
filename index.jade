@@ -6,17 +6,74 @@ html
 		// WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 --
 		meta(name="viewport",content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi")
 		link(rel="stylesheet", type="text/css", href="css/style.css")
-		title Postcard
+		title Lemonade Startup
 	body(id="document-body", ng-controller="MainController")
 		div.container
 			//include ../views/ng-view-write.jade
-			h1 Static Web Template
-			p {{testMessage}}
+			h1.main-title.oi(data-glyph="droplet") Menu
 
+			div.jobs(ng-model="tasks", data-jqyoui-options="taskListOptions", jqyoui-droppable="{multiple:true}")
+				h3 Tasks
+				div(ng-repeat="task in tasks", ls-job)
+				h3 Forecast
+				div(ng-repeat="weather in game.forecast track by $index")
+					span.title {{weather.description}}
+
+			div.days
+				h2 Sprint {{sprint}}
+				div.price-selector
+					h3 Price: ${{prices[price]}}
+					input.price-input(type="range", name="price", ng-model="price", min="0", max="9")
+				div.calendar
+					div.day(ng-repeat="day in sprintDays", ls-day)
+
+			div.assets
+				h3 Stats
+				dl
+					dt Cash
+					dd ${{game.stats.cash}}
+					dt Projected Company Value
+					dd ${{game.stats.projectedValue}}
+				h3 Assets
+				div(ng-repeat="asset in game.assets") {{asset.name}}, Expires In: {{asset.expiry}}
+				h3 Debug
+				dl
+					dt Development
+					dd {{game.stats.development}}
+					dt Design
+					dd {{game.stats.design}}
+					dt Marketing
+					dd {{game.stats.marketing}}
+					dt Research
+					dd {{game.stats.research}}
+					dt Sales
+					dd {{game.stats.sales}}
+					dt Fundraising
+					dd {{game.stats.fundraising}}
+					dt Productivity
+					dd {{game.stats.productivity}}
+
+		h3 Options
+		div.debug-buttons(style="text-align: center;")
+			button(ng-click="startSimulation()")
+				span Start Simulation
+
+		div.announcements(ng-cloak)
+			div.announcement(ng-repeat="event in announcements")
+				h2.event-title
+					span.title {{event.name}}
+				div.oi(data-glyph="{{event.icon}}")
+				p.description {{event.description}}
+				button.confirm(ng-click="resumeSimulation()")
+					span.title OK
+
+		script(src='js/vendor/jquery/jquery.min.js')
+		script(src='js/vendor/jquery/jquery-ui.min.js')
 		script(src='js/vendor/angularjs/angular.min.js')
 		script(src='js/vendor/angularjs/angular-route.min.js')
 		script(src='js/vendor/angularjs/angular-touch.min.js')
 		script(src='js/vendor/angularjs/angular-animate.min.js')
+		script(src='js/vendor/angularjs/angular-dragdrop.min.js')
 		script(src='js/index.js')
 		script.
 			angular.element(document).ready( function(){

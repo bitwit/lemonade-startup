@@ -1,7 +1,6 @@
 #global module:false
 module.exports = (grunt) ->
   # Project configuration.
-
   grunt.initConfig({
   # Metadata.
     meta:
@@ -11,14 +10,40 @@ module.exports = (grunt) ->
 
     copy:
       dist:
-        files: [{
-          expand: true
-          flatten: true
-          dot: true
-          cwd: 'app/bower_components'
-          dest: 'js/vendor/angularjs'
-          src: 'angular*/*.min.js*'
-        }]
+        files: [
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/bower_components'
+            dest: 'js/vendor/jquery'
+            src: 'jquery/dist/jquery.min.js'
+          },
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/bower_components'
+            dest: 'js/vendor/jquery'
+            src: 'jquery-ui/ui/minified/jquery-ui.min.js'
+          },
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/bower_components'
+            dest: 'js/vendor/angularjs'
+            src: 'angular*/*.min.js*'
+          },
+          {
+            expand: true
+            flatten: true
+            dot: true
+            cwd: 'app/bower_components'
+            dest: 'js/vendor/angularjs'
+            src: 'angular-dragdrop/src/*.min.js*'
+          }
+        ]
 
     coffee:
       compile:
@@ -27,7 +52,13 @@ module.exports = (grunt) ->
           bare: true
         files: [
           {
-            'js/index.js':['js/index.coffee']
+            'js/index.js': [
+              'js/index.coffee',
+              'js/job-cards.coffee',
+              'js/event-cards.coffee',
+              'js/weather-cards.coffee',
+              'js/business-object.coffee'
+            ]
           }
         ]
 
@@ -40,13 +71,16 @@ module.exports = (grunt) ->
           "index.html": ["index.jade"]
 
     compass:
-      #options:
-      #  importPath: 'app/bower_components'
+    #options:
+    #  importPath: 'app/bower_components'
       dist:
         options:
           config: "config.rb"
 
     watch:
+      pages:
+        files: ['**/*.jade']
+        tasks: ['jade']
       scripts:
         files: ['**/*.coffee']
         tasks: ['coffee']
@@ -63,4 +97,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
 
   # Default task.
-  grunt.registerTask 'default', ['copy','jade','compass','coffee','watch']
+  grunt.registerTask 'default', ['copy', 'jade', 'compass', 'coffee', 'watch']

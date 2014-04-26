@@ -1,2 +1,225 @@
 @import 'compass'
 @import 'compass/reset'
+
+@import 'open-iconic'
+
+$font-size: 16
+// Your base font-size in pixels
+$em: $font-size / 1em
+// Shorthand for outputting ems
+
+$color-blue-light: rgb(128, 168, 204)
+$color-blue-medium: rgb(102, 144, 180)
+$color-blue-dark: rgb(2, 72, 131)
+$color-orange-dark: rgb(240, 120, 72)
+$color-orange-light: rgb(240, 205, 192)
+
+$color-grey-dark: #333
+$color-grey: #888
+$color-grey-light: #CDCDCD
+$color-grey-ultra-light: #EDEDED
+
+$font-dir: "../fonts/comic-neue/"
+//
+  @font-face
+    font-family: "Comic Neue"
+    src: url('#{$font-dir}ComicNeue-Regular.eot')
+    src: url('#{$font-dir}ComicNeue-Regular.eot?#iefix') format('embedded-opentype'), url('#{$font-dir}ComicNeue-Regular.woff') format('woff'), url('#{$font-dir}ComicNeue-Regular.ttf') format('truetype')
+    font-weight: normal
+    font-style: normal
+
+@font-face
+  font-family: "Comic Neue Angular"
+  src: url('#{$font-dir}ComicNeue-Angular-Regular.eot')
+  src: url('#{$font-dir}ComicNeue-Angular-Regular.eot?#iefix') format('embedded-opentype'), url('#{$font-dir}ComicNeue-Angular-Regular.woff') format('woff'), url('#{$font-dir}ComicNeue-Angular-Regular.ttf') format('truetype')
+  font-weight: normal
+  font-style: normal
+
+@font-face
+  font-family: "Comic Neue Angular"
+  src: url('#{$font-dir}ComicNeue-Angular-Bold.eot')
+  src: url('#{$font-dir}ComicNeue-Angular-Bold.eot?#iefix') format('embedded-opentype'), url('#{$font-dir}ComicNeue-Angular-Bold.woff') format('woff'), url('#{$font-dir}ComicNeue-Angular-Bold.ttf') format('truetype')
+  font-weight: bold
+  font-style: normal
+
+body
+  font:
+    family: "Comic Neue Angular", sans-serif
+    weight: normal
+
+h1, h2, h3
+  font:
+    weight: bold
+  text-align: center
+
+h1
+  margin: 20/$em 0
+  font-size: 32/$em
+
+h2
+  margin: 20/$em 0
+  font-size: 32/$em
+
+h3
+  margin: 10/$em 0
+  font-size: 24/$em
+
+.ng-cloak
+  display: none
+
+h1.main-title
+  text-align: left
+  color: goldenrod
+
+div.jobs
+  box-sizing: border-box
+  width: 15%
+  float: left
+  height: 500/$em
+  border: 1/$em solid $color-blue-medium
+
+div.task, div.job
+  cursor: move
+  margin: 10/$em
+  padding: 6/$em
+  +border-radius(3/$em)
+  height: 24/$em
+  color: white
+  line-height: 24/$em
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+  &.type-dev
+    background: $color-orange-dark
+  &.type-res
+    background: $color-blue-light
+  &.type-mkt
+    background: $color-blue-dark
+  &.type-sal
+    background: red
+  &.type-des
+    background: purple
+  &.type-fun
+    background: green
+
+  &:hover
+    color: $color-blue-medium
+    background: $color-orange-light
+
+div.days
+  float: left
+  box-sizing: border-box
+  width: 70%
+  padding: 0 0 0 1%
+
+div.price-selector
+  width: 80%
+  margin: 0 10%
+
+input.price-input
+  width: 100%
+  display: inline-block
+
+div.price
+  float: left
+  width: 10%
+  text-align: right
+
+div.day
+  box-sizing: border-box
+  position: relative
+  border: 1/$em solid $color-blue-light
+  width: 14%
+  height: 120/$em
+  float: left
+  &:hover
+    background-color: $color-grey-ultra-light
+  &:nth-child(7n+1)
+    clear: left
+
+  div.message
+    position: absolute
+    z-index: 20 //above announcements
+    width: 100%
+    height: 32/$em
+    background: #fff
+    border: 1/$em solid $color-orange-light
+    opacity: 0.8
+    text-align: center
+    line-height: 32/$em
+    +single-transition(all, 0.34s, linear, 0s !important)
+    &.showing-true, &.showing-true-add, &.showing-true-add-active
+      opacity: 1
+      top: -35/$em
+    &.showing-false
+      opacity: 0
+      top: 0
+    &.showing-false-add, &.showing-false-add-active
+      opacity: 0 !important
+      top: 0 !important
+    span.value
+      font:
+        weight: bold
+        size: 24/$em
+
+div.day-progress-meter
+  position: absolute
+  top: 0
+  left: 0
+  height: 100%
+  background-color: lightgreen
+
+h5.day-name
+  position: relative
+  z-index: 1
+
+div.assets
+  box-sizing: border-box
+  border: 1/$em solid $color-blue-medium
+  width: 15%
+  height: 500/$em
+  float: left
+
+div.announcement
+  position: absolute
+  z-index: 10 //above calendar elements
+  box-sizing: border-box
+  top: 0
+  left: 30%
+  margin-top: 2%
+  border: 10/$em solid $color-orange-dark
+  padding: 0 40/$em
+  width: 40%
+  height: 80%
+  background-color: #FFF
+  text-align: center
+
+  h2.event-title
+    padding: 10/$em 0
+    background-color: $color-orange-light
+    border: 1/$em solid $color-orange-dark
+
+  div.oi
+    font-size: 256/$em
+    color: $color-orange-dark
+
+  p.description
+    font-size: 28/$em
+
+  button.confirm
+    cursor: pointer
+    margin: 20/$em 0
+    width: 30%
+    font-size: 16/$em
+    border: 1/$em solid $color-orange-dark
+    background: $color-orange-light
+    span
+      font-size: 28/$em
+    &:hover
+      opacity: 0.85
