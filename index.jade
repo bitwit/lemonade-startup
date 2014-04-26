@@ -37,9 +37,9 @@ html
 					h3 Stats
 					dl
 						dt Cash
-						dd ${{game.stats.cash}}
+						dd ${{game.stats.cash | currency:""}}
 						dt Projected Company Value
-						dd ${{game.stats.projectedValue}}
+						dd ${{game.stats.projectedValue| currency:""}}
 					h3 Assets
 					div(ng-repeat="asset in game.assets") {{asset.name}}, Expires In: {{asset.expiry}}
 					h3 Debug

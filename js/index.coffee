@@ -225,12 +225,15 @@ appModule.directive 'lsDay', [ ->
         width: width
       }
 
+    $scope.isShowingMessage = no
+
     $scope.day.announce = (text) ->
       console.log 'announcing text', $scope.day, text
       $scope.message = text
+      $scope.isShowingMessage = yes
       $timeout(
         ->
-          $scope.message = null
+          $scope.isShowingMessage = no
       , 1000)
 
     $scope.removeTask = (e, task) ->
@@ -256,8 +259,8 @@ appModule.directive 'lsDay', [ ->
   template: """
     <div class="day full-{{day.isInteractive}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
-        <div class="message showing-{{(message != null)}}">
-          <span class="value">{{message}}</span>
+        <div class="message showing-{{(isShowingMessage)}}">
+          <span class="value">{{message | currency:"$"}}</span>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
         <div ng-repeat="task in day.tasks track by $index" ls-task></div>

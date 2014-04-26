@@ -71,7 +71,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     businessObject.dailyRevenueHistory.push cashDelta
     console.log(businessObject.dailyRevenueHistory)
 
-    day.announce "$" + cashDelta
+    day.announce cashDelta
 
     businessObject.predictBusinessValue()
     businessObject.generateForecast() #add something new to the forecast
