@@ -74,21 +74,21 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.sprintDays = [
     #first week
-    {name: "Monday", tasks: []}
-    {name: "Tuesday", tasks: []}
-    {name: "Wednesday", tasks: []}
-    {name: "Thursday", tasks: []}
-    {name: "Friday", tasks: []}
-    {name: "Saturday", tasks: []}
-    {name: "Sunday", tasks: []}
+    {name: "Monday", tasks: [], isInteractive: yes}
+    {name: "Tuesday", tasks: [], isInteractive: yes}
+    {name: "Wednesday", tasks: [], isInteractive: yes}
+    {name: "Thursday", tasks: [], isInteractive: yes}
+    {name: "Friday", tasks: [], isInteractive: yes}
+    {name: "Saturday", tasks: [], isInteractive: yes}
+    {name: "Sunday", tasks: [], isInteractive: yes}
     #second week
-    {name: "Monday", tasks: []}
-    {name: "Tuesday", tasks: []}
-    {name: "Wednesday", tasks: []}
-    {name: "Thursday", tasks: []}
-    {name: "Friday", tasks: []}
-    {name: "Saturday", tasks: []}
-    {name: "Sunday", tasks: []}
+    {name: "Monday", tasks: [], isInteractive: yes}
+    {name: "Tuesday", tasks: [], isInteractive: yes}
+    {name: "Wednesday", tasks: [], isInteractive: yes}
+    {name: "Thursday", tasks: [], isInteractive: yes}
+    {name: "Friday", tasks: [], isInteractive: yes}
+    {name: "Saturday", tasks: [], isInteractive: yes}
+    {name: "Sunday", tasks: [], isInteractive: yes}
   ]
 
   $scope.prices =[
@@ -118,7 +118,9 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.startSimulation = ->
     $scope.hasStarted = yes
     $scope.currentDay = 0
-    $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price]
+    day = $scope.sprintDays[$scope.currentDay]
+    day.price = $scope.prices[$scope.price]
+    day.isInteractive = no
     $scope.tick()
 
   $scope.resumeSimulation = ->
@@ -141,7 +143,10 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
       $scope.nextSprint()
     else
       if didCompleteDay
-        $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price]
+        day = $scope.sprintDays[$scope.currentDay]
+        day.price = $scope.prices[$scope.price]
+        day.isInteractive = no
+
       if !shouldPause
         $scope.timerPromise = $timeout $scope.tick, 40
       else
@@ -153,6 +158,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     $scope.progress = 0
     for day in $scope.sprintDays
       day.tasks = []
+      isInteractive = yes
 
   $scope.setTasks = ->
     $scope.tasks = [
@@ -184,7 +190,7 @@ appModule.directive 'lsDay', [ ->
     $scope.sprintDayDraggableOut = (e, el) ->
       #console.log 'draggable out', e, el, $scope.day
 
-    $scope.taskOnDrop = (e, el, a) ->
+    $scope.taskOnDrop = (e, el) ->
       task = el.draggable[0].taskObject
       console.log 'new task for', $scope.day.name, task
       $rootScope.$broadcast 'newTaskForDay', task, $scope.day
@@ -192,7 +198,7 @@ appModule.directive 'lsDay', [ ->
     $scope.message = null
 
     $scope.addSelectedTask = ->
-      if $scope.day.tasks.length < 2
+      if $scope.day.tasks.length < 2 and $scope.day.isInteractive
         task = $scope.getCurrentSelectedTask()
         $scope.day.tasks.push task
         $rootScope.$broadcast 'newTaskForDay', task, $scope.day
@@ -212,7 +218,7 @@ appModule.directive 'lsDay', [ ->
       if $scope.currentDay > index
         width = "100%"
       else if $scope.currentDay is index
-        width =  ($scope.progress * 10) + "%"
+        width = ($scope.progress * 10) + "%"
       else
         width = 0
       return {
@@ -246,10 +252,9 @@ appModule.directive 'lsDay', [ ->
       ###
       console.log 'task is moving', task, $scope.day.tasks
       ###
-
   ]
   template: """
-    <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
+    <div class="day full-{{day.isInteractive}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
         <div class="message showing-{{(message != null)}}">
           <span class="value">{{message}}</span>
@@ -286,14 +291,21 @@ appModule.directive 'lsTask', [ ->
     element[0].taskObject = scope.task
 
   controller: [ "$scope", "$rootScope", ($scope, $rootScope) ->
+    $scope.dragStart = (e, el) ->
+      console.log 'dragStart', e, el
+      if !$scope.day.isInteractive
+        e.preventDefault()
+        e.stopPropagation()
+        el.helper.draggable "option", "disabled", yes
+
     $scope.dragStop = ->
       console.log 'task', $scope.day.name, $scope.task
       $scope.$emit 'taskMoved', $scope.task
   ]
   template: """
-  <div class="task type-{{task.id}} oi" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert: 'invalid', placeholder:true}" ng-model="task" jqyoui-draggable="{index: {{$index}}, placeholder:'keep', onStop: 'dragStop'}">
+  <div class="task type-{{task.id}} oi" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert: 'invalid', placeholder:true}" ng-model="task" jqyoui-draggable="{index: {{$index}}, placeholder:'keep', onStart: 'dragStart', onStop: 'dragStop'}">
     <span class="title">{{task.id}}</span>
-    <span ng-click="removeTask($event, task)" class="delete">X</span>
+    <span ng-if="day.isInteractive" ng-click="removeTask($event, task)" class="delete">X</span>
   </div>
   """
 ]
