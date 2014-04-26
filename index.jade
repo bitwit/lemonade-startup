@@ -11,20 +11,23 @@ html
 	body(id="document-body", ng-controller="MainController")
 		div.container.ng-cloak
 			div.tasks-column
-				h1.main-title.oi(data-glyph="droplet") Menu
+				h1.main-title.oi(data-glyph="droplet")
+					br
+					span.title Lemons
 				div.jobs(ng-model="tasks", data-jqyoui-options="taskListOptions", jqyoui-droppable="{multiple:true}")
 					h3 Tasks
 					div(ng-repeat="task in tasks", ls-job)
-					h3 Forecast
-					div(ng-repeat="weather in game.forecast track by $index")
-						span.title {{weather.description}}
+					//
+						h3 Forecast
+						div(ng-repeat="weather in game.forecast track by $index")
+							span.title {{weather.description}}
 
 			div.main-column
+				div.price-selector
+					h3 Price: ${{prices[price]}}
+					input.price-input(type="range", name="price", ng-model="price", min="0", max="9")
 				div.days
-					h2 Sprint {{sprint}}
-					div.price-selector
-						h3 Price: ${{prices[price]}}
-						input.price-input(type="range", name="price", ng-model="price", min="0", max="9")
+					h2.sprint-title Sprint {{sprint}}
 					div.calendar
 						div.day(ng-repeat="day in sprintDays", ls-day)
 
@@ -62,7 +65,6 @@ html
 						dd {{game.stats.fundraising}}
 						dt Productivity
 						dd {{game.stats.productivity}}
-
 
 		div.announcements(ng-cloak)
 			div.announcement(ng-repeat="event in announcements")

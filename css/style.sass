@@ -39,6 +39,7 @@ body
   font:
     family: Helvetica Neue, Helvetica, Arial, sans-serif
     weight: 300
+  overflow: hidden
 
 h1, h2, h3, h4, h5, h6
   font:
@@ -61,12 +62,12 @@ h3
   display: none
 
 h1.main-title
-  text-align: left
   color: $color-yellow
 
 div.tasks-column
   float: left
   width: 15%
+  background-color: $color-grey-dark
 
 div.main-column
   float: left
@@ -80,9 +81,9 @@ div.status-column
 
 div.jobs
   box-sizing: border-box
-  float: left
-  height: 500/$em
-  border: 1/$em solid $color-blue
+  height: 800/$em
+  h3
+    color: #FFF
 
 div.task, div.job
   position: relative
@@ -114,6 +115,8 @@ div.task, div.job
     background: $color-orange-light
 
 div.job
+  margin: 0 auto 10/$em
+  width: 100/$em
   left: 0
   &.selected-true-add, &.selected-false-add
     +single-transition(all, 0.16s, linear, 0s !important)
@@ -129,6 +132,11 @@ div.job
     -webkit-transition: none !important
     transition: none !important
 
+  span.title
+    display: inline-block
+    text:
+      indent: 6/$em
+      transform: capitalize
   .hotkey-button
     float: right
 
@@ -165,13 +173,22 @@ div.price
   width: 10%
   text-align: right
 
+h2.sprint-title
+  box-sizing: border-box
+  margin: 40/$em 0 0
+  border: 2/$em solid $color-grey-light
+  border-bottom: 1/$em solid $color-grey-light
+  width: 98%
+  padding: 10/$em 0
+
 div.day
   cursor: cell
   &.full-true
     cursor: pointer
   box-sizing: border-box
   position: relative
-  border: 1/$em solid $color-blue
+  border: 2/$em solid $color-grey-light
+  //background: $color-beige
   width: 14%
   height: 120/$em
   float: left
@@ -210,7 +227,7 @@ div.day-progress-meter
   top: 0
   left: 0
   height: 100%
-  background-color: $color-green
+  background-color: $color-green-dark
 
 h5.day-name
   position: relative

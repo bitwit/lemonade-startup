@@ -289,7 +289,7 @@ appModule.directive 'lsJob', [ ->
   ]
   template: """
   <div class="job type-{{task.id}} selected-{{selectedTaskIndex == $index}} oi" ng-click="selected($index)" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert:'invalid'}" ng-model="task" jqyoui-draggable="{index: {{$index}}, onStop: 'dragStop', placeholder:'keep'}">
-    <span class="title">{{task.name}}</span>
+    <span class="title">{{task.id}}</span>
     <span class="hotkey-button">{{$index + 1}}</span>
   </div>
   """
