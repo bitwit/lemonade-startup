@@ -686,6 +686,8 @@ appModule.service("BusinessObject", [
       forecast: [],
       stats: {
         cash: 50000,
+        creditLimit: 1000,
+        equity: 100,
         projectedValue: 0,
         development: 0,
         design: 0,
@@ -694,7 +696,7 @@ appModule.service("BusinessObject", [
         sales: 0,
         fundraising: 0,
         productivity: 0,
-        fixedCostPerDay: 500,
+        fixedCostPerDay: 50,
         variableCostPerDay: 0.20,
         averageDemand: 200,
         potentialMarketSize: 1000
@@ -702,6 +704,7 @@ appModule.service("BusinessObject", [
       assets: [],
       dailyRevenueHistory: []
     };
+    businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
       var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, stats, weather, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
       console.log('day complete', day);
@@ -741,7 +744,8 @@ appModule.service("BusinessObject", [
     };
     businessObject.sprintComplete = function(sprintNumber) {
       console.log("Sprint " + sprintNumber + " completed");
-      return businessObject.setCosts(sprintNumber);
+      businessObject.setCosts(sprintNumber);
+      return businessObject.setCreditLimit();
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {
@@ -752,8 +756,39 @@ appModule.service("BusinessObject", [
     };
     businessObject.setCosts = function(sprintNumber) {
       var stats;
+      console.log("Updating fixed costs");
       stats = businessObject.stats;
-      return stats.fixedCostPerDay = 50 * sprintNumber;
+      return stats.fixedCostPerDay += 50 * sprintNumber;
+    };
+    businessObject.setCreditLimit = function() {
+      var newLimit, stats;
+      stats = businessObject.stats;
+      newLimit = stats.cash / 10 + businessObject.getRevenueHistory(7);
+      if (newLimit < 1000) {
+        newLimit = 1000;
+      } else if (newLimit > 50000) {
+        newLimit = 50000;
+      }
+      console.log("limit", newLimit % 1000);
+      console.log("new limit", newLimit);
+      newLimit = newLimit - (newLimit % 1000);
+      newLimit = Math.round(newLimit);
+      console.log("new limit", newLimit);
+      if (newLimit < 1000) {
+        newLimit = 1000;
+      } else if (newLimit > 50000) {
+        newLimit = 50000;
+      }
+      return stats.creditLimit = newLimit;
+    };
+    businessObject.doesPassFinancialCheck = function() {
+      var stats;
+      stats = businessObject.stats;
+      if (stats.cash > 0 - stats.creditLimit) {
+        return true;
+      } else {
+        return false;
+      }
     };
     businessObject.setSprintModifiers = function(sprintNUmber) {
       if (sprintNUmber > 3) {
