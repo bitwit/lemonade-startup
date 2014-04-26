@@ -87,6 +87,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     return didTriggerEvent
 
   businessObject.sprintComplete = (sprintNumber) ->
+    #currently passing the number of the completed sprint only
     console.log("Sprint #{sprintNumber} completed")
 
   businessObject.generateForecast = ->
