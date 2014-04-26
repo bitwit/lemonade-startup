@@ -20,6 +20,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     forecast: []
     stats:
       cash: 50000
+      creditLimit: 1000
+      equity: 100
       projectedValue: 0
       development: 0
       design: 0
@@ -28,13 +30,15 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       sales: 0
       fundraising: 0
       productivity: 0
-      fixedCostPerDay: 500
+      fixedCostPerDay: 50
       variableCostPerDay: 0.20
       averageDemand: 200
       potentialMarketSize: 1000
     assets: []
     dailyRevenueHistory: [] #stores the cashDelta for every day
 
+  businessObject.onDayStart = ->
+    #to perform any start of day functions
 
   businessObject.dayComplete = (day) ->
     console.log 'day complete', day
@@ -81,6 +85,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     #currently passing the number of the completed sprint only
     console.log("Sprint #{sprintNumber} completed")
     businessObject.setCosts(sprintNumber)
+    businessObject.setCreditLimit()
 
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
@@ -89,8 +94,31 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     weatherCards = weatherCards.concat businessObject.forecast
 
   businessObject.setCosts = (sprintNumber) ->
+    console.log("Updating fixed costs")
     stats = businessObject.stats
-    stats.fixedCostPerDay = 50 * sprintNumber
+    stats.fixedCostPerDay += 50 * sprintNumber
+
+  businessObject.setCreditLimit = ->
+    stats = businessObject.stats
+    newLimit = stats.cash/10 + businessObject.getRevenueHistory(7)
+
+    if newLimit < 1000
+      newLimit = 1000
+    else if newLimit > 50000
+      newLimit = 50000
+    console.log("limit",newLimit % 1000)
+    console.log("new limit",newLimit)
+    newLimit = newLimit - (newLimit % 1000)
+    newLimit = Math.round(newLimit)
+    console.log("new limit",newLimit)
+    stats.creditLimit = newLimit
+
+  businessObject.doesPassFinancialCheck = ->
+    stats = businessObject.stats
+    if stats.cash > 0 - stats.creditLimit
+      return true
+    else
+      return false
 
   businessObject.setSprintModifiers = (sprintNUmber) ->
     #the thought is to use these to increase difficulty as the game goes on, maybe?
