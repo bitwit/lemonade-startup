@@ -62,13 +62,17 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
     #get the weather before calculating
     weather = businessObject.forecast.shift()
-
+    businessObject.stats.averageDemand = businessObject.calculateDemand(weather,day)
+    numCustomers = businessObject.stats.averageDemand
+    if numCustomers > businessObject.stats.potentialMarketSize
+      numCustomers = businessObject.stats.potentialMarketSize
+    console.log("Number of Customers:",numCustomers)
     #Standard impacts on the business
     stats = businessObject.stats
     cashDelta = 0
     cashDelta -= stats.fixedCostPerDay
-    cashDelta -= stats.averageDemand * weather.averageDemand * stats.variableCostPerDay
-    cashDelta += stats.averageDemand * weather.averageDemand * day.price
+    cashDelta -= numCustomers * stats.variableCostPerDay
+    cashDelta += numCustomers * day.price
     stats.cash = stats.cash + cashDelta
 
     businessObject.dailyRevenueHistory.push cashDelta
@@ -97,6 +101,32 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("Updating fixed costs")
     stats = businessObject.stats
     stats.fixedCostPerDay += 50 * sprintNumber
+
+  businessObject.calculateDemand = (weather,day) ->
+    stats = businessObject.stats
+    demand = 0
+    marketForce = (stats.marketing * 2 + stats.development + stats.design * 2 + stats.research * 2)
+    if marketForce <= 0
+      marketForce = 1
+    neutralPrice = 1 + marketForce/100
+    console.log("market force",marketForce)
+    console.log("Neutral price",neutralPrice)
+    priceDiff = 0
+    if day.price > 0
+      priceDiff = neutralPrice/day.price
+      console.log("price diff:",priceDiff)
+    else if day.price < 0
+      priceDiff = neutralPrice/day.price
+      console.log("price diff:",priceDiff)
+    else
+      priceDiff = 1
+      console.log("price diff:",priceDiff)
+
+    console.log("weather effect", weather.averageDemand)
+    demand = stats.potentialMarketSize * (marketForce/100) * weather.averageDemand * priceDiff
+    console.log("demand",demand)
+
+    return demand
 
   businessObject.setCreditLimit = ->
     stats = businessObject.stats
