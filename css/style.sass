@@ -52,7 +52,7 @@ h1
 
 h2
   margin: 20/$em 0
-  font-size: 32/$em
+  font-size: 28/$em
 
 h3
   margin: 10/$em 0
@@ -61,7 +61,37 @@ h3
 .ng-cloak
   display: none
 
-h1.main-title
+.type-dev
+  color: $color-orange-medium
+  background-color: $color-orange-medium
+  border-color: $color-orange-medium
+
+.type-res
+  color: $color-blue
+  background-color: $color-blue
+  border-color: $color-blue
+
+.type-mkt
+  color: $color-brown
+  background-color: $color-brown
+  border-color: $color-brown
+
+.type-sal
+  color: $color-red
+  background-color: $color-red
+  border-color: $color-red
+
+.type-des
+  color: $color-pink
+  background-color: $color-pink
+  border-color: $color-pink
+
+.type-fun
+  color: $color-green-dark
+  background-color: $color-green-dark
+  border-color: $color-green-dark
+
+h1.main-title, h2.section-title
   color: $color-yellow
 
 div.tasks-column
@@ -78,6 +108,8 @@ div.main-column
 div.status-column
   float: left
   width: 15%
+  background-color: $color-grey-dark
+  color: #FFF
 
 div.jobs
   box-sizing: border-box
@@ -85,7 +117,7 @@ div.jobs
   h3
     color: #FFF
 
-div.task, div.job
+div.task, div.job, div.asset
   position: relative
   cursor: move
   margin: 10/$em
@@ -97,19 +129,6 @@ div.task, div.job
   text-overflow: ellipsis
   white-space: nowrap
   overflow: hidden
-  &.type-dev
-    background: $color-orange-medium
-  &.type-res
-    background: $color-blue
-  &.type-mkt
-    background: $color-yellow
-  &.type-sal
-    background: $color-red
-  &.type-des
-    background: $color-pink
-  &.type-fun
-    background: $color-green
-
   &:hover
     color: $color-orange-dark
     background: $color-orange-light
@@ -199,7 +218,8 @@ div.day
 
   div.message
     position: absolute
-    z-index: 20 //above announcements
+    z-index: 20
+    //above announcements
     width: 100%
     height: 32/$em
     background: #fff
@@ -227,26 +247,55 @@ div.day-progress-meter
   top: 0
   left: 0
   height: 100%
-  background-color: $color-green-dark
+  background-color: $color-green
 
 h5.day-name
   position: relative
   z-index: 1
 
+dl.stats
+  overflow: hidden
+  font:
+    weight: 500
+    size: 22/$em
+  color: $color-green
+  text-align: center
+  dt
+    text-decoration: underline
+  dd
+    margin: 6/$em 0 10/$em
+
 div.assets
   box-sizing: border-box
-  border: 1/$em solid $color-blue
-  height: 500/$em
-  float: left
+  height: 800/$em
+
+div.asset
+  &.ng-enter,
+  &.ng-leave
+    +single-transition(all, 0.24s, linear, 0s)
+
+  &.ng-leave.ng-leave-active,
+  &.ng-enter
+    opacity: 0
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active
+    opacity: 1
+
+  span.expiry
+    display: block
+    float: right
 
 div.announcement
   position: absolute
-  z-index: 10 //above calendar elements
+  z-index: 10
+  //above calendar elements
   box-sizing: border-box
   top: 0
   left: 30%
   margin-top: 2%
-  border: 10/$em solid $color-orange-dark
+  border-width: 10/$em
+  border-style: solid
   padding: 0 40/$em
   width: 40%
   height: 80%
@@ -255,23 +304,26 @@ div.announcement
 
   h2.event-title
     padding: 10/$em 0
-    background-color: $color-orange-light
-    border: 1/$em solid $color-orange-dark
+    background-color: inherit
+    border-width: 4/$em
+    border-style: double
+    color: $color-grey-dark
 
   div.oi
     font-size: 256/$em
-    color: $color-orange-dark
+    color: inherit
 
   p.description
     font-size: 28/$em
+    color: $color-grey-dark
 
   button.confirm
     cursor: pointer
     margin: 20/$em 0
     width: 30%
     font-size: 16/$em
-    border: 1/$em solid $color-orange-dark
-    background: $color-orange-light
+    border: 1/$em solid inherit
+    background: inherit
     span
       font-size: 28/$em
     &:hover

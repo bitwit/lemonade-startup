@@ -210,7 +210,7 @@ appModule.controller('MainController', [
         $scope.progress = 0.1;
         $scope.currentDay++;
       }
-      if ($scope.currentDay >= 14) {
+      if ($scope.currentDay > 13) {
         console.log('sprint simulation complete');
         bizObj.sprintComplete($scope.sprint);
         return $scope.nextSprint();
@@ -250,7 +250,8 @@ appModule.controller('MainController', [
     $scope.$on('taskMoved', function($e, task) {
       return console.log('main controller task moved');
     });
-    return $scope.setTasks();
+    $scope.setTasks();
+    return $scope.startSimulation();
   }
 ]);
 
@@ -526,8 +527,9 @@ var EventCard, PRAgentEventCard,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 EventCard = (function() {
-  function EventCard(name, icon) {
+  function EventCard(name, id, icon) {
     this.name = name;
+    this.id = id;
     this.icon = icon;
     this.expiry = -1;
     this.description = "An event occurred";
@@ -577,7 +579,7 @@ PRAgentEventCard = (function(_super) {
   __extends(PRAgentEventCard, _super);
 
   function PRAgentEventCard() {
-    PRAgentEventCard.__super__.constructor.call(this, "PR Agent", "rss");
+    PRAgentEventCard.__super__.constructor.call(this, "PR Agent", "mkt", "rss");
     this.description = "A PR Agent has agreed to help work with your team for the next few days";
     this.expiry = 3;
     this.thresholds.marketing = 2;

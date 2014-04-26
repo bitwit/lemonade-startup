@@ -1,5 +1,5 @@
 class EventCard
-  constructor: (@name, @icon) ->
+  constructor: (@name, @id ,@icon) ->
     @expiry = -1 #never expires
     @description = "An event occurred"
     @thresholds = {
@@ -31,7 +31,7 @@ class EventCard
 
 class PRAgentEventCard extends EventCard
   constructor: ->
-    super "PR Agent", "rss"
+    super "PR Agent", "mkt", "rss"
     @description = "A PR Agent has agreed to help work with your team for the next few days"
     @expiry = 3 #3 days after receipt
     @thresholds.marketing = 2

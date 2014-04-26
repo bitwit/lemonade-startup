@@ -144,7 +144,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
       $scope.progress = 0.1
       $scope.currentDay++
 
-    if $scope.currentDay >= 14
+    if $scope.currentDay > 13
       console.log 'sprint simulation complete'
       bizObj.sprintComplete $scope.sprint
       $scope.nextSprint()
@@ -182,9 +182,10 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.$on 'taskMoved', ($e, task) ->
     console.log 'main controller task moved'
-    #$scope.setTasks()
 
   $scope.setTasks()
+  $scope.startSimulation()
+
 ]
 
 appModule.directive 'lsDay', [ ->
