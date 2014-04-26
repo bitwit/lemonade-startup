@@ -111,6 +111,10 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     newLimit = newLimit - (newLimit % 1000)
     newLimit = Math.round(newLimit)
     console.log("new limit",newLimit)
+    if newLimit < 1000
+      newLimit = 1000
+    else if newLimit > 50000
+      newLimit = 50000
     stats.creditLimit = newLimit
 
   businessObject.doesPassFinancialCheck = ->

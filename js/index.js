@@ -290,11 +290,13 @@ appModule.directive('lsDay', [
               width: width
             };
           };
+          $scope.isShowingMessage = false;
           $scope.day.announce = function(text) {
             console.log('announcing text', $scope.day, text);
             $scope.message = text;
+            $scope.isShowingMessage = true;
             return $timeout(function() {
-              return $scope.message = null;
+              return $scope.isShowingMessage = false;
             }, 1000);
           };
           $scope.removeTask = function(e, task) {
@@ -327,7 +329,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{message | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -716,7 +718,7 @@ appModule.service("BusinessObject", [
       stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
       console.log(businessObject.dailyRevenueHistory);
-      day.announce("$" + cashDelta);
+      day.announce(cashDelta);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
@@ -753,6 +755,11 @@ appModule.service("BusinessObject", [
       newLimit = newLimit - (newLimit % 1000);
       newLimit = Math.round(newLimit);
       console.log("new limit", newLimit);
+      if (newLimit < 1000) {
+        newLimit = 1000;
+      } else if (newLimit > 50000) {
+        newLimit = 50000;
+      }
       return stats.creditLimit = newLimit;
     };
     businessObject.doesPassFinancialCheck = function() {
