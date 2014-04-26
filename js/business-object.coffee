@@ -81,8 +81,10 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     cashDelta += stats.averageDemand * weather.averageDemand * parseFloat(day.price)
     cashDelta = parseFloat(cashDelta).toFixed(2)
     stats.cash = (Number(stats.cash) + Number(cashDelta)).toFixed(2)
+    fCashDelta = Number(cashDelta).toFixed(2)
 
-    businessObject.dailyRevenueHistory.push cashDelta
+    businessObject.dailyRevenueHistory.push fCashDelta
+    console.log(businessObject.dailyRevenueHistory)
 
     day.announce "$" + cashDelta
 
@@ -113,11 +115,13 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   businessObject.getRevenueHistory = (interval) ->
     runningTotal = 0
     if businessObject.dailyRevenueHistory.length >= interval
-      while i < interval
-        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length -1 - i]
-    else if businessObject.dailyRevenueHistory.length = 0
+      for i in [0...interval]
+        console.log("entry", i)
+        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length -1 - (interval - i)]
+    else if businessObject.dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else
+      console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length)
       for entry in businessObject.dailyRevenueHistory
         runningTotal += entry
 
