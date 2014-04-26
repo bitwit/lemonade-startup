@@ -30,7 +30,6 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       productivity: 0
       fixedCostPerDay: 500
       variableCostPerDay: 0.20
-      sprintNumber_Dev: 1 #sprint number dev is expected to be replaced
       averageDemand: 200
       potentialMarketSize: 1000
     assets: []
@@ -81,7 +80,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   businessObject.sprintComplete = (sprintNumber) ->
     #currently passing the number of the completed sprint only
     console.log("Sprint #{sprintNumber} completed")
-    businessObject.stats.sprintNumber_Dev = sprintNumber
+    businessObject.setCosts(sprintNumber)
 
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
@@ -89,9 +88,19 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       businessObject.forecast.push weatherCards.pop()
     weatherCards = weatherCards.concat businessObject.forecast
 
-  businessObject.setCosts = ->
+  businessObject.setCosts = (sprintNumber) ->
     stats = businessObject.stats
-    stats.fixedCostPerDay = 50 * stats.sprintNumber_Dev
+    stats.fixedCostPerDay = 50 * sprintNumber
+
+  businessObject.setSprintModifiers = (sprintNUmber) ->
+    #the thought is to use these to increase difficulty as the game goes on, maybe?
+    if sprintNUmber > 3
+      #do something?
+    else
+
+    if sprintNUmber > 6
+      #do something else?
+    else
 
   businessObject.predictBusinessValue = ->
     newValue = 0
@@ -100,13 +109,14 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     stats = businessObject.stats
     console.log("Current Stats:")
     console.log("average demand:",stats.averageDemand)
-
+    console.log("fixed costs:",stats.fixedCostPerDay)
+    console.log("variable costs:",stats.variableCostPerDay)
     #set modifiers
     marketingModifier = stats.marketing + 1
     developmentModifier = stats.development + 1
     researchModifier = stats.research + 1
     #perform actual calculation
-    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1)
+    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52 * 0.25) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1)
     #update value
     stats.projectedValue = newValue
 
@@ -119,7 +129,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     else if businessObject.dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else
-      console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length)
+      #console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length)
       for entry in businessObject.dailyRevenueHistory
         runningTotal += entry
 

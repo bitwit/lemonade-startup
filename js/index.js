@@ -290,13 +290,11 @@ appModule.directive('lsDay', [
               width: width
             };
           };
-          $scope.isShowingMessage = false;
           $scope.day.announce = function(text) {
             console.log('announcing text', $scope.day, text);
             $scope.message = text;
-            $scope.isShowingMessage = true;
             return $timeout(function() {
-              return $scope.isShowingMessage = false;
+              return $scope.message = null;
             }, 1000);
           };
           $scope.removeTask = function(e, task) {
@@ -329,7 +327,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{message | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -677,7 +675,6 @@ appModule.service("BusinessObject", [
         productivity: 0,
         fixedCostPerDay: 500,
         variableCostPerDay: 0.20,
-        sprintNumber_Dev: 1,
         averageDemand: 200,
         potentialMarketSize: 1000
       },
@@ -716,14 +713,14 @@ appModule.service("BusinessObject", [
       stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
       console.log(businessObject.dailyRevenueHistory);
-      day.announce(cashDelta);
+      day.announce("$" + cashDelta);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
     };
     businessObject.sprintComplete = function(sprintNumber) {
       console.log("Sprint " + sprintNumber + " completed");
-      return businessObject.stats.sprintNumber_Dev = sprintNumber;
+      return businessObject.setCosts(sprintNumber);
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {
@@ -732,10 +729,22 @@ appModule.service("BusinessObject", [
       }
       return weatherCards = weatherCards.concat(businessObject.forecast);
     };
-    businessObject.setCosts = function() {
+    businessObject.setCosts = function(sprintNumber) {
       var stats;
       stats = businessObject.stats;
-      return stats.fixedCostPerDay = 50 * stats.sprintNumber_Dev;
+      return stats.fixedCostPerDay = 50 * sprintNumber;
+    };
+    businessObject.setSprintModifiers = function(sprintNUmber) {
+      if (sprintNUmber > 3) {
+
+      } else {
+
+      }
+      if (sprintNUmber > 6) {
+
+      } else {
+
+      }
     };
     businessObject.predictBusinessValue = function() {
       var developmentModifier, marketingModifier, newValue, researchModifier, stats;
@@ -743,10 +752,12 @@ appModule.service("BusinessObject", [
       stats = businessObject.stats;
       console.log("Current Stats:");
       console.log("average demand:", stats.averageDemand);
+      console.log("fixed costs:", stats.fixedCostPerDay);
+      console.log("variable costs:".stats.variableCostPerDay);
       marketingModifier = stats.marketing + 1;
       developmentModifier = stats.development + 1;
       researchModifier = stats.research + 1;
-      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1);
+      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52 * 0.25) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1);
       return stats.projectedValue = newValue;
     };
     businessObject.getRevenueHistory = function(interval) {
@@ -759,7 +770,6 @@ appModule.service("BusinessObject", [
       } else if (businessObject.dailyRevenueHistory.length === 0) {
         console.log("No entries in Daily Revenue History");
       } else {
-        console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length);
         _ref = businessObject.dailyRevenueHistory;
         for (_j = 0, _len = _ref.length; _j < _len; _j++) {
           entry = _ref[_j];
