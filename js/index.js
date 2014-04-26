@@ -647,7 +647,8 @@ appModule.service("BusinessObject", [
         productivity: 0,
         fixedCostPerDay: 500,
         variableCostPerDay: 0.20,
-        averageDemand: 200
+        averageDemand: 200,
+        potentialMarketSize: 1000
       },
       assets: [],
       dailyRevenueHistory: []
@@ -690,7 +691,8 @@ appModule.service("BusinessObject", [
       return didTriggerEvent;
     };
     businessObject.sprintComplete = function(sprintNumber) {
-      return console.log("Sprint " + sprintNumber + " completed");
+      console.log("Sprint " + sprintNumber + " completed");
+      return businessObject.setCosts(sprintNumber);
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {
@@ -699,16 +701,35 @@ appModule.service("BusinessObject", [
       }
       return weatherCards = weatherCards.concat(businessObject.forecast);
     };
+    businessObject.setCosts = function(sprintNumber) {
+      var stats;
+      stats = businessObject.stats;
+      return stats.fixedCostPerDay = 50 * sprintNumber;
+    };
+    businessObject.setSprintModifiers = function(sprintNUmber) {
+      if (sprintNUmber > 3) {
+
+      } else {
+
+      }
+      if (sprintNUmber > 6) {
+
+      } else {
+
+      }
+    };
     businessObject.predictBusinessValue = function() {
       var developmentModifier, marketingModifier, newValue, researchModifier, stats;
       newValue = 0;
       stats = businessObject.stats;
       console.log("Current Stats:");
       console.log("average demand:", stats.averageDemand);
+      console.log("fixed costs:", stats.fixedCostPerDay);
+      console.log("variable costs:".stats.variableCostPerDay);
       marketingModifier = stats.marketing + 1;
       developmentModifier = stats.development + 1;
       researchModifier = stats.research + 1;
-      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1);
+      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52 * 0.25) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1);
       return stats.projectedValue = newValue;
     };
     businessObject.getRevenueHistory = function(interval) {
@@ -721,7 +742,6 @@ appModule.service("BusinessObject", [
       } else if (businessObject.dailyRevenueHistory.length === 0) {
         console.log("No entries in Daily Revenue History");
       } else {
-        console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length);
         _ref = businessObject.dailyRevenueHistory;
         for (_j = 0, _len = _ref.length; _j < _len; _j++) {
           entry = _ref[_j];
