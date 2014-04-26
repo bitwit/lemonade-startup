@@ -10,6 +10,7 @@ class EventCard
       sales: 0
       fundraising: 0
       productivity: 0
+      cash: 0
     }
 
   hasBusinessMetConditions: (business) ->

@@ -48,6 +48,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       variableCostPerDay: 0.20
       averageDemand: 200
     assets: []
+    dailyRevenueHistory: [] #stores the cashDelta for every day
 
   businessObject.dayComplete = (day) ->
     console.log 'day complete', day
@@ -80,6 +81,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     cashDelta = parseFloat(cashDelta).toFixed(2)
     stats.cash = (Number(stats.cash) + Number(cashDelta)).toFixed(2)
 
+    businessObject.dailyRevenueHistory.add cashDelta
+
     day.announce "$" + cashDelta
     businessObject.generateForecast() #add something new to the forecast
 
@@ -90,6 +93,27 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       shuffle(weatherCards)
       businessObject.forecast.push weatherCards.pop()
     weatherCards = weatherCards.concat businessObject.forecast
+
+  businessObject.predictBusinessValue = ->
+    newValue = 0
+    #cash on hand + previous week's revenue * factor + marketing * research * ___ + average demand * factor - fundraising * factor
+
+    stats = businessObject.stats
+    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * stats.marketing * stats.development) - (stats.fundraising * -0.1)
+
+    stats.projectedValue = newValue
+
+  businessObject.getRevenueHistory = (interval) ->
+    runningTotal = 0
+    if businessObject.dailyRevenueHistory.length >= interval
+      while i < interval
+        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length -1 - i]
+    else if businessObject.dailyRevenueHistory.length = 0
+      console.log("No entries in Daily Revenue History")
+    else
+      for entry in businessObject.dailyRevenueHistory
+        runningTotal += entry
+    return runningTotal
 
   businessObject.generateForecast()
   $rootScope.game = businessObject

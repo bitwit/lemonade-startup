@@ -6,6 +6,8 @@ class WeatherCard
     @variableCostPerDay = 1.0
     @averageDemand = 1.0
 
+
+
 class HeatWaveWeatherCard extends WeatherCard
   constructor: ->
     super()
