@@ -82,9 +82,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     cashDelta = parseFloat(cashDelta).toFixed(2)
     stats.cash = (Number(stats.cash) + Number(cashDelta)).toFixed(2)
 
-    businessObject.dailyRevenueHistory.add cashDelta
+    businessObject.dailyRevenueHistory.push cashDelta
 
     day.announce "$" + cashDelta
+
+    businessObject.predictBusinessValue()
     businessObject.generateForecast() #add something new to the forecast
 
     return didTriggerEvent  # we inform the UI if an event was triggered so it knows whether to pause or not
@@ -118,6 +120,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     else
       for entry in businessObject.dailyRevenueHistory
         runningTotal += entry
+
+    console.log("runningtotal", runningTotal)
     return runningTotal
 
   businessObject.generateForecast()
