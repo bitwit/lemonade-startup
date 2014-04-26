@@ -90,16 +90,24 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     #cash on hand + previous week's revenue * factor + marketing * research * ___ + average demand * factor - fundraising * factor
 
     stats = businessObject.stats
-    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * stats.marketing * stats.development) - (stats.fundraising * -0.1)
+    console.log("Current Stats:")
+    console.log("average demand:",stats.averageDemand)
 
+    #set modifiers
+    marketingModifier = stats.marketing + 1
+    developmentModifier = stats.development + 1
+    researchModifier = stats.research + 1
+    #perform actual calculation
+    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1)
+    #update value
     stats.projectedValue = newValue
 
   businessObject.getRevenueHistory = (interval) ->
     runningTotal = 0
     if businessObject.dailyRevenueHistory.length >= interval
       for i in [0...interval]
-        console.log("entry", i)
-        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - 1 - (interval - i)]
+        #console.log("entry", i)
+        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - (interval - i)]
     else if businessObject.dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else
