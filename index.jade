@@ -32,43 +32,50 @@ html
 						div.day(ng-repeat="day in sprintDays", ls-day)
 
 			div.status-column
-				h3 Options
-				div.debug-buttons(style="text-align: center;")
-					label Tick Speed
-					input(type="text",ng-model="tickSpeed")
-					button.hotkey(ng-click="startSimulation()")
-						span Start Simulation
-					button.hotkey(ng-click="autoPopulateDays()")
-						span Auto Populate
+				h2.section-title.oi(data-glyph="spreadsheet")
+					br
+					span.title Numbers
 				div.assets
-					h3 Stats
-					dl
+					dl.stats
 						dt Cash
 						dd ${{game.stats.cash | currency:""}}
-						dt Projected Company Value
+						dt Company Value
 						dd ${{game.stats.projectedValue| currency:""}}
-					h3 Assets
-					div(ng-repeat="asset in game.assets") {{asset.name}}, Expires In: {{asset.expiry}}
-					h3 Debug
-					dl
-						dt Development
-						dd {{game.stats.development}}
-						dt Design
-						dd {{game.stats.design}}
-						dt Marketing
-						dd {{game.stats.marketing}}
-						dt Research
-						dd {{game.stats.research}}
-						dt Sales
-						dd {{game.stats.sales}}
-						dt Fundraising
-						dd {{game.stats.fundraising}}
-						dt Productivity
-						dd {{game.stats.productivity}}
+					h2.section-title.oi(data-glyph="list")
+						br
+						span.title Assets
+					div.asset(class="type-{{asset.id}}", ng-repeat="asset in game.assets")
+						span.title {{asset.name}}
+						span.expiry {{asset.expiry}}
+					//
+						h3 Options
+						div.debug-buttons(style="text-align: center;")
+							label Tick Speed
+							input(type="text",ng-model="tickSpeed")
+							button.hotkey(ng-click="startSimulation()")
+								span Start Simulation
+							button.hotkey(ng-click="autoPopulateDays()")
+								span Auto Populate
+						h3 Debug
+						dl
+							dt Development
+							dd {{game.stats.development}}
+							dt Design
+							dd {{game.stats.design}}
+							dt Marketing
+							dd {{game.stats.marketing}}
+							dt Research
+							dd {{game.stats.research}}
+							dt Sales
+							dd {{game.stats.sales}}
+							dt Fundraising
+							dd {{game.stats.fundraising}}
+							dt Productivity
+							dd {{game.stats.productivity}}
 
-		div.announcements(ng-cloak)
-			div.announcement(ng-repeat="event in announcements")
-				h2.event-title
+		div.announcements.ng-cloak
+			div.announcement(class="type-{{event.id}}", ng-repeat="event in announcements")
+				h2.event-title(class="type-{{event.id}}")
 					span.title {{event.name}}
 				div.oi(data-glyph="{{event.icon}}")
 				p.description {{event.description}}
