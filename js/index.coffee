@@ -51,6 +51,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     "7.00"
     "10.00"
   ]
+
   $scope.price = 3
 
   $scope.sprint = 1

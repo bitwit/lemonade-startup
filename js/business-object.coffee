@@ -51,6 +51,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.dayComplete = (day) ->
     console.log 'day complete', day
+
     #First tick assets, which can modify day cards
     for asset in businessObject.assets
       asset.tick businessObject, day.tasks
