@@ -31,8 +31,12 @@ html
 			div.status-column
 				h3 Options
 				div.debug-buttons(style="text-align: center;")
+					label Tick Speed
+					input(type="text",ng-model="tickSpeed")
 					button.hotkey(ng-click="startSimulation()")
 						span Start Simulation
+					button.hotkey(ng-click="autoPopulateDays()")
+						span Auto Populate
 				div.assets
 					h3 Stats
 					dl

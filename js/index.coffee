@@ -111,6 +111,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.currentDay = -1
   $scope.timerPromise = null
   $scope.hasStarted = no
+  $scope.tickSpeed = 40
 
   $scope.getDayPlan = ->
     console.log $scope.sprintDays
@@ -122,6 +123,12 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     day.price = $scope.prices[$scope.price]
     day.isInteractive = no
     $scope.tick()
+
+  $scope.autoPopulateDays = ->
+    for day in $scope.sprintDays
+      while day.tasks.length < 2
+        $scope.selectedTaskIndex = Math.floor((Math.random() * 6))
+        day.tasks.push $scope.getCurrentSelectedTask()
 
   $scope.resumeSimulation = ->
     if $scope.hasStarted and !$scope.timerPromise?
@@ -148,7 +155,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
         day.isInteractive = no
 
       if !shouldPause
-        $scope.timerPromise = $timeout $scope.tick, 40
+        $scope.timerPromise = $timeout $scope.tick, $scope.tickSpeed
       else
         $scope.timerPromise = null
 
@@ -158,7 +165,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     $scope.progress = 0
     for day in $scope.sprintDays
       day.tasks = []
-      isInteractive = yes
+      day.isInteractive = yes
 
   $scope.setTasks = ->
     $scope.tasks = [

@@ -163,6 +163,7 @@ appModule.controller('MainController', [
     $scope.currentDay = -1;
     $scope.timerPromise = null;
     $scope.hasStarted = false;
+    $scope.tickSpeed = 40;
     $scope.getDayPlan = function() {
       return console.log($scope.sprintDays);
     };
@@ -174,6 +175,24 @@ appModule.controller('MainController', [
       day.price = $scope.prices[$scope.price];
       day.isInteractive = false;
       return $scope.tick();
+    };
+    $scope.autoPopulateDays = function() {
+      var day, _i, _len, _ref, _results;
+      _ref = $scope.sprintDays;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        day = _ref[_i];
+        _results.push((function() {
+          var _results1;
+          _results1 = [];
+          while (day.tasks.length < 2) {
+            $scope.selectedTaskIndex = Math.floor(Math.random() * 6);
+            _results1.push(day.tasks.push($scope.getCurrentSelectedTask()));
+          }
+          return _results1;
+        })());
+      }
+      return _results;
     };
     $scope.resumeSimulation = function() {
       if ($scope.hasStarted && ($scope.timerPromise == null)) {
@@ -202,14 +221,14 @@ appModule.controller('MainController', [
           day.isInteractive = false;
         }
         if (!shouldPause) {
-          return $scope.timerPromise = $timeout($scope.tick, 40);
+          return $scope.timerPromise = $timeout($scope.tick, $scope.tickSpeed);
         } else {
           return $scope.timerPromise = null;
         }
       }
     };
     $scope.nextSprint = function() {
-      var day, isInteractive, _i, _len, _ref, _results;
+      var day, _i, _len, _ref, _results;
       $scope.sprint++;
       $scope.currentDay = -1;
       $scope.progress = 0;
@@ -218,7 +237,7 @@ appModule.controller('MainController', [
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         day = _ref[_i];
         day.tasks = [];
-        _results.push(isInteractive = true);
+        _results.push(day.isInteractive = true);
       }
       return _results;
     };
@@ -290,11 +309,13 @@ appModule.directive('lsDay', [
               width: width
             };
           };
+          $scope.isShowingMessage = false;
           $scope.day.announce = function(text) {
             console.log('announcing text', $scope.day, text);
             $scope.message = text;
+            $scope.isShowingMessage = true;
             return $timeout(function() {
-              return $scope.message = null;
+              return $scope.isShowingMessage = false;
             }, 1000);
           };
           $scope.removeTask = function(e, task) {
@@ -327,7 +348,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{message | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -713,7 +734,7 @@ appModule.service("BusinessObject", [
       stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
       console.log(businessObject.dailyRevenueHistory);
-      day.announce("$" + cashDelta);
+      day.announce(cashDelta);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
@@ -753,7 +774,7 @@ appModule.service("BusinessObject", [
       console.log("Current Stats:");
       console.log("average demand:", stats.averageDemand);
       console.log("fixed costs:", stats.fixedCostPerDay);
-      console.log("variable costs:".stats.variableCostPerDay);
+      console.log("variable costs:", stats.variableCostPerDay);
       marketingModifier = stats.marketing + 1;
       developmentModifier = stats.development + 1;
       researchModifier = stats.research + 1;
