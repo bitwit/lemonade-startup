@@ -30,9 +30,12 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       productivity: 0
       fixedCostPerDay: 500
       variableCostPerDay: 0.20
+      sprintNumber_Dev: 1 #sprint number dev is expected to be replaced
       averageDemand: 200
+      potentialMarketSize: 1000
     assets: []
     dailyRevenueHistory: [] #stores the cashDelta for every day
+
 
   businessObject.dayComplete = (day) ->
     console.log 'day complete', day
@@ -78,12 +81,17 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   businessObject.sprintComplete = (sprintNumber) ->
     #currently passing the number of the completed sprint only
     console.log("Sprint #{sprintNumber} completed")
+    businessObject.stats.sprintNumber_Dev = sprintNumber
 
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
       shuffle(weatherCards)
       businessObject.forecast.push weatherCards.pop()
     weatherCards = weatherCards.concat businessObject.forecast
+
+  businessObject.setCosts = ->
+    stats = businessObject.stats
+    stats.fixedCostPerDay = 50 * stats.sprintNumber_Dev
 
   businessObject.predictBusinessValue = ->
     newValue = 0
