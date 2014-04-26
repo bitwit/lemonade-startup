@@ -706,7 +706,7 @@ appModule.service("BusinessObject", [
     };
     businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
-      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, stats, weather, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
       console.log('day complete', day);
       _ref = businessObject.assets;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -729,11 +729,17 @@ appModule.service("BusinessObject", [
         }
       }
       weather = businessObject.forecast.shift();
+      businessObject.stats.averageDemand = businessObject.calculateDemand(weather, day);
+      numCustomers = businessObject.stats.averageDemand;
+      if (numCustomers > businessObject.stats.potentialMarketSize) {
+        numCustomers = businessObject.stats.potentialMarketSize;
+      }
+      console.log("Number of Customers:", numCustomers);
       stats = businessObject.stats;
       cashDelta = 0;
       cashDelta -= stats.fixedCostPerDay;
-      cashDelta -= stats.averageDemand * weather.averageDemand * stats.variableCostPerDay;
-      cashDelta += stats.averageDemand * weather.averageDemand * day.price;
+      cashDelta -= numCustomers * stats.variableCostPerDay;
+      cashDelta += numCustomers * day.price;
       stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
       console.log(businessObject.dailyRevenueHistory);
@@ -759,6 +765,33 @@ appModule.service("BusinessObject", [
       console.log("Updating fixed costs");
       stats = businessObject.stats;
       return stats.fixedCostPerDay += 50 * sprintNumber;
+    };
+    businessObject.calculateDemand = function(weather, day) {
+      var demand, marketForce, neutralPrice, priceDiff, stats;
+      stats = businessObject.stats;
+      demand = 0;
+      marketForce = stats.marketing * 2 + stats.development + stats.design * 2 + stats.research * 2;
+      if (marketForce <= 0) {
+        marketForce = 1;
+      }
+      neutralPrice = 1 + marketForce / 100;
+      console.log("market force", marketForce);
+      console.log("Neutral price", neutralPrice);
+      priceDiff = 0;
+      if (day.price > 0) {
+        priceDiff = neutralPrice / day.price;
+        console.log("price diff:", priceDiff);
+      } else if (day.price < 0) {
+        priceDiff = neutralPrice / day.price;
+        console.log("price diff:", priceDiff);
+      } else {
+        priceDiff = 1;
+        console.log("price diff:", priceDiff);
+      }
+      console.log("weather effect", weather.averageDemand);
+      demand = stats.potentialMarketSize * (marketForce / 100) * weather.averageDemand * priceDiff;
+      console.log("demand", demand);
+      return demand;
     };
     businessObject.setCreditLimit = function() {
       var newLimit, stats;
