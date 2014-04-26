@@ -104,6 +104,7 @@ appModule.controller('MainController', [
       }
       if ($scope.currentDay >= 14) {
         console.log('sprint simulation complete');
+        bizObj.sprintComplete($scope.sprint);
         return $scope.nextSprint();
       } else {
         if (didCompleteDay) {
@@ -594,6 +595,9 @@ appModule.service("BusinessObject", [
       day.announce("$" + cashDelta);
       businessObject.generateForecast();
       return didTriggerEvent;
+    };
+    businessObject.sprintComplete = function(sprintNumber) {
+      return console.log("Sprint " + sprintNumber + " completed");
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {

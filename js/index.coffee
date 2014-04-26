@@ -51,6 +51,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     "7.00"
     "10.00"
   ]
+
   $scope.price = 3
 
   $scope.sprint = 1
@@ -81,6 +82,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
     if $scope.currentDay >= 14
       console.log 'sprint simulation complete'
+      bizObj.sprintComplete $scope.sprint
       $scope.nextSprint()
     else
       if didCompleteDay

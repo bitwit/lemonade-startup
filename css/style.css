@@ -1001,49 +1001,50 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-weight: bold;
   font-style: normal; }
 
-/* line 45, style.sass */
+/* line 53, style.sass */
 body {
-  font-family: "Comic Neue Angular", sans-serif;
-  font-weight: normal; }
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 300; }
 
-/* line 50, style.sass */
-h1, h2, h3 {
+/* line 58, style.sass */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Comic Neue Angular", sans-serif;
   font-weight: bold;
   text-align: center; }
 
-/* line 55, style.sass */
+/* line 64, style.sass */
 h1 {
   margin: 1.25em 0;
   font-size: 2em; }
 
-/* line 59, style.sass */
+/* line 68, style.sass */
 h2 {
   margin: 1.25em 0;
   font-size: 2em; }
 
-/* line 63, style.sass */
+/* line 72, style.sass */
 h3 {
   margin: 0.625em 0;
   font-size: 1.5em; }
 
-/* line 67, style.sass */
+/* line 76, style.sass */
 .ng-cloak {
   display: none; }
 
-/* line 70, style.sass */
+/* line 79, style.sass */
 h1.main-title {
   text-align: left;
-  color: goldenrod; }
+  color: #fbdd8e; }
 
-/* line 74, style.sass */
+/* line 83, style.sass */
 div.jobs {
   box-sizing: border-box;
   width: 15%;
   float: left;
   height: 31.25em;
-  border: 0.0625em solid #6690b4; }
+  border: 0.0625em solid #b9dcee; }
 
-/* line 81, style.sass */
+/* line 90, style.sass */
 div.task, div.job {
   cursor: move;
   margin: 0.625em;
@@ -1054,7 +1055,7 @@ div.task, div.job {
   -o-border-radius: 0.1875em;
   border-radius: 0.1875em;
   height: 1.5em;
-  color: white;
+  color: #333333;
   line-height: 1.5em;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -1065,67 +1066,67 @@ div.task, div.job {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
-  /* line 98, style.sass */
+  /* line 107, style.sass */
   div.task.type-dev, div.job.type-dev {
-    background: #f07848; }
-  /* line 100, style.sass */
+    background: #d99c77; }
+  /* line 109, style.sass */
   div.task.type-res, div.job.type-res {
-    background: #80a8cc; }
-  /* line 102, style.sass */
-  div.task.type-mkt, div.job.type-mkt {
-    background: #024883; }
-  /* line 104, style.sass */
-  div.task.type-sal, div.job.type-sal {
-    background: red; }
-  /* line 106, style.sass */
-  div.task.type-des, div.job.type-des {
-    background: purple; }
-  /* line 108, style.sass */
-  div.task.type-fun, div.job.type-fun {
-    background: green; }
+    background: #b9dcee; }
   /* line 111, style.sass */
+  div.task.type-mkt, div.job.type-mkt {
+    background: #fbdd8e; }
+  /* line 113, style.sass */
+  div.task.type-sal, div.job.type-sal {
+    background: #d77167; }
+  /* line 115, style.sass */
+  div.task.type-des, div.job.type-des {
+    background: #e7b8e1; }
+  /* line 117, style.sass */
+  div.task.type-fun, div.job.type-fun {
+    background: #cad68a; }
+  /* line 120, style.sass */
   div.task:hover, div.job:hover {
-    color: #6690b4;
+    color: #f07848;
     background: #f0cdc0; }
 
-/* line 115, style.sass */
+/* line 124, style.sass */
 div.days {
   float: left;
   box-sizing: border-box;
   width: 70%;
   padding: 0 0 0 1%; }
 
-/* line 121, style.sass */
+/* line 130, style.sass */
 div.price-selector {
   width: 80%;
   margin: 0 10%; }
 
-/* line 125, style.sass */
+/* line 134, style.sass */
 input.price-input {
   width: 100%;
   display: inline-block; }
 
-/* line 129, style.sass */
+/* line 138, style.sass */
 div.price {
   float: left;
   width: 10%;
   text-align: right; }
 
-/* line 134, style.sass */
+/* line 143, style.sass */
 div.day {
   box-sizing: border-box;
   position: relative;
-  border: 0.0625em solid #80a8cc;
+  border: 0.0625em solid #b9dcee;
   width: 14%;
   height: 7.5em;
   float: left; }
-  /* line 141, style.sass */
+  /* line 150, style.sass */
   div.day:hover {
     background-color: #ededed; }
-  /* line 143, style.sass */
+  /* line 152, style.sass */
   div.day:nth-child(7n+1) {
     clear: left; }
-  /* line 146, style.sass */
+  /* line 155, style.sass */
   div.day div.message {
     position: absolute;
     z-index: 20;
@@ -1141,45 +1142,45 @@ div.day {
     -moz-transition: all 0.34s linear 0s !important;
     -o-transition: all 0.34s linear 0s !important;
     transition: all 0.34s linear 0s !important; }
-    /* line 157, style.sass */
+    /* line 166, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1;
       top: -2.1875em; }
-    /* line 160, style.sass */
+    /* line 169, style.sass */
     div.day div.message.showing-false {
       opacity: 0;
       top: 0; }
-    /* line 163, style.sass */
+    /* line 172, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important;
       top: 0 !important; }
-    /* line 166, style.sass */
+    /* line 175, style.sass */
     div.day div.message span.value {
       font-weight: bold;
       font-size: 1.5em; }
 
-/* line 171, style.sass */
+/* line 180, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background-color: lightgreen; }
+  background-color: #cad68a; }
 
-/* line 178, style.sass */
+/* line 187, style.sass */
 h5.day-name {
   position: relative;
   z-index: 1; }
 
-/* line 182, style.sass */
+/* line 191, style.sass */
 div.assets {
   box-sizing: border-box;
-  border: 0.0625em solid #6690b4;
+  border: 0.0625em solid #b9dcee;
   width: 15%;
   height: 31.25em;
   float: left; }
 
-/* line 189, style.sass */
+/* line 198, style.sass */
 div.announcement {
   position: absolute;
   z-index: 10;
@@ -1193,19 +1194,19 @@ div.announcement {
   height: 80%;
   background-color: white;
   text-align: center; }
-  /* line 203, style.sass */
+  /* line 212, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: #f0cdc0;
     border: 0.0625em solid #f07848; }
-  /* line 208, style.sass */
+  /* line 217, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: #f07848; }
-  /* line 212, style.sass */
+  /* line 221, style.sass */
   div.announcement p.description {
     font-size: 1.75em; }
-  /* line 215, style.sass */
+  /* line 224, style.sass */
   div.announcement button.confirm {
     cursor: pointer;
     margin: 1.25em 0;
@@ -1213,9 +1214,9 @@ div.announcement {
     font-size: 1em;
     border: 0.0625em solid #f07848;
     background: #f0cdc0; }
-    /* line 222, style.sass */
+    /* line 231, style.sass */
     div.announcement button.confirm span {
       font-size: 1.75em; }
-    /* line 224, style.sass */
+    /* line 233, style.sass */
     div.announcement button.confirm:hover {
       opacity: 0.85; }

@@ -52,6 +52,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.dayComplete = (day) ->
     console.log 'day complete', day
+
     #First tick assets, which can modify day cards
     for asset in businessObject.assets
       asset.tick businessObject, day.tasks
@@ -65,9 +66,9 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     for eventCard, i in eventCards
       if eventCard.hasBusinessMetConditions businessObject
         didTriggerEvent = yes
-        event = eventCards.splice(i, 1)[0]
-        businessObject.assets.push event
-        $rootScope.announceEvent event
+        event = eventCards.splice(i, 1)[0]  # discarding this event from eventsCards[] for good
+        businessObject.assets.push event  # putting it into assets (where it can expire, or persist indefinitely)
+        $rootScope.announceEvent event  # announcing the event to the UI, which pauses the simulation timer until dismiss
 
     #get the weather before calculating
     weather = businessObject.forecast.shift()
@@ -86,7 +87,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     day.announce "$" + cashDelta
     businessObject.generateForecast() #add something new to the forecast
 
-    return didTriggerEvent
+    return didTriggerEvent  # we inform the UI if an event was triggered so it knows whether to pause or not
+
+  businessObject.sprintComplete = (sprintNumber) ->
+    #currently passing the number of the completed sprint only
+    console.log("Sprint #{sprintNumber} completed")
 
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
