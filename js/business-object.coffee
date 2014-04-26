@@ -30,9 +30,12 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       productivity: 0
       fixedCostPerDay: 500
       variableCostPerDay: 0.20
+      sprintNumber_Dev: 1 #sprint number dev is expected to be replaced
       averageDemand: 200
+      potentialMarketSize: 1000
     assets: []
     dailyRevenueHistory: [] #stores the cashDelta for every day
+
 
   businessObject.dayComplete = (day) ->
     console.log 'day complete', day
@@ -78,6 +81,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   businessObject.sprintComplete = (sprintNumber) ->
     #currently passing the number of the completed sprint only
     console.log("Sprint #{sprintNumber} completed")
+    businessObject.stats.sprintNumber_Dev = sprintNumber
 
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
@@ -85,21 +89,33 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       businessObject.forecast.push weatherCards.pop()
     weatherCards = weatherCards.concat businessObject.forecast
 
+  businessObject.setCosts = ->
+    stats = businessObject.stats
+    stats.fixedCostPerDay = 50 * stats.sprintNumber_Dev
+
   businessObject.predictBusinessValue = ->
     newValue = 0
     #cash on hand + previous week's revenue * factor + marketing * research * ___ + average demand * factor - fundraising * factor
 
     stats = businessObject.stats
-    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * stats.marketing * stats.development) - (stats.fundraising * -0.1)
+    console.log("Current Stats:")
+    console.log("average demand:",stats.averageDemand)
 
+    #set modifiers
+    marketingModifier = stats.marketing + 1
+    developmentModifier = stats.development + 1
+    researchModifier = stats.research + 1
+    #perform actual calculation
+    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1)
+    #update value
     stats.projectedValue = newValue
 
   businessObject.getRevenueHistory = (interval) ->
     runningTotal = 0
     if businessObject.dailyRevenueHistory.length >= interval
       for i in [0...interval]
-        console.log("entry", i)
-        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - 1 - (interval - i)]
+        #console.log("entry", i)
+        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - (interval - i)]
     else if businessObject.dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else

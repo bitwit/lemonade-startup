@@ -728,10 +728,15 @@ appModule.service("BusinessObject", [
       return weatherCards = weatherCards.concat(businessObject.forecast);
     };
     businessObject.predictBusinessValue = function() {
-      var newValue, stats;
+      var developmentModifier, marketingModifier, newValue, researchModifier, stats;
       newValue = 0;
       stats = businessObject.stats;
-      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * stats.marketing * stats.development) - (stats.fundraising * -0.1);
+      console.log("Current Stats:");
+      console.log("average demand:", stats.averageDemand);
+      marketingModifier = stats.marketing + 1;
+      developmentModifier = stats.development + 1;
+      researchModifier = stats.research + 1;
+      newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1);
       return stats.projectedValue = newValue;
     };
     businessObject.getRevenueHistory = function(interval) {
@@ -739,8 +744,7 @@ appModule.service("BusinessObject", [
       runningTotal = 0;
       if (businessObject.dailyRevenueHistory.length >= interval) {
         for (i = _i = 0; 0 <= interval ? _i < interval : _i > interval; i = 0 <= interval ? ++_i : --_i) {
-          console.log("entry", i);
-          runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - 1 - (interval - i)];
+          runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - (interval - i)];
         }
       } else if (businessObject.dailyRevenueHistory.length === 0) {
         console.log("No entries in Daily Revenue History");
