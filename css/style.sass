@@ -27,29 +27,6 @@ $color-red-medium: #d48567
 $color-orange-light: rgb(240, 205, 192)
 $color-orange-dark: rgb(240, 120, 72)
 
-$font-dir: "../fonts/comic-neue/"
-//
-  @font-face
-    font-family: "Comic Neue"
-    src: url('#{$font-dir}ComicNeue-Regular.eot')
-    src: url('#{$font-dir}ComicNeue-Regular.eot?#iefix') format('embedded-opentype'), url('#{$font-dir}ComicNeue-Regular.woff') format('woff'), url('#{$font-dir}ComicNeue-Regular.ttf') format('truetype')
-    font-weight: normal
-    font-style: normal
-
-@font-face
-  font-family: "Comic Neue Angular"
-  src: url('#{$font-dir}ComicNeue-Angular-Regular.eot')
-  src: url('#{$font-dir}ComicNeue-Angular-Regular.eot?#iefix') format('embedded-opentype'), url('#{$font-dir}ComicNeue-Angular-Regular.woff') format('woff'), url('#{$font-dir}ComicNeue-Angular-Regular.ttf') format('truetype')
-  font-weight: normal
-  font-style: normal
-
-@font-face
-  font-family: "Comic Neue Angular"
-  src: url('#{$font-dir}ComicNeue-Angular-Bold.eot')
-  src: url('#{$font-dir}ComicNeue-Angular-Bold.eot?#iefix') format('embedded-opentype'), url('#{$font-dir}ComicNeue-Angular-Bold.woff') format('woff'), url('#{$font-dir}ComicNeue-Angular-Bold.ttf') format('truetype')
-  font-weight: bold
-  font-style: normal
-
 *
   -webkit-touch-callout: none
   -webkit-user-select: none
@@ -65,8 +42,7 @@ body
 
 h1, h2, h3, h4, h5, h6
   font:
-    family: "Comic Neue Angular", sans-serif
-    weight: bold
+    weight: 500
   text-align: center
 
 h1
@@ -88,9 +64,22 @@ h1.main-title
   text-align: left
   color: $color-yellow
 
+div.tasks-column
+  float: left
+  width: 15%
+
+div.main-column
+  float: left
+  width: 70%
+  padding: 0 0 0 1%
+  box-sizing: border-box
+
+div.status-column
+  float: left
+  width: 15%
+
 div.jobs
   box-sizing: border-box
-  width: 15%
   float: left
   height: 500/$em
   border: 1/$em solid $color-blue
@@ -160,12 +149,8 @@ div.task
     &:hover
       font-weight: bold
 
-
 div.days
-  float: left
   box-sizing: border-box
-  width: 70%
-  padding: 0 0 0 1%
 
 div.price-selector
   width: 80%
@@ -234,7 +219,6 @@ h5.day-name
 div.assets
   box-sizing: border-box
   border: 1/$em solid $color-blue
-  width: 15%
   height: 500/$em
   float: left
 

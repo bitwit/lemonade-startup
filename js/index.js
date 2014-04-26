@@ -100,46 +100,60 @@ appModule.controller('MainController', [
     $scope.sprintDays = [
       {
         name: "Monday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Tuesday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Wednesday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Thursday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Friday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Saturday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Sunday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Monday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Tuesday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Wednesday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Thursday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Friday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Saturday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }, {
         name: "Sunday",
-        tasks: []
+        tasks: [],
+        isInteractive: true
       }
     ];
     $scope.prices = [0, 0.5, 1, 1.5, 2, 3, 4, 5, 7, 10];
@@ -153,9 +167,12 @@ appModule.controller('MainController', [
       return console.log($scope.sprintDays);
     };
     $scope.startSimulation = function() {
+      var day;
       $scope.hasStarted = true;
       $scope.currentDay = 0;
-      $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price];
+      day = $scope.sprintDays[$scope.currentDay];
+      day.price = $scope.prices[$scope.price];
+      day.isInteractive = false;
       return $scope.tick();
     };
     $scope.resumeSimulation = function() {
@@ -165,7 +182,7 @@ appModule.controller('MainController', [
       }
     };
     $scope.tick = function() {
-      var didCompleteDay, shouldPause;
+      var day, didCompleteDay, shouldPause;
       $scope.progress += 0.1;
       didCompleteDay = false;
       if ($scope.progress > 10) {
@@ -180,7 +197,9 @@ appModule.controller('MainController', [
         return $scope.nextSprint();
       } else {
         if (didCompleteDay) {
-          $scope.sprintDays[$scope.currentDay].price = $scope.prices[$scope.price];
+          day = $scope.sprintDays[$scope.currentDay];
+          day.price = $scope.prices[$scope.price];
+          day.isInteractive = false;
         }
         if (!shouldPause) {
           return $scope.timerPromise = $timeout($scope.tick, 40);
@@ -190,7 +209,7 @@ appModule.controller('MainController', [
       }
     };
     $scope.nextSprint = function() {
-      var day, _i, _len, _ref, _results;
+      var day, isInteractive, _i, _len, _ref, _results;
       $scope.sprint++;
       $scope.currentDay = -1;
       $scope.progress = 0;
@@ -198,7 +217,8 @@ appModule.controller('MainController', [
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         day = _ref[_i];
-        _results.push(day.tasks = []);
+        day.tasks = [];
+        _results.push(isInteractive = true);
       }
       return _results;
     };
@@ -226,7 +246,7 @@ appModule.directive('lsDay', [
       controller: [
         "$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
           $scope.sprintDayDraggableOut = function(e, el) {};
-          $scope.taskOnDrop = function(e, el, a) {
+          $scope.taskOnDrop = function(e, el) {
             var task;
             task = el.draggable[0].taskObject;
             console.log('new task for', $scope.day.name, task);
@@ -235,7 +255,7 @@ appModule.directive('lsDay', [
           $scope.message = null;
           $scope.addSelectedTask = function() {
             var task;
-            if ($scope.day.tasks.length < 2) {
+            if ($scope.day.tasks.length < 2 && $scope.day.isInteractive) {
               task = $scope.getCurrentSelectedTask();
               $scope.day.tasks.push(task);
               return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
@@ -307,7 +327,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.isInteractive}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(message != null)}}\">\n      <span class=\"value\">{{message}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -343,13 +363,21 @@ appModule.directive('lsTask', [
       },
       controller: [
         "$scope", "$rootScope", function($scope, $rootScope) {
+          $scope.dragStart = function(e, el) {
+            console.log('dragStart', e, el);
+            if (!$scope.day.isInteractive) {
+              e.preventDefault();
+              e.stopPropagation();
+              return el.helper.draggable("option", "disabled", true);
+            }
+          };
           return $scope.dragStop = function() {
             console.log('task', $scope.day.name, $scope.task);
             return $scope.$emit('taskMoved', $scope.task);
           };
         }
       ],
-      template: "<div class=\"task type-{{task.id}} oi\" data-glyph=\"{{task.icon}}\" data-drag=\"{{true}}\" data-day=\"{{day.$$hashKey}}\" data-jqyoui-options=\"{revert: 'invalid', placeholder:true}\" ng-model=\"task\" jqyoui-draggable=\"{index: {{$index}}, placeholder:'keep', onStop: 'dragStop'}\">\n  <span class=\"title\">{{task.id}}</span>\n  <span ng-click=\"removeTask($event, task)\" class=\"delete\">X</span>\n</div>"
+      template: "<div class=\"task type-{{task.id}} oi\" data-glyph=\"{{task.icon}}\" data-drag=\"{{true}}\" data-day=\"{{day.$$hashKey}}\" data-jqyoui-options=\"{revert: 'invalid', placeholder:true}\" ng-model=\"task\" jqyoui-draggable=\"{index: {{$index}}, placeholder:'keep', onStart: 'dragStart', onStop: 'dragStop'}\">\n  <span class=\"title\">{{task.id}}</span>\n  <span ng-if=\"day.isInteractive\" ng-click=\"removeTask($event, task)\" class=\"delete\">X</span>\n</div>"
     };
   }
 ]);
