@@ -258,7 +258,7 @@ div.task
 
 div.days
   box-sizing: border-box
-  margin-top: 20/$em
+  margin-top: 72/$em
 
 div.price-selector
   overflow: hidden
@@ -452,14 +452,20 @@ div.asset
     display: block
     float: right
 
-div.announcement
+div.announcements
   position: absolute
   z-index: 10
+  width: 100%
+  height: 100%
+  top: 0
+  left: 0
+  &.display-true
+    pointer-events: none
+
+div.announcement
   //above calendar elements
   box-sizing: border-box
-  top: 0
-  left: 30%
-  margin-top: 2%
+  margin: 2% auto 0
   border-width: 10/$em
   border-style: solid
   padding: 0 40/$em

@@ -25,9 +25,10 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   ]
 
   businessHistory = []
+  dailyRevenueHistory = [] #stores the cashDelta for every day
+  forecast = []
 
   businessObject =
-    forecast: []
     stats:
       cash: 50
       creditLimit: 1000
@@ -70,7 +71,6 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       mostCashOnHand: 0
       leastCashOnHand: 0
     assets: []
-    dailyRevenueHistory: [] #stores the cashDelta for every day
 
   businessObject.onDayStart = ->
     #to perform any start of day functions
@@ -100,7 +100,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
         break
 
     #get the weather before calculating
-    weather = businessObject.forecast.shift()
+    weather = forecast.shift()
     businessObject.stats.averageDemand = businessObject.calculateDemand(weather,day)
     numCustomers = businessObject.stats.averageDemand
     if numCustomers > businessObject.stats.potentialMarketSize
@@ -114,12 +114,16 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     cashDelta += numCustomers * day.price
     stats.cash = stats.cash + cashDelta
 
-    businessObject.dailyRevenueHistory.push cashDelta
+    dailyRevenueHistory.push cashDelta
+
+    #create history object
     dayHistory = clone businessObject
+    dayHistory.cashDelta = cashDelta
+    dayHistory.weather = weather
     businessHistory.push dayHistory
     console.log 'biz history', businessHistory
 
-    console.log(businessObject.dailyRevenueHistory)
+    console.log(dailyRevenueHistory)
 
     day.announce dayHistory
 
@@ -143,13 +147,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     flags = businessObject.flags
 
 
-
-
   businessObject.generateForecast = ->
-    while businessObject.forecast.length < 3
+    while forecast.length < 3
       shuffle(weatherCards)
-      businessObject.forecast.push weatherCards.pop()
-    weatherCards = weatherCards.concat businessObject.forecast
+      forecast.push weatherCards.pop()
+    weatherCards = weatherCards.concat forecast
 
   businessObject.setCosts = (sprintNumber) ->
     console.log("Updating fixed costs")
@@ -262,25 +264,25 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       flags.hasPassedHighThreshold_Cash = false
 
     if stats.research > 100
-      flags.hasPassedHighThreshold_Research: true
+      flags.hasPassedHighThreshold_Research = true
 
     if stats.development > 100
-      flags.hasPassedHighThreshold_Development: true
+      flags.hasPassedHighThreshold_Development = true
 
     if stats.design > 100
-      flags.hasPassedHighThreshold_Design: true
+      flags.hasPassedHighThreshold_Design = true
 
     if stats.marketing > 100
-      flags.hasPassedHighThreshold_Marketing: true
+      flags.hasPassedHighThreshold_Marketing = true
 
     if stats.sales > 100
-      flags.hasPassedHighThreshold_Sales: true
+      flags.hasPassedHighThreshold_Sales = true
 
     if stats.fundraising > 100
-      flags.hasPassedHighThreshold_Fundraising: true
+      flags.hasPassedHighThreshold_Fundraising = true
 
     if stats.potentialMarketSize > 100000
-      flags.hasPassedHighThreshold_MarketSize: true
+      flags.hasPassedHighThreshold_MarketSize = true
 
     if stats.cash > 0 and stats.cash < 100000
       flags.isUnderLowThreshold_Cash = true
@@ -307,15 +309,15 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.getRevenueHistory = (interval) ->
     runningTotal = 0
-    if businessObject.dailyRevenueHistory.length >= interval
+    if dailyRevenueHistory.length >= interval
       for i in [0...interval]
         #console.log("entry", i)
-        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - (interval - i)]
-    else if businessObject.dailyRevenueHistory.length is 0
+        runningTotal += dailyRevenueHistory[dailyRevenueHistory.length - (interval - i)]
+    else if dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else
-      #console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length)
-      for entry in businessObject.dailyRevenueHistory
+      #console.log("fewer entries than interval", dailyRevenueHistory.length)
+      for entry in dailyRevenueHistory
         runningTotal += entry
 
     console.log("runningtotal", runningTotal)
@@ -323,7 +325,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.generateForecast()
   $rootScope.game = businessObject
-  console.log 'starting forecast', businessObject.forecast
+  console.log 'starting forecast', forecast
   return businessObject
 ]
 

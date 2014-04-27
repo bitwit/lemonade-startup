@@ -59,7 +59,7 @@ appModule.config([
 
 appModule.controller("RootController", [
   "$rootScope", function($rootScope) {
-    $rootScope.currentView = "intro";
+    $rootScope.currentView = "main";
     return $rootScope.switchView = function(viewName) {
       return $rootScope.currentView = viewName;
     };
@@ -89,9 +89,13 @@ appModule.controller('MainController', [
     hotkeys.add("6", "Fundraising", function() {
       return $scope.selectedTaskIndex = 5;
     });
-    hotkeys.add("space", "Resume/Confirm", function() {
+    hotkeys.add("space", "Resume/Accept", function() {
       console.log("resume simulation");
-      return $scope.resumeSimulation();
+      return $scope.acceptEvent();
+    });
+    hotkeys.add("esc", "Resume/Reject", function() {
+      console.log("resume simulation");
+      return $scope.rejectEvent();
     });
     $scope.sprintDays = [
       {
@@ -197,7 +201,7 @@ appModule.controller('MainController', [
       return console.log($scope.sprintDays);
     };
     $scope.startCountdown = function() {
-      $scope.countdownProgress = 15000;
+      $scope.countdownProgress = 2000;
       return $timeout($scope.tickCountdown, $scope.tickSpeed);
     };
     $scope.tickCountdown = function() {
@@ -236,6 +240,18 @@ appModule.controller('MainController', [
       }
       return _results;
     };
+    $scope.acceptEvent = function() {
+      var event;
+      event = $scope.announcements.shift();
+      bizObj.stats.cash -= event.cost;
+      bizObj.assets.unshift(event);
+      return $scope.resumeSimulation();
+    };
+    $scope.rejectEvent = function() {
+      var event;
+      event = $scope.announcements.shift();
+      return $scope.resumeSimulation();
+    };
     $scope.resumeSimulation = function() {
       if ($scope.hasStarted && ($scope.timerPromise == null)) {
         $scope.announcements.length = 0;
@@ -272,9 +288,11 @@ appModule.controller('MainController', [
       }
     };
     $scope.nextSprint = function() {
-      var day, _i, _len, _ref;
+      var day, endResult, _i, _len, _ref;
       $scope.sprint++;
       if ($scope.sprint > $scope.maxSprints) {
+        endResult = bizObject.processEndGame();
+        console.log('end game result', endResult);
         return $rootScope.switchView('end');
       } else {
         $scope.currentDay = -1;
@@ -317,7 +335,7 @@ appModule.directive('lsDay', [
             console.log('new task for', $scope.day.name, task);
             return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
           };
-          $scope.message = null;
+          $scope.result = null;
           $scope.addSelectedTask = function() {
             var task;
             if ($scope.day.tasks.length < 2 && $scope.day.isInteractive) {
@@ -356,9 +374,9 @@ appModule.directive('lsDay', [
             };
           };
           $scope.isShowingMessage = false;
-          $scope.day.announce = function(text) {
-            console.log('announcing text', $scope.day, text);
-            $scope.message = text;
+          $scope.day.announce = function(bizResult) {
+            console.log('announcing result', bizResult);
+            $scope.result = bizResult;
             $scope.isShowingMessage = true;
             return $timeout(function() {
               return $scope.isShowingMessage = false;
@@ -394,7 +412,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{message | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{result.cashDelta | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -578,6 +596,9 @@ EventCard = (function() {
     this.icon = icon;
     this.expiry = -1;
     this.description = "An event occurred";
+    this.acceptText = "Accept";
+    this.rejectText = "Reject";
+    this.cost = 0;
     this.thresholds = {
       development: 0,
       design: 0,
@@ -693,6 +714,8 @@ MoneyFromDadCard = (function(_super) {
 
   function MoneyFromDadCard() {
     MoneyFromDadCard.__super__.constructor.call(this, "$200 From Dad", "fun", "credit-card");
+    this.acceptText = "Accept";
+    this.rejectText = "Too Proud";
     this.description = "Your Dad doesn't want you to starve. Or eat too much.";
     this.expiry = 0;
     this.thresholds.cash = 100;
@@ -896,11 +919,13 @@ ColdWeatherCard = (function(_super) {
 
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
-    var businessObject, eventCards, weatherCards;
+    var businessHistory, businessObject, dailyRevenueHistory, eventCards, forecast, weatherCards;
     eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard(), new SeedInvestmentCard(), new CaffinatedLemonsCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
+    businessHistory = [];
+    dailyRevenueHistory = [];
+    forecast = [];
     businessObject = {
-      forecast: [],
       stats: {
         cash: 50,
         creditLimit: 1000,
@@ -932,7 +957,8 @@ appModule.service("BusinessObject", [
         hasPassedHighThreshold_Sales: false,
         hasPassedHighThreshold_Fundraising: false,
         hasPassedHighThreshold_MarketSize: false,
-        isBroke: false
+        isBroke: false,
+        isUnderLowThreshold_Cash: false
       },
       tracking: {
         highestPrice: 0,
@@ -943,12 +969,11 @@ appModule.service("BusinessObject", [
         mostCashOnHand: 0,
         leastCashOnHand: 0
       },
-      assets: [],
-      dailyRevenueHistory: []
+      assets: []
     };
     businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
-      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
+      var asset, card, cashDelta, dayHistory, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
       console.log('day complete', day);
       if (businessObject.assets.length > 0) {
         for (i = _i = _ref = businessObject.assets.length - 1; _ref <= 0 ? _i <= 0 : _i >= 0; i = _ref <= 0 ? ++_i : --_i) {
@@ -968,12 +993,11 @@ appModule.service("BusinessObject", [
         if (eventCard.hasBusinessMetConditions(businessObject)) {
           didTriggerEvent = true;
           event = eventCards.splice(i, 1)[0];
-          businessObject.assets.push(event);
           $rootScope.$broadcast('eventCardOccured', event);
           break;
         }
       }
-      weather = businessObject.forecast.shift();
+      weather = forecast.shift();
       businessObject.stats.averageDemand = businessObject.calculateDemand(weather, day);
       numCustomers = businessObject.stats.averageDemand;
       if (numCustomers > businessObject.stats.potentialMarketSize) {
@@ -986,9 +1010,14 @@ appModule.service("BusinessObject", [
       cashDelta -= numCustomers * stats.variableCostPerDay;
       cashDelta += numCustomers * day.price;
       stats.cash = stats.cash + cashDelta;
-      businessObject.dailyRevenueHistory.push(cashDelta);
-      console.log(businessObject.dailyRevenueHistory);
-      day.announce(cashDelta);
+      dailyRevenueHistory.push(cashDelta);
+      dayHistory = clone(businessObject);
+      dayHistory.cashDelta = cashDelta;
+      dayHistory.weather = weather;
+      businessHistory.push(dayHistory);
+      console.log('biz history', businessHistory);
+      console.log(dailyRevenueHistory);
+      day.announce(dayHistory);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
@@ -1008,11 +1037,11 @@ appModule.service("BusinessObject", [
       return flags = businessObject.flags;
     };
     businessObject.generateForecast = function() {
-      while (businessObject.forecast.length < 3) {
+      while (forecast.length < 3) {
         shuffle(weatherCards);
-        businessObject.forecast.push(weatherCards.pop());
+        forecast.push(weatherCards.pop());
       }
-      return weatherCards = weatherCards.concat(businessObject.forecast);
+      return weatherCards = weatherCards.concat(forecast);
     };
     businessObject.setCosts = function(sprintNumber) {
       var stats;
@@ -1133,39 +1162,30 @@ appModule.service("BusinessObject", [
         flags.hasPassedHighThreshold_Cash = false;
       }
       if (stats.research > 100) {
-        ({
-          hasPassedHighThreshold_Research: true
-        });
+        flags.hasPassedHighThreshold_Research = true;
       }
       if (stats.development > 100) {
-        ({
-          hasPassedHighThreshold_Development: true
-        });
+        flags.hasPassedHighThreshold_Development = true;
       }
       if (stats.design > 100) {
-        ({
-          hasPassedHighThreshold_Design: true
-        });
+        flags.hasPassedHighThreshold_Design = true;
       }
       if (stats.marketing > 100) {
-        ({
-          hasPassedHighThreshold_Marketing: true
-        });
+        flags.hasPassedHighThreshold_Marketing = true;
       }
       if (stats.sales > 100) {
-        ({
-          hasPassedHighThreshold_Sales: true
-        });
+        flags.hasPassedHighThreshold_Sales = true;
       }
       if (stats.fundraising > 100) {
-        ({
-          hasPassedHighThreshold_Fundraising: true
-        });
+        flags.hasPassedHighThreshold_Fundraising = true;
       }
       if (stats.potentialMarketSize > 100000) {
-        return {
-          hasPassedHighThreshold_MarketSize: true
-        };
+        flags.hasPassedHighThreshold_MarketSize = true;
+      }
+      if (stats.cash > 0 && stats.cash < 100000) {
+        return flags.isUnderLowThreshold_Cash = true;
+      } else {
+        return flags.isUnderLowThreshold_Cash = false;
       }
     };
     businessObject.predictBusinessValue = function() {
@@ -1183,18 +1203,17 @@ appModule.service("BusinessObject", [
       return stats.projectedValue = newValue;
     };
     businessObject.getRevenueHistory = function(interval) {
-      var entry, i, runningTotal, _i, _j, _len, _ref;
+      var entry, i, runningTotal, _i, _j, _len;
       runningTotal = 0;
-      if (businessObject.dailyRevenueHistory.length >= interval) {
+      if (dailyRevenueHistory.length >= interval) {
         for (i = _i = 0; 0 <= interval ? _i < interval : _i > interval; i = 0 <= interval ? ++_i : --_i) {
-          runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - (interval - i)];
+          runningTotal += dailyRevenueHistory[dailyRevenueHistory.length - (interval - i)];
         }
-      } else if (businessObject.dailyRevenueHistory.length === 0) {
+      } else if (dailyRevenueHistory.length === 0) {
         console.log("No entries in Daily Revenue History");
       } else {
-        _ref = businessObject.dailyRevenueHistory;
-        for (_j = 0, _len = _ref.length; _j < _len; _j++) {
-          entry = _ref[_j];
+        for (_j = 0, _len = dailyRevenueHistory.length; _j < _len; _j++) {
+          entry = dailyRevenueHistory[_j];
           runningTotal += entry;
         }
       }
@@ -1203,7 +1222,7 @@ appModule.service("BusinessObject", [
     };
     businessObject.generateForecast();
     $rootScope.game = businessObject;
-    console.log('starting forecast', businessObject.forecast);
+    console.log('starting forecast', forecast);
     return businessObject;
   }
 ]);
