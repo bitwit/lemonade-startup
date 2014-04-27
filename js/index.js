@@ -291,7 +291,7 @@ appModule.controller('MainController', [
       var day, endResult, _i, _len, _ref;
       $scope.sprint++;
       if ($scope.sprint > $scope.maxSprints) {
-        endResult = bizObject.processEndGame();
+        endResult = bizObj.processEndGame();
         console.log('end game result', endResult);
         return $rootScope.switchView('end');
       } else {
@@ -300,7 +300,8 @@ appModule.controller('MainController', [
         _ref = $scope.sprintDays;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           day = _ref[_i];
-          day.tasks = [];
+          day.result = null;
+          day.tasks.length = 0;
           day.isInteractive = true;
         }
         return $scope.startCountdown();
@@ -328,14 +329,13 @@ appModule.directive('lsDay', [
       },
       controller: [
         "$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
-          $scope.sprintDayDraggableOut = function(e, el) {};
+          $scope.isSelected = false;
           $scope.taskOnDrop = function(e, el) {
             var task;
             task = el.draggable[0].taskObject;
             console.log('new task for', $scope.day.name, task);
             return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
           };
-          $scope.result = null;
           $scope.addSelectedTask = function() {
             var task;
             if ($scope.day.tasks.length < 2 && $scope.day.isInteractive) {
@@ -375,12 +375,11 @@ appModule.directive('lsDay', [
           };
           $scope.isShowingMessage = false;
           $scope.day.announce = function(bizResult) {
-            console.log('announcing result', bizResult);
-            $scope.result = bizResult;
+            $scope.day.result = bizResult;
             $scope.isShowingMessage = true;
             return $timeout(function() {
               return $scope.isShowingMessage = false;
-            }, 1000);
+            }, 2500);
           };
           $scope.removeTask = function(e, task) {
             var dayTask, leftOverTasks, _i, _len, _ref;
@@ -412,7 +411,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{result.cashDelta | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" ng-mouseenter=\"isSelected=true;\" ng-mouseleave=\"isSelected=false;\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{day.result != null && (isShowingMessage || isSelected) }}\">\n      <span class=\"oi\" data-glyph=\"{{day.result.weather.icon}}\"></span>\n      <span class=\"temperature\">{{day.result.weather.temperature}}</span>\n      <dl>\n        <dt>Customers</dt>\n        <dd>{{day.result.stats.averageDemand | number:0}}</dd>\n        <dt>Cash</dt>\n        <dd class=\"positive-{{result.cashDelta > 0}}\">{{day.result.cashDelta | currency:\"$\"}}</dd>\n      </dl>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -963,6 +962,8 @@ WeatherCard = (function() {
     this.fixedCostPerDay = 1.0;
     this.variableCostPerDay = 1.0;
     this.averageDemand = 1.0;
+    this.temperatureHigh = 20;
+    this.temperatureLow = 17;
   }
 
   return WeatherCard;
@@ -976,6 +977,8 @@ HeatWaveWeatherCard = (function(_super) {
     HeatWaveWeatherCard.__super__.constructor.call(this);
     this.averageDemand = 2.0;
     this.description = "Blisteringly hot out today.";
+    this.temperatureHigh = 40;
+    this.temperatureLow = 33;
   }
 
   return HeatWaveWeatherCard;
