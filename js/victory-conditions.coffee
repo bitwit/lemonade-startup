@@ -23,11 +23,19 @@ class VictoryCondition
     }
 
   hasBusinessMetConditions: (business) ->
+    console.log "#{@name} conditions being checked"
     criteriaMet = yes
     for flag, value of @criteria
       if value != false
+        console.log "checking #{flag}", value, business.flags[flag], business.flags
         if business.flags[flag] != true
           criteriaMet = no
+
+    if criteriaMet
+      console.log "#{@name} condition was met"
+    else
+      console.log "#{@name} condition was NOT met"
+
     return criteriaMet
 
 
@@ -51,7 +59,7 @@ class StagnantEnding extends VictoryCondition
 
 class AcquiredEnding extends VictoryCondition
   constructor: ->
-    super "JuiceBook is Calling","sal","thumbs-up"
+    super "JuiceBook is Calling","sal","thumb-up"
     @description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
     @criteria.hasPassedHighThreshold_Fundraising = true
     @criteria.hasPassedHighThreshold_Development = true
@@ -61,7 +69,7 @@ class AcquiredEnding extends VictoryCondition
 
 class HostileTakeoverEnding extends VictoryCondition
   constructor: ->
-    super "You Can't Fire me!","sal","thumbs-up"
+    super "You Can't Fire me!","sal","thumb-up"
     @description = "Oh. You can? But ... This was ... Seriously? You're having security escort me out?"
     @criteria.isBroke = true
     @criteria.playerHasSoldOut = true
@@ -69,7 +77,7 @@ class HostileTakeoverEnding extends VictoryCondition
 
 class SoftHostileTakeoverEnding extends VictoryCondition
   constructor: ->
-    super "'Voluntary' Resignation","sal","thumbs-up"
+    super "'Voluntary' Resignation","sal","thumb-up"
     @description = "You just wait. Lemons are so passé. I'm onto Agave now."
     @criteria.playerHasSoldOut = true
     @criteria.isUnderLowThreshold_Cash = true
@@ -77,7 +85,7 @@ class SoftHostileTakeoverEnding extends VictoryCondition
 
 class BankruptEnding extends VictoryCondition
   constructor: ->
-      super "Bankrupt","sal","thumbs-down"
+      super "Bankrupt","sal","thumb-down"
       @description = "The lemonade stand? Oh, no, I work at Starbucks now."
       @criteria.isBroke = true
       @priority = 1

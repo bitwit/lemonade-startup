@@ -26,11 +26,23 @@ html
 				button.game-start(ng-click="switchView('main')")
 					span.title.oi(data-glyph="check") &nbsp;Let's Get Agile
 
-			div.intro-view.view-container.ng-cloak(ng-switch-when="end")
-				h1.intro-title
-					span.lemon-drop.oi(data-glyph="droplet")
-					br
-					| Game Over
+			div.end-view.view-container.ng-cloak(ng-switch-when="end")
+				div.ending
+					h2.end-title {{ending.name}}
+					span.oi.ending-icon(data-glyph="{{ending.icon}}")
+					p.ending-description {{ending.description}}
+					div.cash
+						h3.cash-title(class="positive-{{game.stats.cash > 0}}")
+							span.title Final Cash
+						strong.cash-value(class="positive-{{game.stats.cash > 0}}") {{game.stats.cash | currency}}
+						h3.cash-title(class="positive-{{game.stats.projectedValue > 0}}")
+							span.title Final Valuation
+						strong.cash-value(class="positive-{{game.stats.projectedValue > 0}}") {{game.stats.projectedValue| currency}}
+
+					h3.end-title Game Over
+
+					button.game-start(ng-click="restart()")
+						span.title.oi(data-glyph="reload") &nbsp;Restart
 
 			div.main-view.view-container.ng-cloak(ng-controller="MainController", ng-switch-when="main")
 				div.tasks-column
@@ -53,13 +65,20 @@ html
 								span.title.oi(data-glyph="{{weather.icon}}") {{weather.description}}
 
 				div.main-column
+					div.credits
+						p.developed-by Made by&nbsp;
+							a.credit(target="_blank", href="http://twitter.com/kylnew") Kyle
+							| &nbsp;&amp;&nbsp;
+							a.credit(target="_blank", href="http://twitter.com/rlrichard") Rob
+							| &nbsp;at&nbsp;
+							a.credit(target="_blank", href="http://tojam.ca") Toronto Game Jam #9
 					div.price-selector
 						h3.price-title
 							span.title Price: {{prices[price] | currency}}
 						input.price-input(type="range", ng-model="price", min="0", max="9")
 					div.days
 						h2.sprint-title
-							span.title Sprint {{sprint}}
+							span.title Sprint &#35;{{sprint}} of {{maxSprints}}
 							span.countdown(ng-if="countdownProgress > 0") &nbsp;starts in {{countdownProgress/1000 | number:2}}s
 						div.calendar
 							div.day(ng-repeat="day in sprintDays", ls-day)
@@ -92,33 +111,32 @@ html
 								span.title.oi(data-glyph="{{asset.icon}}") &nbsp;{{asset.name}}
 								span.expiry(ng-if="asset.expiry > 0") {{asset.expiry}}
 
-						//
-							h3 Options
-							div.debug-buttons(style="text-align: center;")
-								label Tick Speed
-								input(type="text",ng-model="tickSpeed")
-								label Countdown Progress
-								input(type="text",ng-model="countdownProgress")
-								button.hotkey(ng-click="startSimulation()")
-									span Start Simulation
-								button.hotkey(ng-click="autoPopulateDays()")
-									span Auto Populate
-							h3 Debug
-							dl
-								dt Development
-								dd {{game.stats.development}}
-								dt Design
-								dd {{game.stats.design}}
-								dt Marketing
-								dd {{game.stats.marketing}}
-								dt Research
-								dd {{game.stats.research}}
-								dt Sales
-								dd {{game.stats.sales}}
-								dt Fundraising
-								dd {{game.stats.fundraising}}
-								dt Productivity
-								dd {{game.stats.productivity}}
+						h3 Options
+						div.debug-buttons(style="text-align: center;")
+							label Tick Speed
+							input(type="text",ng-model="tickSpeed")
+							label Countdown Progress
+							input(type="text",ng-model="countdownProgress")
+							button.hotkey(ng-click="startSimulation()")
+								span Start Simulation
+							button.hotkey(ng-click="autoPopulateDays()")
+								span Auto Populate
+						h3 Debug
+						dl
+							dt Development
+							dd {{game.stats.development}}
+							dt Design
+							dd {{game.stats.design}}
+							dt Marketing
+							dd {{game.stats.marketing}}
+							dt Research
+							dd {{game.stats.research}}
+							dt Sales
+							dd {{game.stats.sales}}
+							dt Fundraising
+							dd {{game.stats.fundraising}}
+							dt Productivity
+							dd {{game.stats.productivity}}
 
 				div.announcements(class="displaying-{{announcements.length > 0}}")
 					div.announcement(class="type-{{event.id}}", ng-repeat="event in announcements")

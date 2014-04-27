@@ -49,6 +49,9 @@ appModule.controller "RootController", ["$rootScope", ($rootScope) ->
   $rootScope.currentView = "intro"
   $rootScope.switchView = (viewName) ->
     $rootScope.currentView = viewName
+
+  $rootScope.restart = ->
+    window.location.reload()
 ]
 
 appModule.controller 'IntroController', ['$scope', ($scope) ->
@@ -114,7 +117,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.price = 3
   $scope.sprint = 1
-  $scope.maxSprints = 10
+  $scope.maxSprints = 4
   $scope.currentDay = -1
   $scope.progress = 0
   $scope.timerPromise = null
@@ -140,7 +143,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log $scope.sprintDays
 
   $scope.startCountdown = ->
-    $scope.countdownProgress = 15000
+    $scope.countdownProgress = 10000
     $timeout $scope.tickCountdown, $scope.tickSpeed
 
   $scope.tickCountdown = ->
@@ -192,7 +195,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     if $scope.currentDay > 13
       console.log 'sprint simulation complete'
       bizObj.sprintComplete $scope.sprint
-      $timeout $scope.nextSprint, 5000
+      $timeout $scope.nextSprint, 3000
     else
       if didCompleteDay
         day = $scope.sprintDays[$scope.currentDay]
@@ -210,6 +213,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     if $scope.sprint > $scope.maxSprints
       endResult = bizObj.processEndGame()
       console.log 'end game result', endResult
+      $rootScope.ending = endResult
       $rootScope.switchView 'end'
     else
       $scope.currentDay = -1
@@ -309,7 +313,11 @@ appModule.directive 'lsDay', [ ->
         <div class="message showing-{{day.result != null && (isShowingMessage || isSelected) }}">
           <span class="oi" data-glyph="{{day.result.weather.icon}}"></span>
           <span class="temperature">{{day.result.weather.temperature}}&deg;C</span>
-          <ul>
+          <ul class="items">
+            <li class="oi" data-glyph="dollar">
+              <span class="title">Price</span>
+              <span class="value">{{day.price | currency:"$"}}</dd>
+            </li>
             <li class="oi" data-glyph="people">
               <span class="title">Customers</span>
               <span class="value">{{day.result.stats.averageDemand | number:0}}</span>
