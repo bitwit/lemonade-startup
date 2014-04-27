@@ -210,14 +210,15 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.nextSprint = ->
     $scope.sprint++
     if $scope.sprint > $scope.maxSprints
-      endResult = bizObject.processEndGame()
+      endResult = bizObj.processEndGame()
       console.log 'end game result', endResult
       $rootScope.switchView 'end'
     else
       $scope.currentDay = -1
       $scope.progress = 0
       for day in $scope.sprintDays
-        day.tasks = []
+        day.result = null
+        day.tasks.length = 0
         day.isInteractive = yes
       $scope.startCountdown()
 
@@ -239,15 +240,12 @@ appModule.directive 'lsDay', [ ->
     element.dayObject = scope.day
 
   controller: [ "$scope", "$rootScope", "$timeout", ($scope, $rootScope, $timeout) ->
-    $scope.sprintDayDraggableOut = (e, el) ->
-      #console.log 'draggable out', e, el, $scope.day
+    $scope.isSelected = no
 
     $scope.taskOnDrop = (e, el) ->
       task = el.draggable[0].taskObject
       console.log 'new task for', $scope.day.name, task
       $rootScope.$broadcast 'newTaskForDay', task, $scope.day
-
-    $scope.result = null
 
     $scope.addSelectedTask = ->
       if $scope.day.tasks.length < 2 and $scope.day.isInteractive
@@ -280,13 +278,12 @@ appModule.directive 'lsDay', [ ->
     $scope.isShowingMessage = no
 
     $scope.day.announce = (bizResult) ->
-      console.log 'announcing result', bizResult
-      $scope.result = bizResult
+      $scope.day.result = bizResult
       $scope.isShowingMessage = yes
       $timeout(
         ->
           $scope.isShowingMessage = no
-      , 1000)
+      , 2500)
 
     $scope.removeTask = (e, task) ->
       if e?
@@ -309,10 +306,17 @@ appModule.directive 'lsDay', [ ->
       ###
   ]
   template: """
-    <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
+    <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" ng-mouseenter="isSelected=true;" ng-mouseleave="isSelected=false;" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
-        <div class="message showing-{{(isShowingMessage)}}">
-          <span class="value">{{result.cashDelta | currency:"$"}}</span>
+        <div class="message showing-{{day.result != null && (isShowingMessage || isSelected) }}">
+          <span class="oi" data-glyph="{{day.result.weather.icon}}"></span>
+          <span class="temperature">{{day.result.weather.temperature}}</span>
+          <dl>
+            <dt>Customers</dt>
+            <dd>{{day.result.stats.averageDemand | number:0}}</dd>
+            <dt>Cash</dt>
+            <dd class="positive-{{result.cashDelta > 0}}">{{day.result.cashDelta | currency:"$"}}</dd>
+          </dl>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
         <div ng-repeat="task in day.tasks track by $index" ls-task></div>

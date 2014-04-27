@@ -363,25 +363,24 @@ div.day
 
   div.message
     position: absolute
-    z-index: 20
-    //above announcements
+    z-index: 9 //above calendary, below announcements
     width: 100%
-    height: 32/$em
+    height: 100%
     background: #fff
-    border: 1/$em solid $color-orange-light
+    //border: 2/$em solid $color-yellow
     opacity: 0.8
     text-align: center
     line-height: 32/$em
-    +single-transition(all, 0.34s, linear, 0s !important)
+    +single-transition(all, 0.44s, linear, 0s !important)
     &.showing-true, &.showing-true-add, &.showing-true-add-active
       opacity: 1
-      top: -35/$em
+      //top: -100%
     &.showing-false
       opacity: 0
-      top: 0
+      //top: 0
     &.showing-false-add, &.showing-false-add-active
       opacity: 0 !important
-      top: 0 !important
+      //top: 0 !important
     span.value
       font:
         weight: bold

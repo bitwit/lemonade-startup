@@ -5,6 +5,8 @@ class WeatherCard
     @fixedCostPerDay = 1.0
     @variableCostPerDay = 1.0
     @averageDemand = 1.0
+    @temperatureHigh = 20
+    @temperatureLow = 17
 
 
 
@@ -13,6 +15,8 @@ class HeatWaveWeatherCard extends WeatherCard
     super()
     @averageDemand = 2.0
     @description = "Blisteringly hot out today."
+    @temperatureHigh = 40
+    @temperatureLow = 33
 
 class GoodWeatherCard extends WeatherCard
   constructor: ->
