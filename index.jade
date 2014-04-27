@@ -114,7 +114,7 @@ html
 								dt Productivity
 								dd {{game.stats.productivity}}
 
-				div.announcements.ng-cloak(class="displaying-{{announcements.length > 0}}")
+				div.announcements(class="displaying-{{announcements.length > 0}}")
 					div.announcement(class="type-{{event.id}}", ng-repeat="event in announcements")
 						h2.event-title(class="type-{{event.id}}")
 							span.title {{event.name}}
