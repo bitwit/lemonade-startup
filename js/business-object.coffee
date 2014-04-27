@@ -1,6 +1,12 @@
 appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   eventCards = [
     new PRAgentEventCard()
+    new BrandAmbassadorCard()
+    new GreatSalesPitchCard()
+    new ProductMarketFitCard()
+    new GoneViralCard_Good()
+    new MoneyFromDadCard()
+    new CrowdfundingCampaignCard()
   ]
   weatherCards = [
     new HeatWaveWeatherCard()
@@ -41,7 +47,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     #to perform any start of day functions
 
   businessObject.dayComplete = (day) ->
-    console.log 'DAY COMPLETE', day.name, day.price
+    console.log 'day complete', day
 
     #First tick assets, which can modify day cards
     for asset in businessObject.assets
@@ -112,6 +118,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("market force",marketForce)
     console.log("Neutral price",neutralPrice)
     priceDiff = 0
+    console.log("Price",day.price)
     if day.price > 0
       priceDiff = neutralPrice/day.price
       console.log("price diff:",priceDiff)
@@ -125,10 +132,10 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("weather effect", weather.averageDemand)
     demand = stats.potentialMarketSize * (marketForce/100) * weather.averageDemand * priceDiff
     if priceDiff < 0.5
-      demand * 0.5 #additional penalty for overpricing.
+      demand *= 0.5 #additional penalty for overpricing.
 
     if priceDiff < 0.2
-      demand * 0.1 #further penalty for crazy overpricing
+      demand *= 0.1 #further penalty for crazy overpricing
 
     console.log("demand",demand)
 

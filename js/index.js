@@ -560,7 +560,7 @@ FundraisingCard = (function(_super) {
 
 })(Card);
 
-var EventCard, PRAgentEventCard,
+var BrandAmbassadorCard, CrowdfundingCampaignCard, EventCard, GoneViralCard_Good, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -634,6 +634,136 @@ PRAgentEventCard = (function(_super) {
   };
 
   return PRAgentEventCard;
+
+})(EventCard);
+
+GoneViralCard_Good = (function(_super) {
+  __extends(GoneViralCard_Good, _super);
+
+  function GoneViralCard_Good() {
+    GoneViralCard_Good.__super__.constructor.call(this, "Gone Viral", "mkt", "rss");
+    this.description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?";
+    this.expiry = 3;
+    this.thresholds.marketing = 3;
+  }
+
+  GoneViralCard_Good.prototype.tick = function(business, tasks) {
+    var task, _i, _len;
+    GoneViralCard_Good.__super__.tick.call(this, business, tasks);
+    for (_i = 0, _len = tasks.length; _i < _len; _i++) {
+      task = tasks[_i];
+      task.marketing = task.marketing * 1.5;
+    }
+    business.stats.marketing += 3;
+    return business.stats.cash += 10;
+  };
+
+  return GoneViralCard_Good;
+
+})(EventCard);
+
+ProductMarketFitCard = (function(_super) {
+  __extends(ProductMarketFitCard, _super);
+
+  function ProductMarketFitCard() {
+    ProductMarketFitCard.__super__.constructor.call(this, "Product Market Fit", "res", "graph");
+    this.description = "Word from our market research team is looking good...";
+    this.expiry = -1;
+    this.thresholds.research = 5;
+  }
+
+  ProductMarketFitCard.prototype.tick = function(business, tasks) {
+    ProductMarketFitCard.__super__.tick.call(this, business, tasks);
+    return business.stats.potentialMarketSize += 1000;
+  };
+
+  return ProductMarketFitCard;
+
+})(EventCard);
+
+MoneyFromDadCard = (function(_super) {
+  __extends(MoneyFromDadCard, _super);
+
+  function MoneyFromDadCard() {
+    MoneyFromDadCard.__super__.constructor.call(this, "$200 From Dad", "fun", "credit-card");
+    this.description = "Your Dad doesn't want you to starve. Or eat too much.";
+    this.expiry = -1;
+    this.thresholds.cash = 100;
+  }
+
+  MoneyFromDadCard.prototype.tick = function(business, tasks) {
+    MoneyFromDadCard.__super__.tick.call(this, business, tasks);
+    return business.stats.cash += 200;
+  };
+
+  return MoneyFromDadCard;
+
+})(EventCard);
+
+CrowdfundingCampaignCard = (function(_super) {
+  __extends(CrowdfundingCampaignCard, _super);
+
+  function CrowdfundingCampaignCard() {
+    CrowdfundingCampaignCard.__super__.constructor.call(this, "Kick my Lemons", "fun", "credit-card");
+    this.description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt.";
+    this.expiry = -1;
+    this.thresholds.marketing = 5;
+    this.thresholds.fundraising = 10;
+  }
+
+  CrowdfundingCampaignCard.prototype.tick = function(business, tasks) {
+    CrowdfundingCampaignCard.__super__.tick.call(this, business, tasks);
+    business.stats.cash += 5000;
+    return business.stats.marketing += 5;
+  };
+
+  return CrowdfundingCampaignCard;
+
+})(EventCard);
+
+GreatSalesPitchCard = (function(_super) {
+  __extends(GreatSalesPitchCard, _super);
+
+  function GreatSalesPitchCard() {
+    GreatSalesPitchCard.__super__.constructor.call(this, "Silver Tongue", "sal", "comment-square");
+    this.description = "Your pitch is so practiced, even the mirror is thirsty.";
+    this.expiry = -1;
+    this.thresholds.sales = 3;
+  }
+
+  GreatSalesPitchCard.prototype.tick = function(business, tasks) {
+    GreatSalesPitchCard.__super__.tick.call(this, business, tasks);
+    return business.stats.marketing += 5;
+  };
+
+  return GreatSalesPitchCard;
+
+})(EventCard);
+
+BrandAmbassadorCard = (function(_super) {
+  __extends(BrandAmbassadorCard, _super);
+
+  function BrandAmbassadorCard() {
+    BrandAmbassadorCard.__super__.constructor.call(this, "Brand Ambassador", "sal", "musical-note");
+    this.description = "Turns out, 50 Cent's cousin's friend likes our lemonade! She's agreed to represent us for a few days.";
+    this.expiry = 5;
+    this.thresholds.marketing = 5;
+    this.thresholds.sales = 5;
+  }
+
+  BrandAmbassadorCard.prototype.tick = function(business, tasks) {
+    var task, _i, _len;
+    BrandAmbassadorCard.__super__.tick.call(this, business, tasks);
+    for (_i = 0, _len = tasks.length; _i < _len; _i++) {
+      task = tasks[_i];
+      task.marketing = task.marketing * 2;
+      task.sales = task.sales * 1.5;
+    }
+    business.stats.marketing += 5;
+    return business.stats.potentialMarketSize += 1000;
+  };
+
+  return BrandAmbassadorCard;
 
 })(EventCard);
 
@@ -720,7 +850,7 @@ ColdWeatherCard = (function(_super) {
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
     var businessObject, eventCards, weatherCards;
-    eventCards = [new PRAgentEventCard()];
+    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCard_Good(), new MoneyFromDadCard(), new CrowdfundingCampaignCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
     businessObject = {
       forecast: [],
@@ -747,7 +877,7 @@ appModule.service("BusinessObject", [
     businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
       var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
-      console.log('DAY COMPLETE', day.name, day.price);
+      console.log('day complete', day);
       _ref = businessObject.assets;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         asset = _ref[_i];
@@ -818,6 +948,7 @@ appModule.service("BusinessObject", [
       console.log("market force", marketForce);
       console.log("Neutral price", neutralPrice);
       priceDiff = 0;
+      console.log("Price", day.price);
       if (day.price > 0) {
         priceDiff = neutralPrice / day.price;
         console.log("price diff:", priceDiff);
@@ -830,6 +961,12 @@ appModule.service("BusinessObject", [
       }
       console.log("weather effect", weather.averageDemand);
       demand = stats.potentialMarketSize * (marketForce / 100) * weather.averageDemand * priceDiff;
+      if (priceDiff < 0.5) {
+        demand *= 0.5;
+      }
+      if (priceDiff < 0.2) {
+        demand *= 0.1;
+      }
       console.log("demand", demand);
       return demand;
     };

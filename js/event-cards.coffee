@@ -29,6 +29,8 @@ class EventCard
         index = business.assets.indexOf @
         business.assets.splice index, 1
 
+
+#marketing cards
 class PRAgentEventCard extends EventCard
   constructor: ->
     super "PR Agent", "mkt", "rss"
@@ -41,3 +43,82 @@ class PRAgentEventCard extends EventCard
     for task in tasks
       task.marketing = task.marketing * 1.5
     business.stats.marketing += 1
+
+class GoneViralCard_Good extends EventCard
+  constructor: ->
+    super "Gone Viral", "mkt", "rss"
+    @description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?"
+    @expiry = 3 #3 days after receipt
+    @thresholds.marketing = 3
+
+  tick: (business, tasks) ->
+    super business, tasks
+    for task in tasks
+      task.marketing = task.marketing * 1.5
+    business.stats.marketing += 3
+    business.stats.cash += 10
+
+#research cards
+class ProductMarketFitCard extends EventCard
+  constructor: ->
+    super "Product Market Fit", "res", "graph"
+    @description = "Word from our market research team is looking good..."
+    @expiry = -1
+    @thresholds.research = 5
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.potentialMarketSize += 1000
+
+#fundraising cards
+class MoneyFromDadCard extends EventCard
+  constructor: ->
+    super "$200 From Dad", "fun", "credit-card"
+    @description = "Your Dad doesn't want you to starve. Or eat too much."
+    @expiry = -1
+    @thresholds.cash = 100
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.cash += 200
+
+class CrowdfundingCampaignCard extends EventCard
+  constructor: ->
+    super "Kick my Lemons", "fun", "credit-card"
+    @description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt."
+    @expiry = -1
+    @thresholds.marketing = 5
+    @thresholds.fundraising = 10
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.cash += 5000
+    business.stats.marketing += 5
+
+#sales cards
+class GreatSalesPitchCard extends EventCard
+  constructor: ->
+    super "Silver Tongue", "sal", "comment-square"
+    @description = "Your pitch is so practiced, even the mirror is thirsty."
+    @expiry = -1
+    @thresholds.sales = 3
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 5
+
+class BrandAmbassadorCard extends EventCard
+  constructor: ->
+    super "Brand Ambassador", "sal", "musical-note"
+    @description = "Turns out, 50 Cent's cousin's friend likes our lemonade! She's agreed to represent us for a few days."
+    @expiry = 5
+    @thresholds.marketing = 5
+    @thresholds.sales = 5
+
+  tick: (business, tasks) ->
+    super business, tasks
+    for task in tasks
+      task.marketing = task.marketing * 2
+      task.sales = task.sales * 1.5
+    business.stats.marketing += 5
+    business.stats.potentialMarketSize += 1000
