@@ -250,8 +250,7 @@ appModule.controller('MainController', [
     $scope.$on('taskMoved', function($e, task) {
       return console.log('main controller task moved');
     });
-    $scope.setTasks();
-    return $scope.startSimulation();
+    return $scope.setTasks();
   }
 ]);
 
@@ -792,6 +791,12 @@ appModule.service("BusinessObject", [
       }
       console.log("weather effect", weather.averageDemand);
       demand = stats.potentialMarketSize * (marketForce / 100) * weather.averageDemand * priceDiff;
+      if (priceDiff < 0.5) {
+        demand * 0.5;
+      }
+      if (priceDiff < 0.2) {
+        demand * 0.1;
+      }
       console.log("demand", demand);
       return demand;
     };

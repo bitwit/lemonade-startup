@@ -124,6 +124,12 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
     console.log("weather effect", weather.averageDemand)
     demand = stats.potentialMarketSize * (marketForce/100) * weather.averageDemand * priceDiff
+    if priceDiff < 0.5
+      demand * 0.5 #additional penalty for overpricing.
+
+    if priceDiff < 0.2
+      demand * 0.1 #further penalty for crazy overpricing
+
     console.log("demand",demand)
 
     return demand
