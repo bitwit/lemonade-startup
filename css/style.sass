@@ -179,8 +179,9 @@ div.task, div.job, div.asset
   position: relative
   cursor: move
   margin: 10/$em
-  padding: 6/$em
+  border: 1/$em solid #fff
   +border-radius(3/$em)
+  padding: 6/$em
   height: 24/$em
   color: $color-grey-dark
   line-height: 24/$em
@@ -265,12 +266,12 @@ div.day
   box-sizing: border-box
   position: relative
   border: 2/$em solid $color-grey-light
-  //background: $color-beige
+  background: $color-grey-ultra-light
   width: 14%
   height: 120/$em
   float: left
   &:hover
-    background-color: $color-grey-ultra-light
+    background-color: $color-beige
   &:nth-child(7n+1)
     clear: left
 

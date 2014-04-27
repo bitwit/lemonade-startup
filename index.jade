@@ -8,9 +8,9 @@ html
 		link(rel="stylesheet", type="text/css", href="css/style.css")
 		link(rel="stylesheet", type="text/css", href="css/hotkeys.min.css")
 		title Lemonade Startup
-	body(id="document-body", ng-controller="MainController")
+	body(id="document-body", ng-controller="RootController")
 		div.views(ng-switch="", on="currentView")
-			div.intro-view.view-container.ng-cloak(ng-switch-when="intro")
+			div.intro-view.view-container.ng-cloak(ng-controller="IntroController", ng-switch-when="intro")
 				h1.intro-title
 					span.lemon-drop.oi(data-glyph="droplet")
 					br
@@ -26,7 +26,7 @@ html
 				button.game-start(ng-click="switchView('main')")
 					span.title Let's Get Agile
 
-			div.main-view.view-container.ng-cloak(ng-switch-when="main")
+			div.main-view.view-container.ng-cloak(ng-controller="MainController", ng-switch-when="main")
 				div.tasks-column
 					h1.main-title.oi(data-glyph="droplet")
 						br
@@ -42,9 +42,11 @@ html
 				div.main-column
 					div.price-selector
 						h3 Price: ${{prices[price]}}
-						input.price-input(type="range", name="price", ng-model="price", min="0", max="9")
+						input.price-input(type="range", ng-model="price", min="0", max="9")
 					div.days
-						h2.sprint-title Sprint {{sprint}}
+						h2.sprint-title
+							span.title Sprint {{sprint}}
+							span.countdown(ng-if="countdownProgress > 0") starts in {{countdownProgress/1000 | number:2}}s
 						div.calendar
 							div.day(ng-repeat="day in sprintDays", ls-day)
 

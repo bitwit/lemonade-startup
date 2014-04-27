@@ -41,7 +41,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     #to perform any start of day functions
 
   businessObject.dayComplete = (day) ->
-    console.log 'day complete', day
+    console.log 'DAY COMPLETE', day.name, day.price
 
     #First tick assets, which can modify day cards
     for asset in businessObject.assets
