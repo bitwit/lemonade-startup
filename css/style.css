@@ -1102,7 +1102,7 @@ div.intro-view {
 
 /* line 128, style.sass */
 h1.intro-title {
-  font-size: 3em;
+  font-size: 2.625em;
   color: #fbdd8e; }
   /* line 131, style.sass */
   h1.intro-title span.lemon-drop {
@@ -1375,32 +1375,43 @@ div.day {
   div.day div.message {
     position: absolute;
     z-index: 9;
+    padding: 0.625em;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     background: white;
     opacity: 0.8;
-    text-align: center;
+    text-align: left;
     line-height: 2em;
+    font-size: 120%;
     -webkit-transition: all 0.44s linear;
     -webkit-transition-delay: 0s !important;
     -moz-transition: all 0.44s linear 0s !important;
     -o-transition: all 0.44s linear 0s !important;
     transition: all 0.44s linear 0s !important; }
-    /* line 375, style.sass */
+    /* line 378, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1; }
-    /* line 378, style.sass */
+    /* line 381, style.sass */
     div.day div.message.showing-false {
       opacity: 0; }
-    /* line 381, style.sass */
+    /* line 384, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important; }
-    /* line 384, style.sass */
-    div.day div.message span.value {
-      font-weight: bold;
-      font-size: 1.5em; }
+    /* line 389, style.sass */
+    div.day div.message li.oi span.title {
+      display: none; }
+    /* line 391, style.sass */
+    div.day div.message li.oi span.value {
+      font-weight: 600; }
+  /* line 394, style.sass */
+  div.day .positive-true {
+    color: #b0ad64; }
+  /* line 396, style.sass */
+  div.day .positive-false {
+    color: #d77167; }
 
-/* line 389, style.sass */
+/* line 400, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
@@ -1408,46 +1419,46 @@ div.day-progress-meter {
   height: 100%;
   background-color: #cad68a; }
 
-/* line 396, style.sass */
+/* line 407, style.sass */
 h5.day-name {
   position: relative;
-  z-index: 1; }
+  z-index: 9; }
 
-/* line 400, style.sass */
+/* line 411, style.sass */
 div.cash {
   overflow: hidden;
   font-weight: 500;
   font-size: 1.375em;
   text-align: center;
   color: #cad68a; }
-  /* line 407, style.sass */
+  /* line 418, style.sass */
   div.cash .positive-false {
     color: #d77167; }
-  /* line 410, style.sass */
+  /* line 422, style.sass */
   div.cash h3.cash-title {
     text-decoration: underline;
     font-size: 1.375em;
     margin-bottom: 0; }
-    /* line 414, style.sass */
+    /* line 426, style.sass */
     div.cash h3.cash-title span.title {
       font-size: 65%; }
-  /* line 416, style.sass */
+  /* line 428, style.sass */
   div.cash strong.cash-value {
     display: block;
     font-size: 1.25em;
     margin: 0.125em 0 0.625em; }
 
-/* line 421, style.sass */
+/* line 433, style.sass */
 div.assets {
   position: relative;
   box-sizing: border-box;
   height: 50em; }
 
-/* line 426, style.sass */
+/* line 438, style.sass */
 div.assets-container {
   position: relative; }
 
-/* line 429, style.sass */
+/* line 441, style.sass */
 div.asset {
   position: absolute;
   width: 100%;
@@ -1460,25 +1471,25 @@ div.asset {
   -moz-transition: all 0.24s linear 0s;
   -o-transition: all 0.24s linear 0s;
   transition: all 0.24s linear 0s; }
-  /* line 438, style.sass */
+  /* line 450, style.sass */
   div.asset.ng-enter, div.asset.ng-leave {
     -webkit-transition: all 0.24s linear;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.24s linear 0s;
     -o-transition: all 0.24s linear 0s;
     transition: all 0.24s linear 0s; }
-  /* line 442, style.sass */
+  /* line 454, style.sass */
   div.asset.ng-leave.ng-leave-active, div.asset.ng-enter {
     opacity: 0; }
-  /* line 446, style.sass */
+  /* line 458, style.sass */
   div.asset.ng-leave, div.asset.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 450, style.sass */
+  /* line 462, style.sass */
   div.asset span.expiry {
     display: block;
     float: right; }
 
-/* line 454, style.sass */
+/* line 466, style.sass */
 div.announcements {
   position: absolute;
   z-index: 10;
@@ -1486,12 +1497,12 @@ div.announcements {
   height: 100%;
   top: 0;
   left: 0; }
-  /* line 462, style.sass */
+  /* line 474, style.sass */
   div.announcements.displaying-false {
     display: none;
     pointer-events: none; }
 
-/* line 466, style.sass */
+/* line 478, style.sass */
 div.announcement {
   box-sizing: border-box;
   margin: 2% auto 0;
@@ -1502,35 +1513,35 @@ div.announcement {
   height: 41.25em;
   background-color: white;
   text-align: center; }
-  /* line 478, style.sass */
+  /* line 490, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -webkit-transition: opacity 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: opacity 0.8s ease-out 0s;
     -o-transition: opacity 0.8s ease-out 0s;
     transition: opacity 0.8s ease-out 0s; }
-  /* line 482, style.sass */
+  /* line 494, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 486, style.sass */
+  /* line 498, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 490, style.sass */
+  /* line 502, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333333; }
-  /* line 497, style.sass */
+  /* line 509, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 501, style.sass */
+  /* line 513, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333333; }
-  /* line 505, style.sass */
+  /* line 517, style.sass */
   div.announcement button.accept, div.announcement button.reject {
     outline: none;
     cursor: pointer;
@@ -1545,30 +1556,30 @@ div.announcement {
     border-radius: 0.25em;
     width: 47.5%;
     background: none; }
-    /* line 515, style.sass */
+    /* line 527, style.sass */
     div.announcement button.accept span, div.announcement button.reject span {
       font-size: 1.75em; }
-    /* line 517, style.sass */
+    /* line 529, style.sass */
     div.announcement button.accept:hover, div.announcement button.reject:hover {
       opacity: 0.85; }
-      /* line 519, style.sass */
+      /* line 531, style.sass */
       div.announcement button.accept:hover .hotkey-button, div.announcement button.reject:hover .hotkey-button {
         display: inline-block; }
-    /* line 522, style.sass */
+    /* line 534, style.sass */
     div.announcement button.accept .hotkey-button, div.announcement button.reject .hotkey-button {
       display: none;
       margin-top: 0.25em;
       color: #333333;
       font-size: 1em; }
-  /* line 528, style.sass */
+  /* line 540, style.sass */
   div.announcement button.accept {
     color: #b0ad64;
     margin-right: 5%; }
-  /* line 532, style.sass */
+  /* line 544, style.sass */
   div.announcement button.reject {
     color: #d77167; }
 
-/* line 535, style.sass */
+/* line 547, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;
