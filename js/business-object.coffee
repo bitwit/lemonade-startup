@@ -302,7 +302,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     else
       flags.playerHasTotalOwnership = false
 
-    if stats.cash > 1000000
+    if stats.cash > 100000
       flags.hasPassedHighThreshold_Cash = true
     else
       flags.hasPassedHighThreshold_Cash = false
@@ -325,15 +325,15 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     if stats.fundraising > 100
       flags.hasPassedHighThreshold_Fundraising = true
 
-    if stats.potentialMarketSize > 100000
+    if stats.potentialMarketSize > 10000
       flags.hasPassedHighThreshold_MarketSize = true
 
-    if stats.cash > 0 and stats.cash < 100000
+    if stats.cash > 0 and stats.cash < 10000
       flags.isUnderLowThreshold_Cash = true
     else
       flags.isUnderLowThreshold_Cash = false
 
-    if stats.cash > 100000
+    if stats.cash > 25000
       flags.hasPassedLowThreshold_Cash = true
     else
       flags.hasPassedLowThreshold_Cash = false
