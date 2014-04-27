@@ -1167,6 +1167,7 @@ div.task, div.job, div.asset {
   position: relative;
   cursor: move;
   margin: 0.625em;
+  border: 0.0625em solid white;
   padding: 0.375em;
   -webkit-border-radius: 0.1875em;
   -moz-border-radius: 0.1875em;
@@ -1179,17 +1180,17 @@ div.task, div.job, div.asset {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
-  /* line 190, style.sass */
+  /* line 191, style.sass */
   div.task:hover, div.job:hover, div.asset:hover {
     color: #f07848;
     background: #f0cdc0; }
 
-/* line 194, style.sass */
+/* line 195, style.sass */
 div.job {
   margin: 0 auto 0.625em;
   width: 6.25em;
   left: 0; }
-  /* line 198, style.sass */
+  /* line 199, style.sass */
   div.job.selected-true-add, div.job.selected-false-add {
     -webkit-transition: all 0.16s linear;
     -webkit-transition-delay: 0s !important;
@@ -1197,32 +1198,32 @@ div.job {
     -o-transition: all 0.16s linear 0s !important;
     transition: all 0.16s linear 0s !important;
     position: relative; }
-  /* line 201, style.sass */
+  /* line 202, style.sass */
   div.job.selected-true, div.job.selected-true-add-active {
     position: relative;
     left: 1.25em; }
-  /* line 204, style.sass */
+  /* line 205, style.sass */
   div.job.selected-false, div.job.selected-false-add-active {
     position: relative;
     left: 0; }
-  /* line 208, style.sass */
+  /* line 209, style.sass */
   div.job.ui-draggable-dragging {
     -webkit-transition: none !important;
     transition: none !important; }
-  /* line 212, style.sass */
+  /* line 213, style.sass */
   div.job span.title {
     display: inline-block;
     text-indent: 0.375em;
     text-transform: capitalize; }
-  /* line 217, style.sass */
+  /* line 218, style.sass */
   div.job .hotkey-button {
     float: right; }
 
-/* line 221, style.sass */
+/* line 222, style.sass */
 div.task span.title {
   font-size: 0.875em;
   text-transform: capitalize; }
-/* line 224, style.sass */
+/* line 225, style.sass */
 div.task span.delete {
   display: block;
   position: absolute;
@@ -1233,31 +1234,31 @@ div.task span.delete {
   right: 0;
   cursor: pointer;
   text-align: center; }
-  /* line 234, style.sass */
+  /* line 235, style.sass */
   div.task span.delete:hover {
     font-weight: bold; }
 
-/* line 237, style.sass */
+/* line 238, style.sass */
 div.days {
   box-sizing: border-box; }
 
-/* line 240, style.sass */
+/* line 241, style.sass */
 div.price-selector {
   width: 80%;
   margin: 0 10%; }
 
-/* line 244, style.sass */
+/* line 245, style.sass */
 input.price-input {
   width: 100%;
   display: inline-block; }
 
-/* line 248, style.sass */
+/* line 249, style.sass */
 div.price {
   float: left;
   width: 10%;
   text-align: right; }
 
-/* line 253, style.sass */
+/* line 254, style.sass */
 h2.sprint-title {
   box-sizing: border-box;
   margin: 2.5em 0 0;
@@ -1266,25 +1267,26 @@ h2.sprint-title {
   width: 98%;
   padding: 0.625em 0; }
 
-/* line 261, style.sass */
+/* line 262, style.sass */
 div.day {
   cursor: cell;
   box-sizing: border-box;
   position: relative;
   border: 0.125em solid #cdcdcd;
+  background: #ededed;
   width: 14%;
   height: 7.5em;
   float: left; }
-  /* line 263, style.sass */
+  /* line 264, style.sass */
   div.day.full-true {
     cursor: pointer; }
-  /* line 272, style.sass */
+  /* line 273, style.sass */
   div.day:hover {
-    background-color: #ededed; }
-  /* line 274, style.sass */
+    background-color: #dcd095; }
+  /* line 275, style.sass */
   div.day:nth-child(7n+1) {
     clear: left; }
-  /* line 277, style.sass */
+  /* line 278, style.sass */
   div.day div.message {
     position: absolute;
     z-index: 20;
@@ -1300,24 +1302,24 @@ div.day {
     -moz-transition: all 0.34s linear 0s !important;
     -o-transition: all 0.34s linear 0s !important;
     transition: all 0.34s linear 0s !important; }
-    /* line 289, style.sass */
+    /* line 290, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1;
       top: -2.1875em; }
-    /* line 292, style.sass */
+    /* line 293, style.sass */
     div.day div.message.showing-false {
       opacity: 0;
       top: 0; }
-    /* line 295, style.sass */
+    /* line 296, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important;
       top: 0 !important; }
-    /* line 298, style.sass */
+    /* line 299, style.sass */
     div.day div.message span.value {
       font-weight: bold;
       font-size: 1.5em; }
 
-/* line 303, style.sass */
+/* line 304, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
@@ -1325,52 +1327,52 @@ div.day-progress-meter {
   height: 100%;
   background-color: #cad68a; }
 
-/* line 310, style.sass */
+/* line 311, style.sass */
 h5.day-name {
   position: relative;
   z-index: 1; }
 
-/* line 314, style.sass */
+/* line 315, style.sass */
 dl.stats {
   overflow: hidden;
   font-weight: 500;
   font-size: 1.375em;
   text-align: center;
   color: #cad68a; }
-  /* line 321, style.sass */
+  /* line 322, style.sass */
   dl.stats .positive-false {
     color: #d77167; }
-  /* line 323, style.sass */
+  /* line 324, style.sass */
   dl.stats dt {
     text-decoration: underline; }
-  /* line 325, style.sass */
+  /* line 326, style.sass */
   dl.stats dd {
     margin: 0.375em 0 0.625em; }
 
-/* line 328, style.sass */
+/* line 329, style.sass */
 div.assets {
   box-sizing: border-box;
   height: 50em; }
 
-/* line 333, style.sass */
+/* line 334, style.sass */
 div.asset.ng-enter, div.asset.ng-leave {
   -webkit-transition: all 0.24s linear;
   -webkit-transition-delay: 0s;
   -moz-transition: all 0.24s linear 0s;
   -o-transition: all 0.24s linear 0s;
   transition: all 0.24s linear 0s; }
-/* line 337, style.sass */
+/* line 338, style.sass */
 div.asset.ng-leave.ng-leave-active, div.asset.ng-enter {
   opacity: 0; }
-/* line 341, style.sass */
+/* line 342, style.sass */
 div.asset.ng-leave, div.asset.ng-enter.ng-enter-active {
   opacity: 1; }
-/* line 345, style.sass */
+/* line 346, style.sass */
 div.asset span.expiry {
   display: block;
   float: right; }
 
-/* line 349, style.sass */
+/* line 350, style.sass */
 div.announcement {
   position: absolute;
   z-index: 10;
@@ -1385,35 +1387,35 @@ div.announcement {
   height: 80%;
   background-color: white;
   text-align: center; }
-  /* line 365, style.sass */
+  /* line 366, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -webkit-transition: all 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.8s ease-out 0s;
     -o-transition: all 0.8s ease-out 0s;
     transition: all 0.8s ease-out 0s; }
-  /* line 369, style.sass */
+  /* line 370, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 373, style.sass */
+  /* line 374, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 377, style.sass */
+  /* line 378, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333333; }
-  /* line 384, style.sass */
+  /* line 385, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 388, style.sass */
+  /* line 389, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333333; }
-  /* line 392, style.sass */
+  /* line 393, style.sass */
   div.announcement button.confirm {
     cursor: pointer;
     margin: 1.25em 0;
@@ -1421,14 +1423,14 @@ div.announcement {
     font-size: 1em;
     border: 0.0625em solid inherit;
     background: inherit; }
-    /* line 399, style.sass */
+    /* line 400, style.sass */
     div.announcement button.confirm span {
       font-size: 1.75em; }
-    /* line 401, style.sass */
+    /* line 402, style.sass */
     div.announcement button.confirm:hover {
       opacity: 0.85; }
 
-/* line 404, style.sass */
+/* line 405, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;
