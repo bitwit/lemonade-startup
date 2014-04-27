@@ -1490,11 +1490,12 @@ div.announcements {
   height: 100%;
   top: 0;
   left: 0; }
-  /* line 462, style.sass */
-  div.announcements.display-true {
+  /* line 463, style.sass */
+  div.announcements.displaying-false {
+    display: none;
     pointer-events: none; }
 
-/* line 465, style.sass */
+/* line 467, style.sass */
 div.announcement {
   box-sizing: border-box;
   margin: 2% auto 0;
@@ -1505,35 +1506,35 @@ div.announcement {
   height: 41.25em;
   background-color: white;
   text-align: center; }
-  /* line 477, style.sass */
+  /* line 479, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -webkit-transition: opacity 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: opacity 0.8s ease-out 0s;
     -o-transition: opacity 0.8s ease-out 0s;
     transition: opacity 0.8s ease-out 0s; }
-  /* line 481, style.sass */
+  /* line 483, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 485, style.sass */
+  /* line 487, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 489, style.sass */
+  /* line 491, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333333; }
-  /* line 496, style.sass */
+  /* line 498, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 500, style.sass */
+  /* line 502, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333333; }
-  /* line 504, style.sass */
+  /* line 506, style.sass */
   div.announcement button.accept, div.announcement button.reject {
     outline: none;
     cursor: pointer;
@@ -1548,30 +1549,30 @@ div.announcement {
     border-radius: 0.25em;
     width: 47.5%;
     background: none; }
-    /* line 514, style.sass */
+    /* line 516, style.sass */
     div.announcement button.accept span, div.announcement button.reject span {
       font-size: 1.75em; }
-    /* line 516, style.sass */
+    /* line 518, style.sass */
     div.announcement button.accept:hover, div.announcement button.reject:hover {
       opacity: 0.85; }
-      /* line 518, style.sass */
+      /* line 520, style.sass */
       div.announcement button.accept:hover .hotkey-button, div.announcement button.reject:hover .hotkey-button {
         display: inline-block; }
-    /* line 521, style.sass */
+    /* line 523, style.sass */
     div.announcement button.accept .hotkey-button, div.announcement button.reject .hotkey-button {
       display: none;
       margin-top: 0.25em;
       color: #333333;
       font-size: 1em; }
-  /* line 527, style.sass */
+  /* line 529, style.sass */
   div.announcement button.accept {
     color: #b0ad64;
     margin-right: 5%; }
-  /* line 531, style.sass */
+  /* line 533, style.sass */
   div.announcement button.reject {
     color: #d77167; }
 
-/* line 534, style.sass */
+/* line 536, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;
