@@ -55,14 +55,15 @@ class GoneViralCardGood extends EventCard
   constructor: ->
     super "Gone Viral", "mkt", "rss"
     @description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?"
-    @isRejectable = false
+    @acceptText = "Milk it"
+    @rejectText = "Youtube? No."
     @expiry = 3 #3 days after receipt
-    @thresholds.marketing = 3
+    @thresholds.marketing = 70
 
   tick: (business, tasks) ->
     super business, tasks
     for task in tasks
-      task.marketing *= 1.5
+      task.marketing *= 2.5
     business.stats.marketing += 3
     business.stats.cash += 10
 
@@ -275,7 +276,7 @@ class BloodLemonsCard extends EventCard
     super "Blood Lemons", "dev", "comment-square"
     @description = "Err, we should ethically source our lemons. A little more expensive, but ... Just don't ask."
     @acceptText = "Okay"
-    @rejectText = "Don't care"
+    @rejectText = "Mmm blood"
     @expiry = 0
     @thresholds.development = 10
 
