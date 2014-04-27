@@ -290,12 +290,13 @@ class SuburbanPermitCard extends EventCard
 class FranchiseCard extends EventCard
   constructor: ->
     super "Second Cart Life", "sal", "comment-square"
-    @description = "We could open a second cart. It would only cost about $25000"
+    @description = "We could open another cart. It would only cost about $25000, and 10%"
     @isRejectable = false
     @expiry = 0
     @thresholds.sales = 40
     @thresholds.marketing = 40
-    @thresholds.cash = 50000
+    @thresholds.cash = 25000
+    @thresholds.equity = 10
 
   tick: (business, tasks) ->
     super business, tasks
@@ -303,6 +304,7 @@ class FranchiseCard extends EventCard
     business.stats.sales += 5
     business.stats.potentialMarketSize *= 1.5
     business.stats.cash -= 25000
+    business.stats.equity -= 10
 
 class BrandAmbassadorCard extends EventCard
   constructor: ->
