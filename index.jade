@@ -36,12 +36,19 @@ html
 				div.tasks-column
 					h1.main-title.oi(data-glyph="droplet")
 						br
-						span.title Lemon
+						span.title Lemonade
 							br
 							| Startup
 					div.jobs(ng-model="tasks", data-jqyoui-options="taskListOptions", jqyoui-droppable="{multiple:true}")
 						h3 Tasks
 						div(ng-repeat="task in tasks", ls-job)
+					div.instructions
+						h3 Instructions
+						ul
+							li.instruction Select different tasks using their hotkeys (1-6)
+							li.instruction Add tasks to the calendar by clicking days or dragging tasks
+							li.instruction Adjust the price dial as you please
+							li.instruction Pay attention for timely events
 						//
 							h3 Forecast
 							div(ng-repeat="weather in game.forecast track by $index")
@@ -49,7 +56,8 @@ html
 
 				div.main-column
 					div.price-selector
-						h3.price-title Price: {{prices[price] | currency}}
+						h3.price-title
+							span.title Price: {{prices[price] | currency}}
 						input.price-input(type="range", ng-model="price", min="0", max="9")
 					div.days
 						h2.sprint-title
@@ -59,21 +67,24 @@ html
 							div.day(ng-repeat="day in sprintDays", ls-day)
 
 				div.status-column
-					h2.section-title.oi(data-glyph="spreadsheet")
-						br
-						span.title Numbers
-					div.assets
-						dl.stats
-							dt(class="positive-{{game.stats.cash > 0}}") Cash
-							dd(class="positive-{{game.stats.cash > 0}}") {{game.stats.cash | currency}}
-							dt(class="positive-{{game.stats.projectedValue > 0}}") Company Value
-							dd(class="positive-{{game.stats.projectedValue > 0}}") {{game.stats.projectedValue| currency}}
-						h2.section-title.oi(data-glyph="list")
+					div.cash
+						h3.cash-title.oi(data-glyph="dollar")
 							br
-							span.title Assets
-						div.asset(class="type-{{asset.id}}", ng-repeat="asset in game.assets")
-							span.title.oi(data-glyph="{{asset.icon}}") &nbsp;{{asset.name}}
-							span.expiry(ng-if="asset.expiry > 0") {{asset.expiry}}
+							span.title Cash
+						strong.cash-value(class="positive-{{game.stats.cash > 0}}") {{game.stats.cash | currency}}
+						h3.cash-title.oi(data-glyph="question-mark", class="positive-{{game.stats.projectedValue > 0}}")
+							br
+							span.title Valuation
+						strong.cash-value(class="positive-{{game.stats.projectedValue > 0}}") {{game.stats.projectedValue| currency}}
+
+					div.assets
+						h2.section-title.oi(data-glyph="timer")
+							br
+							span.title Events
+						div.assets-container
+							div.asset(class="type-{{asset.id}}", ng-repeat="asset in game.assets")
+								span.title.oi(data-glyph="{{asset.icon}}") &nbsp;{{asset.name}}
+								span.expiry(ng-if="asset.expiry > 0") {{asset.expiry}}
 
 						//
 							h3 Options
@@ -109,8 +120,14 @@ html
 							span.title {{event.name}}
 						div.oi(data-glyph="{{event.icon}}")
 						p.description {{event.description}}
-						button.confirm(ng-click="resumeSimulation()")
-							span.title.oi(data-glyph="check") OK
+						button.accept(class="type-{{event.id}}", ng-click="acceptEvent()")
+							span.title.oi(data-glyph="check") {{event.acceptText}}
+							br
+							span.hotkey-button space
+						button.reject(class="type-{{event.id}}", ng-click="rejectEvent()")
+							span.title.oi(data-glyph="x") {{event.rejectText}}
+							br
+							span.hotkey-button esc
 
 		script(src='js/vendor/jquery/jquery.min.js')
 		script(src='js/vendor/jquery/jquery-ui.min.js')

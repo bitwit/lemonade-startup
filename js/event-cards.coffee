@@ -2,6 +2,9 @@ class EventCard
   constructor: (@name, @id ,@icon) ->
     @expiry = -1 #never expires
     @description = "An event occurred"
+    @acceptText = "Accept"
+    @rejectText = "Reject"
+    @cost = 0
     @thresholds = {
       development: 0
       design: 0
@@ -74,6 +77,8 @@ class ProductMarketFitCard extends EventCard
 class MoneyFromDadCard extends EventCard
   constructor: ->
     super "$200 From Dad", "fun", "credit-card"
+    @acceptText = "Accept"
+    @rejectText = "Too Proud"
     @description = "Your Dad doesn't want you to starve. Or eat too much."
     @expiry = 0
     @thresholds.cash = 100

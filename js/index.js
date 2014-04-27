@@ -59,7 +59,7 @@ appModule.config([
 
 appModule.controller("RootController", [
   "$rootScope", function($rootScope) {
-    $rootScope.currentView = "intro";
+    $rootScope.currentView = "main";
     return $rootScope.switchView = function(viewName) {
       return $rootScope.currentView = viewName;
     };
@@ -89,9 +89,13 @@ appModule.controller('MainController', [
     hotkeys.add("6", "Fundraising", function() {
       return $scope.selectedTaskIndex = 5;
     });
-    hotkeys.add("space", "Resume/Confirm", function() {
+    hotkeys.add("space", "Resume/Accept", function() {
       console.log("resume simulation");
-      return $scope.resumeSimulation();
+      return $scope.acceptEvent();
+    });
+    hotkeys.add("esc", "Resume/Reject", function() {
+      console.log("resume simulation");
+      return $scope.rejectEvent();
     });
     $scope.sprintDays = [
       {
@@ -197,7 +201,7 @@ appModule.controller('MainController', [
       return console.log($scope.sprintDays);
     };
     $scope.startCountdown = function() {
-      $scope.countdownProgress = 15000;
+      $scope.countdownProgress = 2000;
       return $timeout($scope.tickCountdown, $scope.tickSpeed);
     };
     $scope.tickCountdown = function() {
@@ -235,6 +239,18 @@ appModule.controller('MainController', [
         })());
       }
       return _results;
+    };
+    $scope.acceptEvent = function() {
+      var event;
+      event = $scope.announcements.shift();
+      bizObj.stats.cash -= event.cost;
+      bizObj.assets.unshift(event);
+      return $scope.resumeSimulation();
+    };
+    $scope.rejectEvent = function() {
+      var event;
+      event = $scope.announcements.shift();
+      return $scope.resumeSimulation();
     };
     $scope.resumeSimulation = function() {
       if ($scope.hasStarted && ($scope.timerPromise == null)) {
@@ -317,7 +333,7 @@ appModule.directive('lsDay', [
             console.log('new task for', $scope.day.name, task);
             return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
           };
-          $scope.message = null;
+          $scope.result = null;
           $scope.addSelectedTask = function() {
             var task;
             if ($scope.day.tasks.length < 2 && $scope.day.isInteractive) {
@@ -356,9 +372,9 @@ appModule.directive('lsDay', [
             };
           };
           $scope.isShowingMessage = false;
-          $scope.day.announce = function(text) {
-            console.log('announcing text', $scope.day, text);
-            $scope.message = text;
+          $scope.day.announce = function(bizResult) {
+            console.log('announcing result', bizResult);
+            $scope.result = bizResult;
             $scope.isShowingMessage = true;
             return $timeout(function() {
               return $scope.isShowingMessage = false;
@@ -394,7 +410,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{message | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{result.dailyRevenueHistory[result.dailyRevenueHistory.length - 1] | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -578,6 +594,9 @@ EventCard = (function() {
     this.icon = icon;
     this.expiry = -1;
     this.description = "An event occurred";
+    this.acceptText = "Accept";
+    this.rejectText = "Reject";
+    this.cost = 0;
     this.thresholds = {
       development: 0,
       design: 0,
@@ -693,6 +712,8 @@ MoneyFromDadCard = (function(_super) {
 
   function MoneyFromDadCard() {
     MoneyFromDadCard.__super__.constructor.call(this, "$200 From Dad", "fun", "credit-card");
+    this.acceptText = "Accept";
+    this.rejectText = "Too Proud";
     this.description = "Your Dad doesn't want you to starve. Or eat too much.";
     this.expiry = 0;
     this.thresholds.cash = 100;
@@ -896,9 +917,11 @@ ColdWeatherCard = (function(_super) {
 
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
-    var businessObject, eventCards, weatherCards;
+    var businessHistory, businessObject, eventCards, victoryConditions, weatherCards;
     eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard(), new SeedInvestmentCard(), new CaffinatedLemonsCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
+    victoryConditions = [new StagnantEnding(), new BankruptEnding(), new AcquiredEnding(), new BootstrapEnding(), new HostileTakeoverEnding(), new SoftHostileTakeoverEnding(), new ALittleBetterEnding()];
+    businessHistory = [];
     businessObject = {
       forecast: [],
       stats: {
@@ -932,7 +955,9 @@ appModule.service("BusinessObject", [
         hasPassedHighThreshold_Sales: false,
         hasPassedHighThreshold_Fundraising: false,
         hasPassedHighThreshold_MarketSize: false,
-        isBroke: false
+        isBroke: false,
+        isUnderLowThreshold_Cash: false,
+        playerHasSoldOut: false
       },
       tracking: {
         highestPrice: 0,
@@ -948,7 +973,7 @@ appModule.service("BusinessObject", [
     };
     businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
-      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
+      var asset, card, cashDelta, dayHistory, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
       console.log('day complete', day);
       if (businessObject.assets.length > 0) {
         for (i = _i = _ref = businessObject.assets.length - 1; _ref <= 0 ? _i <= 0 : _i >= 0; i = _ref <= 0 ? ++_i : --_i) {
@@ -968,7 +993,6 @@ appModule.service("BusinessObject", [
         if (eventCard.hasBusinessMetConditions(businessObject)) {
           didTriggerEvent = true;
           event = eventCards.splice(i, 1)[0];
-          businessObject.assets.push(event);
           $rootScope.$broadcast('eventCardOccured', event);
           break;
         }
@@ -987,8 +1011,11 @@ appModule.service("BusinessObject", [
       cashDelta += numCustomers * day.price;
       stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
+      dayHistory = clone(businessObject);
+      businessHistory.push(dayHistory);
+      console.log('biz history', businessHistory);
       console.log(businessObject.dailyRevenueHistory);
-      day.announce(cashDelta);
+      day.announce(dayHistory);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
@@ -996,16 +1023,25 @@ appModule.service("BusinessObject", [
     businessObject.sprintComplete = function(sprintNumber) {
       console.log("Sprint " + sprintNumber + " completed");
       businessObject.setCosts(sprintNumber);
-      businessObject.setCreditLimit();
-      if (sprintNumber === 10) {
-        return businessObject.processEndGame();
-      }
+      return businessObject.setCreditLimit();
     };
     businessObject.processEndGame = function() {
-      var flags, stats;
+      var condition, i, selectedCondition, validConditions, _i, _j, _len, _ref;
       console.log("Game over!");
-      stats = businessObject.stats;
-      return flags = businessObject.flags;
+      validConditions = [];
+      for (_i = 0, _len = victoryConditions.length; _i < _len; _i++) {
+        condition = victoryConditions[_i];
+        if (condition.hasBusinessMetConditions(businessObject)) {
+          validConditions.push(condition);
+        }
+      }
+      selectedCondition = validConditions[0];
+      for (i = _j = 0, _ref = validConditions.length; 0 <= _ref ? _j < _ref : _j > _ref; i = 0 <= _ref ? ++_j : --_j) {
+        if (validConditions[i].priority > selectedCondition.priority) {
+          selectedCondition = validConditions[i];
+        }
+      }
+      return selectedCondition;
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {
@@ -1133,39 +1169,35 @@ appModule.service("BusinessObject", [
         flags.hasPassedHighThreshold_Cash = false;
       }
       if (stats.research > 100) {
-        ({
-          hasPassedHighThreshold_Research: true
-        });
+        flags.hasPassedHighThreshold_Research = true;
       }
       if (stats.development > 100) {
-        ({
-          hasPassedHighThreshold_Development: true
-        });
+        flags.hasPassedHighThreshold_Development = true;
       }
       if (stats.design > 100) {
-        ({
-          hasPassedHighThreshold_Design: true
-        });
+        flags.hasPassedHighThreshold_Design = true;
       }
       if (stats.marketing > 100) {
-        ({
-          hasPassedHighThreshold_Marketing: true
-        });
+        flags.hasPassedHighThreshold_Marketing = true;
       }
       if (stats.sales > 100) {
-        ({
-          hasPassedHighThreshold_Sales: true
-        });
+        flags.hasPassedHighThreshold_Sales = true;
       }
       if (stats.fundraising > 100) {
-        ({
-          hasPassedHighThreshold_Fundraising: true
-        });
+        flags.hasPassedHighThreshold_Fundraising = true;
       }
       if (stats.potentialMarketSize > 100000) {
-        return {
-          hasPassedHighThreshold_MarketSize: true
-        };
+        flags.hasPassedHighThreshold_MarketSize = true;
+      }
+      if (stats.cash > 0 && stats.cash < 100000) {
+        flags.isUnderLowThreshold_Cash = true;
+      } else {
+        flags.isUnderLowThreshold_Cash = false;
+      }
+      if (stats.equity < 50) {
+        return flags.playerHasSoldOut = true;
+      } else {
+        return flags.playerHasSoldOut = false;
       }
     };
     businessObject.predictBusinessValue = function() {
@@ -1207,3 +1239,164 @@ appModule.service("BusinessObject", [
     return businessObject;
   }
 ]);
+
+var VictoryCondition,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+VictoryCondition = (function() {
+  var ALittleBetterEnding, AcquiredEnding, BankruptEnding, BootstrapEnding, HostileTakeoverEnding, SoftHostileTakeoverEnding, StagnantEnding;
+
+  function VictoryCondition(name, id, icon) {
+    this.name = name;
+    this.id = id;
+    this.icon = icon;
+    this.description = "An event occurred";
+    this.priority = 0;
+    this.criteria = {
+      doesHaveAvailableFunds: false,
+      doesHaveAvailableEquity: false,
+      playerHasMajorityEquity: false,
+      playerHasTotalOwnership: false,
+      cashOnHandIsPositive: false,
+      hasPassedHighThreshold_Cash: false,
+      hasPassedHighThreshold_Research: false,
+      hasPassedHighThreshold_Development: false,
+      hasPassedHighThreshold_Design: false,
+      hasPassedHighThreshold_Marketing: false,
+      hasPassedHighThreshold_Sales: false,
+      hasPassedHighThreshold_Fundraising: false,
+      hasPassedHighThreshold_MarketSize: false,
+      hasPassedLowThreshold_Cash: false,
+      isBroke: false,
+      isUnderLowThreshold_Cash: false,
+      playerHasSoldOut: false
+    };
+  }
+
+  VictoryCondition.prototype.hasBusinessMetConditions = function(business) {
+    var criteriaMet, flag, value;
+    criteriaMet = true;
+    for (flag in criteria) {
+      value = criteria[flag];
+      if (value !== false) {
+        if (business.flags[flag] !== true) {
+          criteriaMet = false;
+        }
+      }
+    }
+    return criteriaMet;
+  };
+
+  BootstrapEnding = (function(_super) {
+    __extends(BootstrapEnding, _super);
+
+    function BootstrapEnding() {
+      BootstrapEnding.__super__.constructor.call(this, "Bootstrapped", "sal", "dollar");
+      this.description = "Squeezing lemons by hand? Nope. Now, you just roll over them with a Ferrari. I guess that means you made it?";
+      this.criteria.doesHaveAvailableFunds = true;
+      this.criteria.playerHasTotalOwnership = true;
+      this.criteria.hasPassedHighThreshold_Cash = true;
+      this.priority = 10;
+    }
+
+    return BootstrapEnding;
+
+  })(VictoryCondition);
+
+  StagnantEnding = (function(_super) {
+    __extends(StagnantEnding, _super);
+
+    function StagnantEnding() {
+      StagnantEnding.__super__.constructor.call(this, "Still Here", "sal", "dollar");
+      this.description = "Yesterday, I squeezed lemons, today I am squeezing lemons, and tomorrow I will squeeze lemons. Lemon, lemon, something, lemon.";
+      this.criteria.doesHaveAvailableFunds = true;
+      this.criteria.doesHaveAvailableEquity = true;
+      this.criteria.isUnderLowThreshold_Cash = true;
+      this.priority = 1;
+    }
+
+    return StagnantEnding;
+
+  })(VictoryCondition);
+
+  AcquiredEnding = (function(_super) {
+    __extends(AcquiredEnding, _super);
+
+    function AcquiredEnding() {
+      AcquiredEnding.__super__.constructor.call(this, "JuiceBook is Calling", "sal", "thumbs-up");
+      this.description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris.";
+      this.criteria.hasPassedHighThreshold_Fundraising = true;
+      this.criteria.hasPassedHighThreshold_Development = true;
+      this.criteria.hasPassedHighThreshold_Marketing = true;
+      this.criteria.doesHaveAvailableFunds = true;
+      this.priority = 9;
+    }
+
+    return AcquiredEnding;
+
+  })(VictoryCondition);
+
+  HostileTakeoverEnding = (function(_super) {
+    __extends(HostileTakeoverEnding, _super);
+
+    function HostileTakeoverEnding() {
+      HostileTakeoverEnding.__super__.constructor.call(this, "You Can't Fire me!", "sal", "thumbs-up");
+      this.description = "Oh. You can? But ... This was ... Seriously? You're having security escort me out?";
+      this.criteria.isBroke = true;
+      this.criteria.playerHasSoldOut = true;
+      this.priority = 7;
+    }
+
+    return HostileTakeoverEnding;
+
+  })(VictoryCondition);
+
+  SoftHostileTakeoverEnding = (function(_super) {
+    __extends(SoftHostileTakeoverEnding, _super);
+
+    function SoftHostileTakeoverEnding() {
+      SoftHostileTakeoverEnding.__super__.constructor.call(this, "'Voluntary' Resignation", "sal", "thumbs-up");
+      this.description = "You just wait. Lemons are so passé. I'm onto Agave now.";
+      this.criteria.playerHasSoldOut = true;
+      this.criteria.isUnderLowThreshold_Cash = true;
+      this.priority = 8;
+    }
+
+    return SoftHostileTakeoverEnding;
+
+  })(VictoryCondition);
+
+  BankruptEnding = (function(_super) {
+    __extends(BankruptEnding, _super);
+
+    function BankruptEnding() {
+      BankruptEnding.__super__.constructor.call(this, "Bankrupt", "sal", "thumbs-down");
+      this.description = "The lemonade stand? Oh, no, I work at Starbucks now.";
+      this.criteria.isBroke = true;
+      this.priority = 1;
+    }
+
+    return BankruptEnding;
+
+  })(VictoryCondition);
+
+  ALittleBetterEnding = (function(_super) {
+    __extends(ALittleBetterEnding, _super);
+
+    function ALittleBetterEnding() {
+      ALittleBetterEnding.__super__.constructor.call(this, "Still in Business", "sal", "thumbs-down");
+      this.description = "I can pay myself now!";
+      this.criteria.doesHaveAvailableFunds = true;
+      this.criteria.doesHaveAvailableEquity = true;
+      this.criteria.hasPassedLowThreshold_Cash = true;
+      this.priority = 1;
+    }
+
+    return ALittleBetterEnding;
+
+  })(VictoryCondition);
+
+  return VictoryCondition;
+
+})();

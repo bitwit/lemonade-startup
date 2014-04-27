@@ -45,7 +45,7 @@ appModule.config ['hotkeysProvider', (hotkeysProvider) ->
 ]
 
 appModule.controller "RootController", ["$rootScope", ($rootScope) ->
-  $rootScope.currentView = "intro"
+  $rootScope.currentView = "main"
 
   $rootScope.switchView = (viewName) ->
     $rootScope.currentView = viewName
@@ -64,9 +64,12 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   hotkeys.add "4", "Design", -> $scope.selectedTaskIndex = 3
   hotkeys.add "5", "Sales", -> $scope.selectedTaskIndex = 4
   hotkeys.add "6", "Fundraising", -> $scope.selectedTaskIndex = 5
-  hotkeys.add "space", "Resume/Confirm", ->
+  hotkeys.add "space", "Resume/Accept", ->
     console.log "resume simulation"
-    $scope.resumeSimulation()
+    $scope.acceptEvent()
+  hotkeys.add "esc", "Resume/Reject", ->
+    console.log "resume simulation"
+    $scope.rejectEvent()
 
   $scope.sprintDays = [
     #first week
@@ -137,7 +140,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log $scope.sprintDays
 
   $scope.startCountdown = ->
-    $scope.countdownProgress = 15000
+    $scope.countdownProgress = 2000
     $timeout $scope.tickCountdown, $scope.tickSpeed
 
   $scope.tickCountdown = ->
@@ -161,6 +164,16 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
       while day.tasks.length < 2
         $scope.selectedTaskIndex = Math.floor((Math.random() * 6))
         day.tasks.push $scope.getCurrentSelectedTask()
+
+  $scope.acceptEvent = ->
+    event = $scope.announcements.shift()
+    bizObj.stats.cash -= event.cost
+    bizObj.assets.unshift event
+    $scope.resumeSimulation()
+
+  $scope.rejectEvent = ->
+    event = $scope.announcements.shift()
+    $scope.resumeSimulation()
 
   $scope.resumeSimulation = ->
     if $scope.hasStarted and !$scope.timerPromise?
@@ -231,7 +244,7 @@ appModule.directive 'lsDay', [ ->
       console.log 'new task for', $scope.day.name, task
       $rootScope.$broadcast 'newTaskForDay', task, $scope.day
 
-    $scope.message = null
+    $scope.result = null
 
     $scope.addSelectedTask = ->
       if $scope.day.tasks.length < 2 and $scope.day.isInteractive
@@ -263,9 +276,9 @@ appModule.directive 'lsDay', [ ->
 
     $scope.isShowingMessage = no
 
-    $scope.day.announce = (text) ->
-      console.log 'announcing text', $scope.day, text
-      $scope.message = text
+    $scope.day.announce = (bizResult) ->
+      console.log 'announcing result', bizResult
+      $scope.result = bizResult
       $scope.isShowingMessage = yes
       $timeout(
         ->
@@ -296,7 +309,7 @@ appModule.directive 'lsDay', [ ->
     <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
         <div class="message showing-{{(isShowingMessage)}}">
-          <span class="value">{{message | currency:"$"}}</span>
+          <span class="value">{{result.dailyRevenueHistory[result.dailyRevenueHistory.length - 1] | currency:"$"}}</span>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
         <div ng-repeat="task in day.tasks track by $index" ls-task></div>
