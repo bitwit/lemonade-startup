@@ -50,7 +50,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       fixedCostPerDay: 5
       variableCostPerDay: 0.20
       averageDemand: 200
-      potentialMarketSize: 1000
+      potentialMarketSize: 100
     flags:
       doesHaveAvailableFunds: true
       doesHaveAvailableEquity: true
