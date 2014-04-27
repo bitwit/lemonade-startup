@@ -326,6 +326,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     else
       flags.isUnderLowThreshold_Cash = false
 
+    if stats.cash > 100000
+      flags.hasPassedLowThreshold_Cash = true
+    else
+      flags.hasPassedLowThreshold_Cash = false
+
     if stats.equity < 50
       flags.playerHasSoldOut = true
     else
