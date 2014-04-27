@@ -9,6 +9,20 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new CrowdfundingCampaignCard()
     new SeedInvestmentCard()
     new CaffinatedLemonsCard()
+    new BloodLemonsCard()
+    new MoneyFromDadCard_Generous()
+    new MoneyFromMomCard()
+    new MoneyFromMomCard_Generous()
+    new SeedInvestmentCard_B()
+    new CrowdfundingCampaignCard_B()
+    new PRAgentEventCard_B()
+    new FranchiseCard()
+    new DowntownPermitCard()
+    new SuburbanPermitCard()
+    new SlickPackagingCard()
+    new DesignAwardCard()
+    new SuperSlickPackagingCard()
+    new GoneViralBadCard()
   ]
   weatherCards = [
     new HeatWaveWeatherCard()
@@ -312,6 +326,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       flags.isUnderLowThreshold_Cash = true
     else
       flags.isUnderLowThreshold_Cash = false
+
+    if stats.cash > 100000
+      flags.hasPassedLowThreshold_Cash = true
+    else
+      flags.hasPassedLowThreshold_Cash = false
 
     if stats.equity < 50
       flags.playerHasSoldOut = true

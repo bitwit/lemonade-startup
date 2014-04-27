@@ -51,6 +51,23 @@ class PRAgentEventCard extends EventCard
       task.marketing = task.marketing * 1.5
     business.stats.marketing += 1
 
+
+class PRAgentEventCard_B extends EventCard
+  constructor: ->
+    super "PR Agent", "mkt", "rss"
+    @description = "A PR Agent has agreed to help work with your team for the next few days"
+    @acceptText = "Great"
+    @rejectText = "Gross"
+    @expiry = 5 #3 days after receipt
+    @thresholds.marketing = 10
+
+  tick: (business, tasks) ->
+    super business, tasks
+    for task in tasks
+      task.marketing = task.marketing * 1.4
+    business.stats.marketing += 2
+
+
 class GoneViralCardGood extends EventCard
   constructor: ->
     super "Gone Viral", "mkt", "rss"
@@ -238,6 +255,55 @@ class GreatSalesPitchCard extends EventCard
     business.stats.marketing += 5
     business.stats.sales += 5
 
+class DowntownPermitCard extends EventCard
+  constructor: ->
+    super "Downtown Vending Permit", "sal", "comment-square"
+    @description = "A permit opened up for a prime corner downtown. Want it? Only $20000...."
+    @isRejectable = false
+    @expiry = 0
+    @thresholds.sales = 60
+    @thresholds.cash = 20000
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing -= 5
+    business.stats.sales += 5
+    business.stats.potentialMarketSize *= 1.5
+    business.stats.cash -= 20000
+
+class SuburbanPermitCard extends EventCard
+  constructor: ->
+    super "Suburban Vending Permit", "sal", "comment-square"
+    @description = "A permit opened up for a spot in a residential neighbourhood. Want it? Only $10000...."
+    @isRejectable = false
+    @expiry = 0
+    @thresholds.sales = 40
+    @thresholds.cash = 10000
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing -= 5
+    business.stats.sales += 5
+    business.stats.potentialMarketSize *= 1.1
+    business.stats.cash -= 10000
+
+class FranchiseCard extends EventCard
+  constructor: ->
+    super "Second Cart Life", "sal", "comment-square"
+    @description = "We could open a second cart. It would only cost about $25000"
+    @isRejectable = false
+    @expiry = 0
+    @thresholds.sales = 40
+    @thresholds.marketing = 40
+    @thresholds.cash = 50000
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 5
+    business.stats.sales += 5
+    business.stats.potentialMarketSize *= 1.5
+    business.stats.cash -= 25000
+
 class BrandAmbassadorCard extends EventCard
   constructor: ->
     super "Brand Ambassador", "sal", "musical-note"
@@ -285,3 +351,68 @@ class BloodLemonsCard extends EventCard
     business.stats.marketing += 5
     business.stats.potentialMarketSize *= 1.1
     business.stats.variableCostPerDay *= 1.2
+
+class GoneViralBadCard extends EventCard
+  constructor: ->
+    super "Gone Viral", "dev", "bug"
+    @description = "Like actually viral. We need a product recall."
+    @acceptText = "Meh"
+    @rejectText = "Do it"
+    @expiry = 0
+    @thresholds.development = 5
+
+  hasBusinessMetConditions: (business) ->
+    thresholdsMet = yes
+    for stat, value of @thresholds
+      if value != 0 and business.stats[stat] > value
+        thresholdsMet = no
+    return thresholdsMet
+
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing -= 10
+    business.stats.sales -= 10
+    business.stats.potentialMarketSize *= 0.75
+
+
+class SlickPackagingCard extends EventCard
+  constructor: ->
+    super "Slick Packaging", "des", "comment-square"
+    @description = "I think it's time for new packaging."
+    @acceptText = "Sure"
+    @rejectText = "Meh"
+    @expiry = 0
+    @thresholds.design = 10
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 5
+    business.stats.variableCostPerDay *= 1.1
+
+class SuperSlickPackagingCard extends EventCard
+  constructor: ->
+    super "Super Slick Packaging", "des", "aperture"
+    @description = "Don't you think this looks cooler?"
+    @acceptText = "Sure"
+    @rejectText = "Meh"
+    @expiry = 0
+    @thresholds.design = 30
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 10
+    business.stats.variableCostPerDay *= 1.2
+
+class DesignAwardCard extends EventCard
+  constructor: ->
+    super "Design Award", "des", "badge"
+    @description = "So, we won a design award. But we need to pay to accept it. Worth $2500?"
+    @acceptText = "Sure"
+    @rejectText = "No way"
+    @expiry = 0
+    @thresholds.design = 20
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 5
