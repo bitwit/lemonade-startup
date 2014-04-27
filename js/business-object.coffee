@@ -24,7 +24,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new SlickPackagingCard()
     new DesignAwardCard()
     new SuperSlickPackagingCard()
-    new GoneViralBadCard()
+   # new GoneViralBadCard()
     new CrossPromotionCard()
     new BrandAmbassadorCard_B()
     new IntravenousLemonadeCard()

@@ -78,7 +78,7 @@ class HostileTakeoverEnding extends VictoryCondition
 class SoftHostileTakeoverEnding extends VictoryCondition
   constructor: ->
     super "'Voluntary' Resignation","sal","thumb-up"
-    @description = "You just wait. Lemons are so passé. I'm onto Agave now."
+    @description = "The board pushed your out. But you got paid. Lemons are so passé anyway. Time to disrupt the world of Agave."
     @criteria.playerHasSoldOut = true
     @criteria.isUnderLowThreshold_Cash = true
     @priority = 8

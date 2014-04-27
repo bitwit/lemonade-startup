@@ -1266,7 +1266,7 @@ div.task, div.job, div.asset {
 /* line 262, style.sass */
 div.job {
   margin: 0 auto 0.625em;
-  width: 6.25em;
+  width: 75%;
   left: 0;
   -webkit-transition: left 0.16s linear;
   -webkit-transition-delay: 0s !important;
@@ -1452,7 +1452,8 @@ div.day {
       opacity: 1; }
     /* line 427, style.sass */
     div.day div.message.showing-false {
-      opacity: 0; }
+      opacity: 0;
+      pointer-events: none; }
     /* line 430, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important; }
@@ -1598,8 +1599,9 @@ div.announcement {
   /* line 558, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
-    color: #333333; }
-  /* line 562, style.sass */
+    color: #333333;
+    margin-top: 0.625em; }
+  /* line 563, style.sass */
   div.announcement button.accept, div.announcement button.reject {
     outline: none;
     cursor: pointer;
@@ -1614,30 +1616,30 @@ div.announcement {
     border-radius: 0.25em;
     width: 47.5%;
     background: none; }
-    /* line 572, style.sass */
+    /* line 573, style.sass */
     div.announcement button.accept span, div.announcement button.reject span {
       font-size: 1.75em; }
-    /* line 574, style.sass */
+    /* line 575, style.sass */
     div.announcement button.accept:hover, div.announcement button.reject:hover {
       opacity: 0.85; }
-      /* line 576, style.sass */
+      /* line 577, style.sass */
       div.announcement button.accept:hover .hotkey-button, div.announcement button.reject:hover .hotkey-button {
         display: inline-block; }
-    /* line 579, style.sass */
+    /* line 580, style.sass */
     div.announcement button.accept .hotkey-button, div.announcement button.reject .hotkey-button {
       display: none;
       margin-top: 0.25em;
       color: #333333;
       font-size: 1em; }
-  /* line 585, style.sass */
+  /* line 586, style.sass */
   div.announcement button.accept {
     color: #b0ad64;
     margin-right: 5%; }
-  /* line 589, style.sass */
+  /* line 590, style.sass */
   div.announcement button.reject {
     color: #d77167; }
 
-/* line 592, style.sass */
+/* line 593, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;

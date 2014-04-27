@@ -111,32 +111,32 @@ html
 								span.title.oi(data-glyph="{{asset.icon}}") &nbsp;{{asset.name}}
 								span.expiry(ng-if="asset.expiry > 0") {{asset.expiry}}
 
-						h3 Options
-						div.debug-buttons(style="text-align: center;")
-							label Tick Speed
-							input(type="text",ng-model="tickSpeed")
-							label Countdown Progress
-							input(type="text",ng-model="countdownProgress")
-							button.hotkey(ng-click="startSimulation()")
-								span Start Simulation
-							button.hotkey(ng-click="autoPopulateDays()")
-								span Auto Populate
-						h3 Debug
-						dl
-							dt Development
-							dd {{game.stats.development}}
-							dt Design
-							dd {{game.stats.design}}
-							dt Marketing
-							dd {{game.stats.marketing}}
-							dt Research
-							dd {{game.stats.research}}
-							dt Sales
-							dd {{game.stats.sales}}
-							dt Fundraising
-							dd {{game.stats.fundraising}}
-							dt Productivity
-							dd {{game.stats.productivity}}
+						//h3 Options
+							div.debug-buttons(style="text-align: center;")
+								label Tick Speed
+								input(type="text",ng-model="tickSpeed")
+								label Countdown Progress
+								input(type="text",ng-model="countdownProgress")
+								button.hotkey(ng-click="startSimulation()")
+									span Start Simulation
+								button.hotkey(ng-click="autoPopulateDays()")
+									span Auto Populate
+							h3 Debug
+							dl
+								dt Development
+								dd {{game.stats.development}}
+								dt Design
+								dd {{game.stats.design}}
+								dt Marketing
+								dd {{game.stats.marketing}}
+								dt Research
+								dd {{game.stats.research}}
+								dt Sales
+								dd {{game.stats.sales}}
+								dt Fundraising
+								dd {{game.stats.fundraising}}
+								dt Productivity
+								dd {{game.stats.productivity}}
 
 				div.announcements(class="displaying-{{announcements.length > 0}}")
 					div.announcement(class="type-{{event.id}}", ng-repeat="event in announcements")

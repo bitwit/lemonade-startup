@@ -122,7 +122,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.progress = 0
   $scope.timerPromise = null
   $scope.hasStarted = no
-  $scope.tickSpeed = 40
+  $scope.tickSpeed = 30
   $scope.selectedTaskIndex = 0
   $scope.countdownProgress = 0
   $scope.announcements = []
@@ -171,6 +171,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.acceptEvent = ->
     event = $scope.announcements.shift()
     bizObj.stats.cash -= event.cost
+    bizObj.stats.equity -= event.equity
     bizObj.assets.unshift event
     $scope.resumeSimulation()
 
@@ -348,7 +349,7 @@ appModule.directive 'lsJob', [ ->
   ]
   template: """
   <div class="job type-{{task.id}} selected-{{selectedTaskIndex == $index}} oi" ng-click="selected($index)" data-glyph="{{task.icon}}" data-drag="{{true}}" data-day="{{day.$$hashKey}}" data-jqyoui-options="{revert:'invalid'}" ng-model="task" jqyoui-draggable="{index: {{$index}}, onStop: 'dragStop', placeholder:'keep'}">
-    <span class="title">{{task.id}}</span>
+    <span class="title">{{task.name}}</span>
     <span class="hotkey-button">{{$index + 1}}</span>
   </div>
   """

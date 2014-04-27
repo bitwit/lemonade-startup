@@ -261,7 +261,7 @@ div.task, div.job, div.asset
 
 div.job
   margin: 0 auto 10/$em
-  width: 100/$em
+  width: 75%
   left: 0
   +single-transition(left, 0.16s, linear, 0s !important)
 
@@ -426,7 +426,7 @@ div.day
       //top: -100%
     &.showing-false
       opacity: 0
-      //top: 0
+      pointer-events: none
     &.showing-false-add, &.showing-false-add-active
       opacity: 0 !important
       //top: 0 !important
@@ -558,6 +558,7 @@ div.announcement
   p.description
     font-size: 28/$em
     color: $color-grey-dark
+    margin-top: 10/$em
 
   button.accept, button.reject
     outline: none

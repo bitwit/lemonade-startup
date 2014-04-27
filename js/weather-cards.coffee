@@ -24,7 +24,7 @@ class GoodWeatherCard extends WeatherCard
   constructor: ->
     super "sun"
     @averageDemand = 1.2
-    @description = "Sunny with scattered clouds"
+    @description = "Sunny with clouds"
     @temperatureHigh = 29
     @temperatureLow = 24
 
@@ -39,7 +39,7 @@ class RainyWeatherCard extends WeatherCard
   constructor: ->
     super "rain"
     @averageDemand = 0.5
-    @description = "Scattered showers all day"
+    @description = "Scattered showers"
     @temperatureHigh = 26
     @temperatureLow = 17
 
