@@ -400,7 +400,7 @@ class IntravenousLemonadeCard extends EventCard
     super business, tasks
     business.stats.marketing += 15
     business.stats.sales += 10
-    business.stats.variableCostPerDay *= 1.04
+    business.stat.variableCostPerDay *= 1.1
 
 class BloodLemonsCard extends EventCard
   constructor: ->
@@ -481,4 +481,5 @@ class DesignAwardCard extends EventCard
   tick: (business, tasks) ->
     super business, tasks
     business.stats.marketing += 5
+    business.stats.cash -= 2500
     business.stats.sales += 1
