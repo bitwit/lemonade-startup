@@ -7,6 +7,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new GoneViralCardGood()
     new MoneyFromDadCard()
     new CrowdfundingCampaignCard()
+    new SeedInvestmentCard()
+    new CaffinatedLemonsCard()
   ]
   weatherCards = [
     new HeatWaveWeatherCard()
@@ -27,7 +29,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
   businessObject =
     forecast: []
     stats:
-      cash: 50000
+      cash: 50
       creditLimit: 1000
       equity: 100
       projectedValue: -1000
@@ -38,10 +40,35 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       sales: 0
       fundraising: 0
       productivity: 0
-      fixedCostPerDay: 50
+      fixedCostPerDay: 5
       variableCostPerDay: 0.20
       averageDemand: 200
       potentialMarketSize: 1000
+    flags:
+      doesHaveAvailableFunds: true
+      doesHaveAvailableEquity: true
+      playerHasMajorityEquity: true
+      playerHasTotalOwnership: true
+      cashOnHandIsPositive: true
+      hasPassedHighThreshold_Cash: false
+      hasPassedHighThreshold_Research: false
+      hasPassedHighThreshold_Development: false
+      hasPassedHighThreshold_Design: false
+      hasPassedHighThreshold_Marketing: false
+      hasPassedHighThreshold_Sales: false
+      hasPassedHighThreshold_Fundraising: false
+      hasPassedHighThreshold_MarketSize: false
+      isBroke: false
+      isUnderLowThreshold_Cash: false
+
+    tracking:
+      highestPrice: 0
+      lowestPrice: 0
+      mostCustomersInOneDay: 0
+      totalCustomers: 0
+      totalRevenue: 0
+      mostCashOnHand: 0
+      leastCashOnHand: 0
     assets: []
     dailyRevenueHistory: [] #stores the cashDelta for every day
 
@@ -106,6 +133,17 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("Sprint #{sprintNumber} completed")
     businessObject.setCosts(sprintNumber)
     businessObject.setCreditLimit()
+    if sprintNumber is 10 #GAME OVER!
+      businessObject.processEndGame()
+
+  businessObject.processEndGame = ->
+    console.log("Game over!")
+
+    stats = businessObject.stats
+    flags = businessObject.flags
+
+
+
 
   businessObject.generateForecast = ->
     while businessObject.forecast.length < 3
@@ -186,6 +224,68 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     if sprintNUmber > 6
       #do something else?
     else
+
+  businessObject.assessBusinessState = ->
+    stats = businessObject.stats
+    flags = businessObject.flags
+
+    if stats.cash > 0
+      flags.cashOnHandIsPositive = true
+    else
+      flags.cashOnHandIsPositive = false
+
+    if stats.cash + stats.creditLimit > 0
+      flags.doesHaveAvailableFunds = true
+      flags.isBroke = false
+    else
+      flags.doesHaveAvailableFunds = false
+      flags.isBroke = true
+
+    if stats.equity > 0
+      flags.doesHaveAvailableEquity = true
+    else
+      flags.doesHaveAvailableEquity = false
+
+    if stats.equity > 50
+      flags.playerHasMajorityEquity = true
+    else
+      flags.playerHasMajorityEquity = false
+
+    if stats.equity >= 100
+      flags.playerHasTotalOwnership = true
+    else
+      flags.playerHasTotalOwnership = false
+
+    if stats.cash > 1000000
+      flags.hasPassedHighThreshold_Cash = true
+    else
+      flags.hasPassedHighThreshold_Cash = false
+
+    if stats.research > 100
+      flags.hasPassedHighThreshold_Research: true
+
+    if stats.development > 100
+      flags.hasPassedHighThreshold_Development: true
+
+    if stats.design > 100
+      flags.hasPassedHighThreshold_Design: true
+
+    if stats.marketing > 100
+      flags.hasPassedHighThreshold_Marketing: true
+
+    if stats.sales > 100
+      flags.hasPassedHighThreshold_Sales: true
+
+    if stats.fundraising > 100
+      flags.hasPassedHighThreshold_Fundraising: true
+
+    if stats.potentialMarketSize > 100000
+      flags.hasPassedHighThreshold_MarketSize: true
+
+    if stats.cash > 0 and stats.cash < 100000
+      flags.isUnderLowThreshold_Cash = true
+    else
+      flags.isUnderLowThreshold_Cash = false
 
   businessObject.predictBusinessValue = ->
     newValue = 0

@@ -59,7 +59,7 @@ appModule.config([
 
 appModule.controller("RootController", [
   "$rootScope", function($rootScope) {
-    $rootScope.currentView = "main";
+    $rootScope.currentView = "intro";
     return $rootScope.switchView = function(viewName) {
       return $rootScope.currentView = viewName;
     };
@@ -89,13 +89,9 @@ appModule.controller('MainController', [
     hotkeys.add("6", "Fundraising", function() {
       return $scope.selectedTaskIndex = 5;
     });
-    hotkeys.add("space", "Resume/Accept", function() {
+    hotkeys.add("space", "Resume/Confirm", function() {
       console.log("resume simulation");
-      return $scope.acceptEvent();
-    });
-    hotkeys.add("esc", "Resume/Reject", function() {
-      console.log("resume simulation");
-      return $scope.rejectEvent();
+      return $scope.resumeSimulation();
     });
     $scope.sprintDays = [
       {
@@ -201,7 +197,7 @@ appModule.controller('MainController', [
       return console.log($scope.sprintDays);
     };
     $scope.startCountdown = function() {
-      $scope.countdownProgress = 2000;
+      $scope.countdownProgress = 15000;
       return $timeout($scope.tickCountdown, $scope.tickSpeed);
     };
     $scope.tickCountdown = function() {
@@ -239,18 +235,6 @@ appModule.controller('MainController', [
         })());
       }
       return _results;
-    };
-    $scope.acceptEvent = function() {
-      var event;
-      event = $scope.announcements.shift();
-      bizObj.stats.cash -= event.cost;
-      bizObj.assets.unshift(event);
-      return $scope.resumeSimulation();
-    };
-    $scope.rejectEvent = function() {
-      var event;
-      event = $scope.announcements.shift();
-      return $scope.resumeSimulation();
     };
     $scope.resumeSimulation = function() {
       if ($scope.hasStarted && ($scope.timerPromise == null)) {
@@ -333,7 +317,7 @@ appModule.directive('lsDay', [
             console.log('new task for', $scope.day.name, task);
             return $rootScope.$broadcast('newTaskForDay', task, $scope.day);
           };
-          $scope.result = null;
+          $scope.message = null;
           $scope.addSelectedTask = function() {
             var task;
             if ($scope.day.tasks.length < 2 && $scope.day.isInteractive) {
@@ -372,9 +356,9 @@ appModule.directive('lsDay', [
             };
           };
           $scope.isShowingMessage = false;
-          $scope.day.announce = function(bizResult) {
-            console.log('announcing result', bizResult);
-            $scope.result = bizResult;
+          $scope.day.announce = function(text) {
+            console.log('announcing text', $scope.day, text);
+            $scope.message = text;
             $scope.isShowingMessage = true;
             return $timeout(function() {
               return $scope.isShowingMessage = false;
@@ -410,7 +394,7 @@ appModule.directive('lsDay', [
           });
         }
       ],
-      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{result.dailyRevenueHistory[result.dailyRevenueHistory.length - 1] | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
+      template: "<div class=\"day full-{{day.tasks.length >= 2}}\" ng-click=\"addSelectedTask()\" data-drop=\"true\" ng-model=\"day.tasks\" data-jqyoui-options=\"sprintDayOptions($index)\" jqyoui-droppable=\"{onDrop:'taskOnDrop', multiple:true}\">\n    <div class=\"day-progress-meter\" ng-style=\"progressMeterStyles($index)\"></div>\n    <div class=\"message showing-{{(isShowingMessage)}}\">\n      <span class=\"value\">{{message | currency:\"$\"}}</span>\n    </div>\n    <h5 class=\"day-name\">{{day.name}}</h5>\n    <div ng-repeat=\"task in day.tasks track by $index\" ls-task></div>\n</div>"
     };
   }
 ]);
@@ -583,7 +567,7 @@ FundraisingCard = (function(_super) {
 
 })(Card);
 
-var BrandAmbassadorCard, CrowdfundingCampaignCard, EventCard, GoneViralCardGood, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard,
+var BrandAmbassadorCard, CaffinatedLemonsCard, CrowdfundingCampaignCard, EventCard, GoneViralCardGood, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard, SeedInvestmentCard,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -594,9 +578,6 @@ EventCard = (function() {
     this.icon = icon;
     this.expiry = -1;
     this.description = "An event occurred";
-    this.acceptText = "Accept";
-    this.rejectText = "Reject";
-    this.cost = 0;
     this.thresholds = {
       development: 0,
       design: 0,
@@ -694,7 +675,7 @@ ProductMarketFitCard = (function(_super) {
   function ProductMarketFitCard() {
     ProductMarketFitCard.__super__.constructor.call(this, "Product Market Fit", "res", "graph");
     this.description = "Word from our market research team is looking good...";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.research = 5;
   }
 
@@ -712,8 +693,6 @@ MoneyFromDadCard = (function(_super) {
 
   function MoneyFromDadCard() {
     MoneyFromDadCard.__super__.constructor.call(this, "$200 From Dad", "fun", "credit-card");
-    this.acceptText = "Accept";
-    this.rejectText = "Too Proud";
     this.description = "Your Dad doesn't want you to starve. Or eat too much.";
     this.expiry = 0;
     this.thresholds.cash = 100;
@@ -734,7 +713,7 @@ CrowdfundingCampaignCard = (function(_super) {
   function CrowdfundingCampaignCard() {
     CrowdfundingCampaignCard.__super__.constructor.call(this, "Kick my Lemons", "fun", "credit-card");
     this.description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.marketing = 5;
     this.thresholds.fundraising = 10;
   }
@@ -749,13 +728,33 @@ CrowdfundingCampaignCard = (function(_super) {
 
 })(EventCard);
 
+SeedInvestmentCard = (function(_super) {
+  __extends(SeedInvestmentCard, _super);
+
+  function SeedInvestmentCard() {
+    SeedInvestmentCard.__super__.constructor.call(this, "Ignore the Horns", "fun", "credit-card");
+    this.description = "A lovely gentleman with a dashing goatee offered some seed money...";
+    this.expiry = -1;
+    this.thresholds.fundraising = 15;
+  }
+
+  SeedInvestmentCard.prototype.tick = function(business, tasks) {
+    SeedInvestmentCard.__super__.tick.call(this, business, tasks);
+    business.stats.cash += 20000;
+    return business.stats.equity -= 10;
+  };
+
+  return SeedInvestmentCard;
+
+})(EventCard);
+
 GreatSalesPitchCard = (function(_super) {
   __extends(GreatSalesPitchCard, _super);
 
   function GreatSalesPitchCard() {
     GreatSalesPitchCard.__super__.constructor.call(this, "Silver Tongue", "sal", "comment-square");
     this.description = "Your pitch is so practiced, even the mirror is thirsty.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.sales = 3;
   }
 
@@ -792,6 +791,26 @@ BrandAmbassadorCard = (function(_super) {
   };
 
   return BrandAmbassadorCard;
+
+})(EventCard);
+
+CaffinatedLemonsCard = (function(_super) {
+  __extends(CaffinatedLemonsCard, _super);
+
+  function CaffinatedLemonsCard() {
+    CaffinatedLemonsCard.__super__.constructor.call(this, "Caffinated Lemons", "dev", "comment-square");
+    this.description = "How diddddn't we thinkkk of thss bbbeforre?? Why wn'tttt mmy knee stop shhhhaking?";
+    this.expiry = 0;
+    this.thresholds.development = 10;
+  }
+
+  CaffinatedLemonsCard.prototype.tick = function(business, tasks) {
+    CaffinatedLemonsCard.__super__.tick.call(this, business, tasks);
+    business.stats.marketing += 5;
+    return business.stats.sales += 1;
+  };
+
+  return CaffinatedLemonsCard;
 
 })(EventCard);
 
@@ -877,14 +896,13 @@ ColdWeatherCard = (function(_super) {
 
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
-    var businessHistory, businessObject, eventCards, weatherCards;
-    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard()];
+    var businessObject, eventCards, weatherCards;
+    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard(), new SeedInvestmentCard(), new CaffinatedLemonsCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
-    businessHistory = [];
     businessObject = {
       forecast: [],
       stats: {
-        cash: 50000,
+        cash: 50,
         creditLimit: 1000,
         equity: 100,
         projectedValue: -1000,
@@ -895,17 +913,42 @@ appModule.service("BusinessObject", [
         sales: 0,
         fundraising: 0,
         productivity: 0,
-        fixedCostPerDay: 50,
+        fixedCostPerDay: 5,
         variableCostPerDay: 0.20,
         averageDemand: 200,
         potentialMarketSize: 1000
+      },
+      flags: {
+        doesHaveAvailableFunds: true,
+        doesHaveAvailableEquity: true,
+        playerHasMajorityEquity: true,
+        playerHasTotalOwnership: true,
+        cashOnHandIsPositive: true,
+        hasPassedHighThreshold_Cash: false,
+        hasPassedHighThreshold_Research: false,
+        hasPassedHighThreshold_Development: false,
+        hasPassedHighThreshold_Design: false,
+        hasPassedHighThreshold_Marketing: false,
+        hasPassedHighThreshold_Sales: false,
+        hasPassedHighThreshold_Fundraising: false,
+        hasPassedHighThreshold_MarketSize: false,
+        isBroke: false
+      },
+      tracking: {
+        highestPrice: 0,
+        lowestPrice: 0,
+        mostCustomersInOneDay: 0,
+        totalCustomers: 0,
+        totalRevenue: 0,
+        mostCashOnHand: 0,
+        leastCashOnHand: 0
       },
       assets: [],
       dailyRevenueHistory: []
     };
     businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
-      var asset, card, cashDelta, dayHistory, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
+      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
       console.log('day complete', day);
       if (businessObject.assets.length > 0) {
         for (i = _i = _ref = businessObject.assets.length - 1; _ref <= 0 ? _i <= 0 : _i >= 0; i = _ref <= 0 ? ++_i : --_i) {
@@ -925,6 +968,7 @@ appModule.service("BusinessObject", [
         if (eventCard.hasBusinessMetConditions(businessObject)) {
           didTriggerEvent = true;
           event = eventCards.splice(i, 1)[0];
+          businessObject.assets.push(event);
           $rootScope.$broadcast('eventCardOccured', event);
           break;
         }
@@ -943,11 +987,8 @@ appModule.service("BusinessObject", [
       cashDelta += numCustomers * day.price;
       stats.cash = stats.cash + cashDelta;
       businessObject.dailyRevenueHistory.push(cashDelta);
-      dayHistory = clone(businessObject);
-      businessHistory.push(dayHistory);
-      console.log('biz history', businessHistory);
       console.log(businessObject.dailyRevenueHistory);
-      day.announce(dayHistory);
+      day.announce(cashDelta);
       businessObject.predictBusinessValue();
       businessObject.generateForecast();
       return didTriggerEvent;
@@ -955,7 +996,16 @@ appModule.service("BusinessObject", [
     businessObject.sprintComplete = function(sprintNumber) {
       console.log("Sprint " + sprintNumber + " completed");
       businessObject.setCosts(sprintNumber);
-      return businessObject.setCreditLimit();
+      businessObject.setCreditLimit();
+      if (sprintNumber === 10) {
+        return businessObject.processEndGame();
+      }
+    };
+    businessObject.processEndGame = function() {
+      var flags, stats;
+      console.log("Game over!");
+      stats = businessObject.stats;
+      return flags = businessObject.flags;
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {
@@ -1044,6 +1094,78 @@ appModule.service("BusinessObject", [
 
       } else {
 
+      }
+    };
+    businessObject.assessBusinessState = function() {
+      var flags, stats;
+      stats = businessObject.stats;
+      flags = businessObject.flags;
+      if (stats.cash > 0) {
+        flags.cashOnHandIsPositive = true;
+      } else {
+        flags.cashOnHandIsPositive = false;
+      }
+      if (stats.cash + stats.creditLimit > 0) {
+        flags.doesHaveAvailableFunds = true;
+        flags.isBroke = false;
+      } else {
+        flags.doesHaveAvailableFunds = false;
+        flags.isBroke = true;
+      }
+      if (stats.equity > 0) {
+        flags.doesHaveAvailableEquity = true;
+      } else {
+        flags.doesHaveAvailableEquity = false;
+      }
+      if (stats.equity > 50) {
+        flags.playerHasMajorityEquity = true;
+      } else {
+        flags.playerHasMajorityEquity = false;
+      }
+      if (stats.equity >= 100) {
+        flags.playerHasTotalOwnership = true;
+      } else {
+        flags.playerHasTotalOwnership = false;
+      }
+      if (stats.cash > 1000000) {
+        flags.hasPassedHighThreshold_Cash = true;
+      } else {
+        flags.hasPassedHighThreshold_Cash = false;
+      }
+      if (stats.research > 100) {
+        ({
+          hasPassedHighThreshold_Research: true
+        });
+      }
+      if (stats.development > 100) {
+        ({
+          hasPassedHighThreshold_Development: true
+        });
+      }
+      if (stats.design > 100) {
+        ({
+          hasPassedHighThreshold_Design: true
+        });
+      }
+      if (stats.marketing > 100) {
+        ({
+          hasPassedHighThreshold_Marketing: true
+        });
+      }
+      if (stats.sales > 100) {
+        ({
+          hasPassedHighThreshold_Sales: true
+        });
+      }
+      if (stats.fundraising > 100) {
+        ({
+          hasPassedHighThreshold_Fundraising: true
+        });
+      }
+      if (stats.potentialMarketSize > 100000) {
+        return {
+          hasPassedHighThreshold_MarketSize: true
+        };
       }
     };
     businessObject.predictBusinessValue = function() {
