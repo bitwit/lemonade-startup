@@ -563,7 +563,7 @@ FundraisingCard = (function(_super) {
 
 })(Card);
 
-var BrandAmbassadorCard, CrowdfundingCampaignCard, EventCard, GoneViralCardGood, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard,
+var BrandAmbassadorCard, CaffinatedLemonsCard, CrowdfundingCampaignCard, EventCard, GoneViralCardGood, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard, SeedInvestmentCard,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -671,7 +671,7 @@ ProductMarketFitCard = (function(_super) {
   function ProductMarketFitCard() {
     ProductMarketFitCard.__super__.constructor.call(this, "Product Market Fit", "res", "graph");
     this.description = "Word from our market research team is looking good...";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.research = 5;
   }
 
@@ -709,7 +709,7 @@ CrowdfundingCampaignCard = (function(_super) {
   function CrowdfundingCampaignCard() {
     CrowdfundingCampaignCard.__super__.constructor.call(this, "Kick my Lemons", "fun", "credit-card");
     this.description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.marketing = 5;
     this.thresholds.fundraising = 10;
   }
@@ -724,13 +724,33 @@ CrowdfundingCampaignCard = (function(_super) {
 
 })(EventCard);
 
+SeedInvestmentCard = (function(_super) {
+  __extends(SeedInvestmentCard, _super);
+
+  function SeedInvestmentCard() {
+    SeedInvestmentCard.__super__.constructor.call(this, "Ignore the Horns", "fun", "credit-card");
+    this.description = "A lovely gentleman with a dashing goatee offered some seed money...";
+    this.expiry = -1;
+    this.thresholds.fundraising = 15;
+  }
+
+  SeedInvestmentCard.prototype.tick = function(business, tasks) {
+    SeedInvestmentCard.__super__.tick.call(this, business, tasks);
+    business.stats.cash += 20000;
+    return business.stats.equity -= 10;
+  };
+
+  return SeedInvestmentCard;
+
+})(EventCard);
+
 GreatSalesPitchCard = (function(_super) {
   __extends(GreatSalesPitchCard, _super);
 
   function GreatSalesPitchCard() {
     GreatSalesPitchCard.__super__.constructor.call(this, "Silver Tongue", "sal", "comment-square");
     this.description = "Your pitch is so practiced, even the mirror is thirsty.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.sales = 3;
   }
 
@@ -767,6 +787,26 @@ BrandAmbassadorCard = (function(_super) {
   };
 
   return BrandAmbassadorCard;
+
+})(EventCard);
+
+CaffinatedLemonsCard = (function(_super) {
+  __extends(CaffinatedLemonsCard, _super);
+
+  function CaffinatedLemonsCard() {
+    CaffinatedLemonsCard.__super__.constructor.call(this, "Caffinated Lemons", "dev", "comment-square");
+    this.description = "How diddddn't we thinkkk of thss bbbeforre?? Why wn'tttt mmy knee stop shhhhaking?";
+    this.expiry = 0;
+    this.thresholds.development = 10;
+  }
+
+  CaffinatedLemonsCard.prototype.tick = function(business, tasks) {
+    CaffinatedLemonsCard.__super__.tick.call(this, business, tasks);
+    business.stats.marketing += 5;
+    return business.stats.sales += 1;
+  };
+
+  return CaffinatedLemonsCard;
 
 })(EventCard);
 
@@ -853,12 +893,12 @@ ColdWeatherCard = (function(_super) {
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
     var businessObject, eventCards, weatherCards;
-    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard()];
+    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard(), new SeedInvestmentCard(), new CaffinatedLemonsCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
     businessObject = {
       forecast: [],
       stats: {
-        cash: 50000,
+        cash: 50,
         creditLimit: 1000,
         equity: 100,
         projectedValue: -1000,
@@ -869,10 +909,35 @@ appModule.service("BusinessObject", [
         sales: 0,
         fundraising: 0,
         productivity: 0,
-        fixedCostPerDay: 50,
+        fixedCostPerDay: 5,
         variableCostPerDay: 0.20,
         averageDemand: 200,
         potentialMarketSize: 1000
+      },
+      flags: {
+        doesHaveAvailableFunds: true,
+        doesHaveAvailableEquity: true,
+        playerHasMajorityEquity: true,
+        playerHasTotalOwnership: true,
+        cashOnHandIsPositive: true,
+        hasPassedHighThreshold_Cash: false,
+        hasPassedHighThreshold_Research: false,
+        hasPassedHighThreshold_Development: false,
+        hasPassedHighThreshold_Design: false,
+        hasPassedHighThreshold_Marketing: false,
+        hasPassedHighThreshold_Sales: false,
+        hasPassedHighThreshold_Fundraising: false,
+        hasPassedHighThreshold_MarketSize: false,
+        isBroke: false
+      },
+      tracking: {
+        highestPrice: 0,
+        lowestPrice: 0,
+        mostCustomersInOneDay: 0,
+        totalCustomers: 0,
+        totalRevenue: 0,
+        mostCashOnHand: 0,
+        leastCashOnHand: 0
       },
       assets: [],
       dailyRevenueHistory: []
@@ -927,7 +992,16 @@ appModule.service("BusinessObject", [
     businessObject.sprintComplete = function(sprintNumber) {
       console.log("Sprint " + sprintNumber + " completed");
       businessObject.setCosts(sprintNumber);
-      return businessObject.setCreditLimit();
+      businessObject.setCreditLimit();
+      if (sprintNumber === 10) {
+        return businessObject.processEndGame();
+      }
+    };
+    businessObject.processEndGame = function() {
+      var flags, stats;
+      console.log("Game over!");
+      stats = businessObject.stats;
+      return flags = businessObject.flags;
     };
     businessObject.generateForecast = function() {
       while (businessObject.forecast.length < 3) {
@@ -1016,6 +1090,78 @@ appModule.service("BusinessObject", [
 
       } else {
 
+      }
+    };
+    businessObject.assessBusinessState = function() {
+      var flags, stats;
+      stats = businessObject.stats;
+      flags = businessObject.flags;
+      if (stats.cash > 0) {
+        flags.cashOnHandIsPositive = true;
+      } else {
+        flags.cashOnHandIsPositive = false;
+      }
+      if (stats.cash + stats.creditLimit > 0) {
+        flags.doesHaveAvailableFunds = true;
+        flags.isBroke = false;
+      } else {
+        flags.doesHaveAvailableFunds = false;
+        flags.isBroke = true;
+      }
+      if (stats.equity > 0) {
+        flags.doesHaveAvailableEquity = true;
+      } else {
+        flags.doesHaveAvailableEquity = false;
+      }
+      if (stats.equity > 50) {
+        flags.playerHasMajorityEquity = true;
+      } else {
+        flags.playerHasMajorityEquity = false;
+      }
+      if (stats.equity >= 100) {
+        flags.playerHasTotalOwnership = true;
+      } else {
+        flags.playerHasTotalOwnership = false;
+      }
+      if (stats.cash > 1000000) {
+        flags.hasPassedHighThreshold_Cash = true;
+      } else {
+        flags.hasPassedHighThreshold_Cash = false;
+      }
+      if (stats.research > 100) {
+        ({
+          hasPassedHighThreshold_Research: true
+        });
+      }
+      if (stats.development > 100) {
+        ({
+          hasPassedHighThreshold_Development: true
+        });
+      }
+      if (stats.design > 100) {
+        ({
+          hasPassedHighThreshold_Design: true
+        });
+      }
+      if (stats.marketing > 100) {
+        ({
+          hasPassedHighThreshold_Marketing: true
+        });
+      }
+      if (stats.sales > 100) {
+        ({
+          hasPassedHighThreshold_Sales: true
+        });
+      }
+      if (stats.fundraising > 100) {
+        ({
+          hasPassedHighThreshold_Fundraising: true
+        });
+      }
+      if (stats.potentialMarketSize > 100000) {
+        return {
+          hasPassedHighThreshold_MarketSize: true
+        };
       }
     };
     businessObject.predictBusinessValue = function() {

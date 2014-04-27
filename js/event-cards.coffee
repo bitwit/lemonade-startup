@@ -139,7 +139,7 @@ class BrandAmbassadorCard extends EventCard
 class CaffinatedLemonsCard extends EventCard
   constructor: ->
     super "Caffinated Lemons", "dev", "comment-square"
-    @description = "How diddddn't we thinkkk of thss bbbeforre??"
+    @description = "How diddddn't we thinkkk of thss bbbeforre?? Why wn'tttt mmy knee stop shhhhaking?"
     @expiry = 0
     @thresholds.development = 10
 
