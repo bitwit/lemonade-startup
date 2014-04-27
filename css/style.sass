@@ -35,11 +35,16 @@ $color-orange-dark: rgb(240, 120, 72)
   -ms-user-select: none
   user-select: none
 
+html
+  height: 100%
+  overflow: hidden
+
 body
   font:
     family: Helvetica Neue, Helvetica, Arial, sans-serif
     weight: 300
   overflow: hidden
+  height: 100%
 
 h1, h2, h3, h4, h5, h6
   font:
@@ -90,6 +95,59 @@ h3
   color: $color-green-dark
   background-color: $color-green-dark
   border-color: $color-green-dark
+
+div.views
+  height: 100%
+  overflow: hidden
+
+div.view-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+
+div.intro-view
+  height: 100%
+  overflow: hidden
+  background-color: $color-grey-dark
+  &.ng-enter,
+  &.ng-leave
+    +single-transition(all, 0.80s, ease-out, 0s)
+
+  &.ng-leave.ng-leave-active,
+  &.ng-enter
+    left: -100%
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active
+    left: 0
+
+h1.intro-title
+  font-size: 48/$em
+  color: $color-yellow
+  span.lemon-drop
+    font-size: 64/$em
+
+button.game-start
+  display: block
+  margin: 0 auto
+  font-size: 16/$em
+  width: 300/$em
+  height: 80/$em
+
+div.main-view
+  &.ng-enter,
+  &.ng-leave
+    +single-transition(all, 0.80s, ease-out, 0s)
+
+  &.ng-leave.ng-leave-active,
+  &.ng-enter
+    left: 100%
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active
+    left: 0
 
 h1.main-title, h2.section-title
   color: $color-yellow
@@ -258,8 +316,10 @@ dl.stats
   font:
     weight: 500
     size: 22/$em
-  color: $color-green
   text-align: center
+  color: $color-green
+  .positive-false
+    color: $color-red
   dt
     text-decoration: underline
   dd
@@ -301,6 +361,18 @@ div.announcement
   height: 80%
   background-color: #FFF
   text-align: center
+
+  &.ng-enter,
+  &.ng-leave
+    +single-transition(all, 0.80s, ease-out, 0s)
+
+  &.ng-leave.ng-leave-active,
+  &.ng-enter
+    opacity: 0
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active
+    opacity: 1
 
   h2.event-title
     padding: 10/$em 0
@@ -348,3 +420,4 @@ div.announcement
   background: -o-linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
   background: -ms-linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
   background: linear-gradient(left, #ffffff 0%, #e2e2e2 25%)
+
