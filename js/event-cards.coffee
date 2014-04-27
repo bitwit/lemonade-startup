@@ -63,7 +63,7 @@ class ProductMarketFitCard extends EventCard
   constructor: ->
     super "Product Market Fit", "res", "graph"
     @description = "Word from our market research team is looking good..."
-    @expiry = -1
+    @expiry = 0
     @thresholds.research = 5
 
   tick: (business, tasks) ->
@@ -75,7 +75,7 @@ class MoneyFromDadCard extends EventCard
   constructor: ->
     super "$200 From Dad", "fun", "credit-card"
     @description = "Your Dad doesn't want you to starve. Or eat too much."
-    @expiry = -1
+    @expiry = 0
     @thresholds.cash = 100
 
   tick: (business, tasks) ->
@@ -86,7 +86,7 @@ class CrowdfundingCampaignCard extends EventCard
   constructor: ->
     super "Kick my Lemons", "fun", "credit-card"
     @description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt."
-    @expiry = -1
+    @expiry = 0
     @thresholds.marketing = 5
     @thresholds.fundraising = 10
 
@@ -95,12 +95,24 @@ class CrowdfundingCampaignCard extends EventCard
     business.stats.cash += 5000
     business.stats.marketing += 5
 
+class SeedInvestmentCard extends EventCard
+  constructor: ->
+    super "Ignore the Horns", "fun", "credit-card"
+    @description = "A lovely gentleman with a dashing goatee offered some seed money..."
+    @expiry = -1
+    @thresholds.fundraising = 15
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.cash += 20000
+    business.stats.equity -= 10
+
 #sales cards
 class GreatSalesPitchCard extends EventCard
   constructor: ->
     super "Silver Tongue", "sal", "comment-square"
     @description = "Your pitch is so practiced, even the mirror is thirsty."
-    @expiry = -1
+    @expiry = 0
     @thresholds.sales = 3
 
   tick: (business, tasks) ->
@@ -122,3 +134,16 @@ class BrandAmbassadorCard extends EventCard
       task.sales = task.sales * 1.5
     business.stats.marketing += 5
     business.stats.potentialMarketSize += 1000
+
+#development cards
+class CaffinatedLemonsCard extends EventCard
+  constructor: ->
+    super "Caffinated Lemons", "dev", "comment-square"
+    @description = "How diddddn't we thinkkk of thss bbbeforre??"
+    @expiry = 0
+    @thresholds.development = 10
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 5
+    business.stats.sales += 1

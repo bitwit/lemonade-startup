@@ -560,7 +560,7 @@ FundraisingCard = (function(_super) {
 
 })(Card);
 
-var BrandAmbassadorCard, CrowdfundingCampaignCard, EventCard, GoneViralCard_Good, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard,
+var BrandAmbassadorCard, CaffinatedLemonsCard, CrowdfundingCampaignCard, EventCard, GoneViralCard_Good, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard, SeedInvestmentCard,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -668,7 +668,7 @@ ProductMarketFitCard = (function(_super) {
   function ProductMarketFitCard() {
     ProductMarketFitCard.__super__.constructor.call(this, "Product Market Fit", "res", "graph");
     this.description = "Word from our market research team is looking good...";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.research = 5;
   }
 
@@ -687,7 +687,7 @@ MoneyFromDadCard = (function(_super) {
   function MoneyFromDadCard() {
     MoneyFromDadCard.__super__.constructor.call(this, "$200 From Dad", "fun", "credit-card");
     this.description = "Your Dad doesn't want you to starve. Or eat too much.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.cash = 100;
   }
 
@@ -706,7 +706,7 @@ CrowdfundingCampaignCard = (function(_super) {
   function CrowdfundingCampaignCard() {
     CrowdfundingCampaignCard.__super__.constructor.call(this, "Kick my Lemons", "fun", "credit-card");
     this.description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.marketing = 5;
     this.thresholds.fundraising = 10;
   }
@@ -721,13 +721,33 @@ CrowdfundingCampaignCard = (function(_super) {
 
 })(EventCard);
 
+SeedInvestmentCard = (function(_super) {
+  __extends(SeedInvestmentCard, _super);
+
+  function SeedInvestmentCard() {
+    SeedInvestmentCard.__super__.constructor.call(this, "Ignore the Horns", "fun", "credit-card");
+    this.description = "A lovely gentleman with a dashing goatee offered some seed money...";
+    this.expiry = -1;
+    this.thresholds.fundraising = 15;
+  }
+
+  SeedInvestmentCard.prototype.tick = function(business, tasks) {
+    SeedInvestmentCard.__super__.tick.call(this, business, tasks);
+    business.stats.cash += 20000;
+    return business.stats.equity -= 10;
+  };
+
+  return SeedInvestmentCard;
+
+})(EventCard);
+
 GreatSalesPitchCard = (function(_super) {
   __extends(GreatSalesPitchCard, _super);
 
   function GreatSalesPitchCard() {
     GreatSalesPitchCard.__super__.constructor.call(this, "Silver Tongue", "sal", "comment-square");
     this.description = "Your pitch is so practiced, even the mirror is thirsty.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.sales = 3;
   }
 
@@ -764,6 +784,26 @@ BrandAmbassadorCard = (function(_super) {
   };
 
   return BrandAmbassadorCard;
+
+})(EventCard);
+
+CaffinatedLemonsCard = (function(_super) {
+  __extends(CaffinatedLemonsCard, _super);
+
+  function CaffinatedLemonsCard() {
+    CaffinatedLemonsCard.__super__.constructor.call(this, "Caffinated Lemons", "dev", "comment-square");
+    this.description = "How diddddn't we thinkkk of thss bbbeforre??";
+    this.expiry = 0;
+    this.thresholds.development = 10;
+  }
+
+  CaffinatedLemonsCard.prototype.tick = function(business, tasks) {
+    CaffinatedLemonsCard.__super__.tick.call(this, business, tasks);
+    business.stats.marketing += 5;
+    return business.stats.sales += 1;
+  };
+
+  return CaffinatedLemonsCard;
 
 })(EventCard);
 
@@ -850,7 +890,7 @@ ColdWeatherCard = (function(_super) {
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
     var businessObject, eventCards, weatherCards;
-    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCard_Good(), new MoneyFromDadCard(), new CrowdfundingCampaignCard()];
+    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCard_Good(), new MoneyFromDadCard(), new CrowdfundingCampaignCard(), new SeedInvestmentCard(), new CaffinatedLemonsCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
     businessObject = {
       forecast: [],

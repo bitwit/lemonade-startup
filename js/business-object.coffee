@@ -7,6 +7,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new GoneViralCard_Good()
     new MoneyFromDadCard()
     new CrowdfundingCampaignCard()
+    new SeedInvestmentCard()
+    new CaffinatedLemonsCard()
   ]
   weatherCards = [
     new HeatWaveWeatherCard()
