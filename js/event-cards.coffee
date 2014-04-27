@@ -326,18 +326,92 @@ class BrandAmbassadorCard extends EventCard
     business.stats.potentialMarketSize *= 1.25
     business.stats.cash -= 10000
 
+class BrandAmbassadorCard_B extends EventCard
+  constructor: ->
+    super "Brand Ambassador", "sal", "musical-note"
+    @description = "For 10%, Ice-T's manager's favourite dog groomer will do some promotion for us!"
+    @acceptText = "Sign us up!"
+    @rejectText = "Err, no?"
+    @expiry = 10
+    @thresholds.marketing = 50
+    @thresholds.sales = 25
+    @thresholds.equity = 10
+
+  tick: (business, tasks) ->
+    super business, tasks
+    for task in tasks
+      task.marketing = task.marketing * 2
+      task.sales = task.sales * 1.5
+    business.stats.marketing += 5
+    business.stats.potentialMarketSize *= 1.1
+    business.stats.equity -= 10
+
+class CrossPromotionCard extends EventCard
+  constructor: ->
+    super "Cross Promotion", "sal", "musical-note"
+    @description = "Know what goes with lemonade? Salmon! Well, anyways, they want to co-market with us, for 5%."
+    @acceptText = "Yum"
+    @rejectText = "Disgusting. No"
+    @expiry = 3
+    @thresholds.marketing = 8
+    @thresholds.sales = 7
+    @thresholds.equity = 5
+
+  tick: (business, tasks) ->
+    super business, tasks
+    for task in tasks
+      task.marketing = task.marketing * 1.1
+      task.sales = task.sales * 1.1
+    business.stats.marketing += 7
+    business.stats.potentialMarketSize *= 1.1
+    business.stats.equity -= 5
+
+
 #development cards
 class CaffinatedLemonsCard extends EventCard
   constructor: ->
-    super "Caffinated Lemons", "dev", "comment-square"
+    super "Caffinated Lemons", "dev", "beaker"
     @description = "How diddddn't we thinkkk of thss bbbeforre?? Why wn'tttt mmy knee stop shhhhaking?"
+    @acceptText = "Surrrre"
+    @rejectText = "Nope"
     @expiry = 0
     @thresholds.development = 10
 
   tick: (business, tasks) ->
     super business, tasks
+    business.stats.marketing += 10
+    business.stats.sales += 3
+    business.stat.variableCostPerDay *= 1.1
+
+class LemonadeEyedropsCard extends EventCard
+  constructor: ->
+    super "Lemonade Eyedrops", "dev", "eyedropper"
+    @description = "Have you tried this yet? No? Neither have I, but they say it'll sell."
+    @acceptText = "Okay"
+    @rejectText = "Err..."
+    @expiry = 0
+    @thresholds.development = 20
+
+  tick: (business, tasks) ->
+    super business, tasks
     business.stats.marketing += 5
     business.stats.sales += 1
+    business.stat.variableCostPerDay *= 1.1
+
+class IntravenousLemonadeCard extends EventCard
+  constructor: ->
+    super "Intravenous Lemonade", "dev", "eyedropper"
+    @description = "Now you never have to stop drinking lemonade!"
+    @acceptText = "Okay"
+    @rejectText = "No?"
+    @expiry = 0
+    @thresholds.development = 30
+
+  tick: (business, tasks) ->
+    super business, tasks
+    business.stats.marketing += 15
+    business.stats.sales += 10
+    business.stat.variableCostPerDay *= 1.1
 
 class BloodLemonsCard extends EventCard
   constructor: ->

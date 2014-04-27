@@ -17,12 +17,18 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new CrowdfundingCampaignCard_B()
     new PRAgentEventCard_B()
     new FranchiseCard()
+    new FranchiseCard()
+    new FranchiseCard()
     new DowntownPermitCard()
     new SuburbanPermitCard()
     new SlickPackagingCard()
     new DesignAwardCard()
     new SuperSlickPackagingCard()
     new GoneViralBadCard()
+    new CrossPromotionCard()
+    new BrandAmbassadorCard_B()
+    new IntravenousLemonadeCard()
+    new LemonadeEyedropsCard()
   ]
   weatherCards = [
     new HeatWaveWeatherCard()
