@@ -32,7 +32,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessHistory = []
   dailyRevenueHistory = [] #stores the cashDelta for every day
-  forecast = []
+  $rootScope.forecast = []
 
   businessObject =
     stats:
@@ -107,7 +107,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
         break
 
     #get the weather before calculating
-    weather = forecast.shift()
+    weather = $rootScope.forecast.shift()
     businessObject.stats.averageDemand = businessObject.calculateDemand(weather,day)
     numCustomers = businessObject.stats.averageDemand
     if numCustomers > businessObject.stats.potentialMarketSize
@@ -171,10 +171,10 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
 
   businessObject.generateForecast = ->
-    while forecast.length < 3
+    while $rootScope.forecast.length < 3
       shuffle(weatherCards)
-      forecast.push weatherCards.pop()
-    weatherCards = weatherCards.concat forecast
+      $rootScope.forecast.push weatherCards.pop()
+    weatherCards = weatherCards.concat $rootScope.forecast
 
   businessObject.setCosts = (sprintNumber) ->
     console.log("Updating fixed costs")
@@ -353,7 +353,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.generateForecast()
   $rootScope.game = businessObject
-  console.log 'starting forecast', forecast
+  console.log 'starting forecast', $rootScope.forecast
   return businessObject
 ]
 

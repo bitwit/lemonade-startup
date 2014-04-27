@@ -172,8 +172,11 @@ div.tasks-column
   background-color: $color-grey-dark
 
 div.instructions
-  margin: 0 20/$em
+  margin: 40/$em auto
+  width: 40%
   color: white
+  ul.instructions
+    list-style-type: decimal
   li.instruction
     margin-bottom: 14/$em
 
@@ -194,10 +197,21 @@ div.status-column
   background-color: $color-grey-dark
   color: #FFF
 
+h3.sub-title
+  color: $color-yellow
+
 div.jobs
   box-sizing: border-box
-  h3
-    color: #FFF
+
+div.forecast
+  text-align: center
+  color: #FFF
+  div.weather-conditions
+    position: relative
+  div.weather-condition
+    font-size: 18/$em
+    margin: 0 20/$em 8/$em
+
 
 div.task, div.job, div.asset
   position: relative
@@ -255,6 +269,9 @@ div.task
     text-align: center
     &:hover
       font-weight: bold
+
+div.calendar
+  overflow: hidden
 
 div.days
   box-sizing: border-box

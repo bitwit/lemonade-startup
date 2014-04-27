@@ -17,7 +17,7 @@ html
 					| 1 Lemonade Stand
 					br
 					br
-					| $50 Life savings
+					| $50 Life Savings
 					br
 					br
 					| Time to bootstrap this baby
@@ -40,19 +40,17 @@ html
 							br
 							| Startup
 					div.jobs(ng-model="tasks", data-jqyoui-options="taskListOptions", jqyoui-droppable="{multiple:true}")
-						h3 Tasks
+						h3.sub-title.oi(data-glyph="briefcase")
+							br
+							span.title Tasks
 						div(ng-repeat="task in tasks", ls-job)
-					div.instructions
-						h3 Instructions
-						ul
-							li.instruction Select different tasks using their hotkeys (1-6)
-							li.instruction Add tasks to the calendar by clicking days or dragging tasks
-							li.instruction Adjust the price dial as you please
-							li.instruction Pay attention for timely events
-						//
-							h3 Forecast
-							div(ng-repeat="weather in game.forecast track by $index")
-								span.title {{weather.description}}
+					div.forecast
+						h3.sub-title.oi(data-glyph="dashboard")
+							br
+							span.title 3-Day Forecast
+						div.weather-conditions
+							div.weather-condition(ng-repeat="weather in forecast track by $index", style="top: {{$index * 24}}px;")
+								span.title.oi(data-glyph="{{weather.icon}}") {{weather.description}}
 
 				div.main-column
 					div.price-selector
@@ -65,6 +63,14 @@ html
 							span.countdown(ng-if="countdownProgress > 0") &nbsp;starts in {{countdownProgress/1000 | number:2}}s
 						div.calendar
 							div.day(ng-repeat="day in sprintDays", ls-day)
+						div.instructions
+							h3 Instructions
+							ul.instructions
+								li.instruction Select different tasks using their hotkeys (1-6)
+								li.instruction Add tasks to the calendar by clicking days or dragging tasks
+								li.instruction Adjust the price dial as you please
+								li.instruction Pay attention for timely optional events
+								li.instruction Watch the weather forecast for hints at daily demand
 
 				div.status-column
 					div.cash

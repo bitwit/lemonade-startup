@@ -16,7 +16,7 @@ class HeatWaveWeatherCard extends WeatherCard
   constructor: ->
     super "fire"
     @averageDemand = 2.0
-    @description = "Blisteringly hot out today."
+    @description = "Heat Wave Warning"
     @temperatureHigh = 38
     @temperatureLow = 30
 
@@ -24,14 +24,14 @@ class GoodWeatherCard extends WeatherCard
   constructor: ->
     super "sun"
     @averageDemand = 1.2
-    @description = "It's a beautiful day outside"
+    @description = "Sunny with scattered clouds"
     @temperatureHigh = 29
     @temperatureLow = 24
 
 class AverageWeatherCard extends WeatherCard
   constructor: ->
     super "cloud"
-    @description = "Fair weather outside today"
+    @description = "Partially cloudy"
     @temperatureHigh = 23
     @temperatureLow = 20
 
@@ -39,7 +39,7 @@ class RainyWeatherCard extends WeatherCard
   constructor: ->
     super "rain"
     @averageDemand = 0.5
-    @description = "It's very rainy out today"
+    @description = "Scattered showers all day"
     @temperatureHigh = 26
     @temperatureLow = 17
 
@@ -47,7 +47,7 @@ class ColdWeatherCard extends WeatherCard
   constructor: ->
     super "cloudy"
     @averageDemand = 0.5
-    @description = "It's freezing outside"
+    @description = "Mostly cloudy"
     @temperatureHigh = 17
     @temperatureLow = 12
 
