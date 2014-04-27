@@ -22,7 +22,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       cash: 50000
       creditLimit: 1000
       equity: 100
-      projectedValue: 0
+      projectedValue: -1000
       development: 0
       design: 0
       marketing: 0

@@ -57,20 +57,6 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log "resume simulation"
     $scope.resumeSimulation()
 
-  $scope.selectedTaskIndex = 0
-
-  $scope.setSelectedTaskIndex = (index) ->
-    $scope.selectedTaskIndex = index
-
-  $scope.getCurrentSelectedTask = ->
-    task = $scope.tasks[$scope.selectedTaskIndex] #$scope.tasks.slice $scope.selectedTaskIndex, 1
-    return clone task
-
-  $scope.taskListOptions =
-    accept: (dragEl) ->
-      return no
-    helper: 'clone'
-
   $scope.sprintDays = [
     #first week
     {name: "Monday", tasks: [], isInteractive: yes}
@@ -90,6 +76,15 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     {name: "Sunday", tasks: [], isInteractive: yes}
   ]
 
+  $scope.tasks = [
+    new DevelopmentCard()
+    new ResearchCard()
+    new MarketingCard()
+    new DesignCard()
+    new SalesCard()
+    new FundraisingCard()
+  ]
+
   $scope.prices =[
     0
     0.5
@@ -104,13 +99,31 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   ]
 
   $scope.price = 3
-
+  $scope.currentView = "intro"
   $scope.sprint = 1
   $scope.progress = 0
   $scope.currentDay = -1
   $scope.timerPromise = null
   $scope.hasStarted = no
   $scope.tickSpeed = 40
+  $scope.selectedTaskIndex = 0
+
+  $scope.switchView = (viewName) ->
+    $scope.currentView = viewName
+    if viewName is 'main'
+      $scope.startSimulation()
+
+  $scope.setSelectedTaskIndex = (index) ->
+    $scope.selectedTaskIndex = index
+
+  $scope.getCurrentSelectedTask = ->
+    task = $scope.tasks[$scope.selectedTaskIndex] #$scope.tasks.slice $scope.selectedTaskIndex, 1
+    return clone task
+
+  $scope.taskListOptions =
+    accept: (dragEl) ->
+      return no
+    helper: 'clone'
 
   $scope.getDayPlan = ->
     console.log $scope.sprintDays
@@ -166,24 +179,11 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
       day.tasks = []
       day.isInteractive = yes
 
-  $scope.setTasks = ->
-    $scope.tasks = [
-      new DevelopmentCard()
-      new ResearchCard()
-      new MarketingCard()
-      new DesignCard()
-      new SalesCard()
-      new FundraisingCard()
-    ]
-
   $rootScope.announceEvent = (event) ->
     $rootScope.announcements = [event]
 
   $scope.$on 'taskMoved', ($e, task) ->
     console.log 'main controller task moved'
-
-  $scope.setTasks()
-  #$scope.startSimulation()
 
 ]
 

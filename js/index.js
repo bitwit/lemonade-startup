@@ -82,21 +82,6 @@ appModule.controller('MainController', [
       console.log("resume simulation");
       return $scope.resumeSimulation();
     });
-    $scope.selectedTaskIndex = 0;
-    $scope.setSelectedTaskIndex = function(index) {
-      return $scope.selectedTaskIndex = index;
-    };
-    $scope.getCurrentSelectedTask = function() {
-      var task;
-      task = $scope.tasks[$scope.selectedTaskIndex];
-      return clone(task);
-    };
-    $scope.taskListOptions = {
-      accept: function(dragEl) {
-        return false;
-      },
-      helper: 'clone'
-    };
     $scope.sprintDays = [
       {
         name: "Monday",
@@ -156,14 +141,37 @@ appModule.controller('MainController', [
         isInteractive: true
       }
     ];
+    $scope.tasks = [new DevelopmentCard(), new ResearchCard(), new MarketingCard(), new DesignCard(), new SalesCard(), new FundraisingCard()];
     $scope.prices = [0, 0.5, 1, 1.5, 2, 3, 4, 5, 7, 10];
     $scope.price = 3;
+    $scope.currentView = "intro";
     $scope.sprint = 1;
     $scope.progress = 0;
     $scope.currentDay = -1;
     $scope.timerPromise = null;
     $scope.hasStarted = false;
     $scope.tickSpeed = 40;
+    $scope.selectedTaskIndex = 0;
+    $scope.switchView = function(viewName) {
+      $scope.currentView = viewName;
+      if (viewName === 'main') {
+        return $scope.startSimulation();
+      }
+    };
+    $scope.setSelectedTaskIndex = function(index) {
+      return $scope.selectedTaskIndex = index;
+    };
+    $scope.getCurrentSelectedTask = function() {
+      var task;
+      task = $scope.tasks[$scope.selectedTaskIndex];
+      return clone(task);
+    };
+    $scope.taskListOptions = {
+      accept: function(dragEl) {
+        return false;
+      },
+      helper: 'clone'
+    };
     $scope.getDayPlan = function() {
       return console.log($scope.sprintDays);
     };
@@ -241,17 +249,12 @@ appModule.controller('MainController', [
       }
       return _results;
     };
-    $scope.setTasks = function() {
-      return $scope.tasks = [new DevelopmentCard(), new ResearchCard(), new MarketingCard(), new DesignCard(), new SalesCard(), new FundraisingCard()];
-    };
     $rootScope.announceEvent = function(event) {
       return $rootScope.announcements = [event];
     };
-    $scope.$on('taskMoved', function($e, task) {
+    return $scope.$on('taskMoved', function($e, task) {
       return console.log('main controller task moved');
     });
-    $scope.setTasks();
-    return $scope.startSimulation();
   }
 ]);
 
@@ -690,7 +693,7 @@ appModule.service("BusinessObject", [
         cash: 50000,
         creditLimit: 1000,
         equity: 100,
-        projectedValue: 0,
+        projectedValue: -1000,
         development: 0,
         design: 0,
         marketing: 0,
