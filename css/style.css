@@ -1082,22 +1082,22 @@ div.view-container {
   height: 100%; }
 
 /* line 112, style.sass */
-div.intro-view {
+div.intro-view, div.end-view {
   height: 100%;
   overflow: hidden;
   background-color: #333333; }
   /* line 116, style.sass */
-  div.intro-view.ng-enter, div.intro-view.ng-leave {
+  div.intro-view.ng-enter, div.intro-view.ng-leave, div.end-view.ng-enter, div.end-view.ng-leave {
     -webkit-transition: all 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.8s ease-out 0s;
     -o-transition: all 0.8s ease-out 0s;
     transition: all 0.8s ease-out 0s; }
   /* line 120, style.sass */
-  div.intro-view.ng-leave.ng-leave-active, div.intro-view.ng-enter {
+  div.intro-view.ng-leave.ng-leave-active, div.intro-view.ng-enter, div.end-view.ng-leave.ng-leave-active, div.end-view.ng-enter {
     left: -100%; }
   /* line 124, style.sass */
-  div.intro-view.ng-leave, div.intro-view.ng-enter.ng-enter-active {
+  div.intro-view.ng-leave, div.intro-view.ng-enter.ng-enter-active, div.end-view.ng-leave, div.end-view.ng-enter.ng-enter-active {
     left: 0; }
 
 /* line 128, style.sass */
@@ -1128,45 +1128,72 @@ button.game-start {
   button.game-start span.title {
     font-size: 1.5em; }
 
-/* line 153, style.sass */
+/* line 151, style.sass */
+div.ending {
+  color: #fbdd8e;
+  width: 40%;
+  margin: 0 auto;
+  text-align: center; }
+  /* line 157, style.sass */
+  div.ending span.ending-icon {
+    font-size: 6em; }
+  /* line 160, style.sass */
+  div.ending p.ending-description {
+    margin: 1.25em 0;
+    font-size: 1.75em; }
+
+/* line 164, style.sass */
+h2.end-title {
+  font-size: 2.625em; }
+
+/* line 167, style.sass */
+h3.end-title {
+  font-size: 2em;
+  color: #fbdd8e; }
+  /* line 170, style.sass */
+  h3.end-title span.lemon-drop {
+    font-size: 1.5em; }
+
+/* line 175, style.sass */
 div.main-view.ng-enter, div.main-view.ng-leave {
   -webkit-transition: all 0.8s ease-out;
   -webkit-transition-delay: 0s;
   -moz-transition: all 0.8s ease-out 0s;
   -o-transition: all 0.8s ease-out 0s;
   transition: all 0.8s ease-out 0s; }
-/* line 157, style.sass */
+/* line 179, style.sass */
 div.main-view.ng-leave.ng-leave-active, div.main-view.ng-enter {
   left: 100%; }
-/* line 161, style.sass */
+/* line 183, style.sass */
 div.main-view.ng-leave, div.main-view.ng-enter.ng-enter-active {
   left: 0; }
 
-/* line 165, style.sass */
+/* line 187, style.sass */
 h1.main-title, h2.section-title {
   color: #fbdd8e; }
 
-/* line 168, style.sass */
+/* line 190, style.sass */
 div.tasks-column {
   float: left;
   width: 15%;
   height: 100%;
   background-color: #333333; }
 
-/* line 174, style.sass */
+/* line 196, style.sass */
 div.instructions {
   margin: 2.5em auto;
   width: 40%;
   color: white; }
-  /* line 178, style.sass */
+  /* line 200, style.sass */
   div.instructions ul.instructions {
     list-style-type: decimal; }
-  /* line 180, style.sass */
+  /* line 202, style.sass */
   div.instructions li.instruction {
     margin-bottom: 0.875em; }
 
-/* line 184, style.sass */
+/* line 205, style.sass */
 div.main-column {
+  position: relative;
   float: left;
   width: 70%;
   height: 100%;
@@ -1174,7 +1201,17 @@ div.main-column {
   box-sizing: border-box;
   background-color: #454545; }
 
-/* line 192, style.sass */
+/* line 214, style.sass */
+div.credits {
+  position: absolute;
+  color: white;
+  font-size: 80%;
+  padding: 0.25em 0; }
+  /* line 219, style.sass */
+  div.credits a.credit {
+    color: #add9e0; }
+
+/* line 222, style.sass */
 div.status-column {
   float: left;
   box-sizing: border-box;
@@ -1183,27 +1220,27 @@ div.status-column {
   background-color: #333333;
   color: white; }
 
-/* line 200, style.sass */
+/* line 230, style.sass */
 h3.sub-title {
   color: #fbdd8e; }
 
-/* line 203, style.sass */
+/* line 233, style.sass */
 div.jobs {
   box-sizing: border-box; }
 
-/* line 206, style.sass */
+/* line 236, style.sass */
 div.forecast {
   text-align: center;
   color: white; }
-  /* line 209, style.sass */
+  /* line 239, style.sass */
   div.forecast div.weather-conditions {
     position: relative; }
-  /* line 211, style.sass */
+  /* line 241, style.sass */
   div.forecast div.weather-condition {
     font-size: 1.125em;
     margin: 0 1.25em 0.5em; }
 
-/* line 216, style.sass */
+/* line 245, style.sass */
 div.task, div.job, div.asset {
   position: relative;
   cursor: move;
@@ -1221,12 +1258,12 @@ div.task, div.job, div.asset {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
-  /* line 229, style.sass */
+  /* line 258, style.sass */
   div.task:hover, div.job:hover, div.asset:hover {
     color: #f07848;
     background: #f0cdc0; }
 
-/* line 233, style.sass */
+/* line 262, style.sass */
 div.job {
   margin: 0 auto 0.625em;
   width: 6.25em;
@@ -1236,30 +1273,30 @@ div.job {
   -moz-transition: left 0.16s linear 0s !important;
   -o-transition: left 0.16s linear 0s !important;
   transition: left 0.16s linear 0s !important; }
-  /* line 239, style.sass */
+  /* line 268, style.sass */
   div.job.selected-true, div.job.selected-true.selected-true-add-active {
     left: 1.25em; }
-  /* line 241, style.sass */
+  /* line 270, style.sass */
   div.job.selected-false.selected-false-add-active {
     left: 0; }
-  /* line 244, style.sass */
+  /* line 273, style.sass */
   div.job.ui-draggable-dragging {
     -webkit-transition: none !important;
     transition: none !important; }
-  /* line 248, style.sass */
+  /* line 277, style.sass */
   div.job span.title {
     display: inline-block;
     text-indent: 0.375em;
     text-transform: capitalize; }
-  /* line 253, style.sass */
+  /* line 282, style.sass */
   div.job .hotkey-button {
     float: right; }
 
-/* line 257, style.sass */
+/* line 286, style.sass */
 div.task span.title {
   font-size: 0.875em;
   text-transform: capitalize; }
-/* line 260, style.sass */
+/* line 289, style.sass */
 div.task span.delete {
   display: block;
   position: absolute;
@@ -1270,50 +1307,50 @@ div.task span.delete {
   right: 0;
   cursor: pointer;
   text-align: center; }
-  /* line 270, style.sass */
+  /* line 299, style.sass */
   div.task span.delete:hover {
     font-weight: bold; }
 
-/* line 273, style.sass */
+/* line 302, style.sass */
 div.calendar {
   overflow: hidden; }
 
-/* line 276, style.sass */
+/* line 305, style.sass */
 div.days {
   box-sizing: border-box;
   margin-top: 4.5em; }
 
-/* line 280, style.sass */
+/* line 309, style.sass */
 div.price-selector {
   overflow: hidden;
   width: 80%;
   margin: 3.75em 10% 0;
   color: #cad68a; }
-  /* line 286, style.sass */
+  /* line 315, style.sass */
   div.price-selector h3.price-title {
     margin: 0 0 0.625em; }
-    /* line 288, style.sass */
+    /* line 317, style.sass */
     div.price-selector h3.price-title span.title {
       font-size: 1.5em; }
-  /* line 291, style.sass */
+  /* line 320, style.sass */
   div.price-selector input.price-input {
     margin: 1.25em 0;
     outline: none;
     cursor: ew-resize; }
-  /* line 296, style.sass */
+  /* line 325, style.sass */
   div.price-selector input[type='range'] {
     -webkit-appearance: none;
     border-radius: 0.3125em;
     background-color: #999999;
     height: 0.625em;
     vertical-align: middle; }
-  /* line 303, style.sass */
+  /* line 332, style.sass */
   div.price-selector input[type='range']::-moz-range-track {
     -moz-appearance: none;
     border-radius: 0.3125em;
     background-color: #999999;
     height: 0.625em; }
-  /* line 309, style.sass */
+  /* line 338, style.sass */
   div.price-selector input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none !important;
     -moz-appearance: none;
@@ -1321,7 +1358,7 @@ div.price-selector {
     height: 5em;
     width: 5em;
     font-size: 1em; }
-    /* line 316, style.sass */
+    /* line 345, style.sass */
     div.price-selector input[type='range']::-webkit-slider-thumb:after {
       position: relative;
       top: 0.25em;
@@ -1331,7 +1368,7 @@ div.price-selector {
       font-family: Icons, sans-serif;
       font-size: 3em;
       text-align: center; }
-  /* line 327, style.sass */
+  /* line 356, style.sass */
   div.price-selector input[type='range']::-moz-range-thumb {
     -webkit-appearance: none !important;
     -moz-appearance: none;
@@ -1339,7 +1376,7 @@ div.price-selector {
     height: 5em;
     width: 5em;
     font-size: 1em; }
-    /* line 334, style.sass */
+    /* line 363, style.sass */
     div.price-selector input[type='range']::-moz-range-thumb:after {
       position: relative;
       top: 0.25em;
@@ -1350,18 +1387,18 @@ div.price-selector {
       font-size: 3em;
       text-align: center; }
 
-/* line 345, style.sass */
+/* line 374, style.sass */
 input.price-input {
   width: 100%;
   display: inline-block; }
 
-/* line 349, style.sass */
+/* line 378, style.sass */
 div.price {
   float: left;
   width: 10%;
   text-align: right; }
 
-/* line 354, style.sass */
+/* line 383, style.sass */
 h2.sprint-title {
   color: #333333;
   box-sizing: border-box;
@@ -1372,7 +1409,7 @@ h2.sprint-title {
   width: 98%;
   padding: 0.625em 0; }
 
-/* line 364, style.sass */
+/* line 393, style.sass */
 div.day {
   cursor: cell;
   color: #333333;
@@ -1383,16 +1420,16 @@ div.day {
   width: 14%;
   height: 8.75em;
   float: left; }
-  /* line 365, style.sass */
+  /* line 394, style.sass */
   div.day.full-true {
     cursor: pointer; }
-  /* line 376, style.sass */
+  /* line 405, style.sass */
   div.day:hover {
     background-color: #fce4a7; }
-  /* line 378, style.sass */
+  /* line 407, style.sass */
   div.day:nth-child(7n+1) {
     clear: left; }
-  /* line 381, style.sass */
+  /* line 410, style.sass */
   div.day div.message {
     position: absolute;
     z-index: 9;
@@ -1403,36 +1440,36 @@ div.day {
     background: white;
     opacity: 0.8;
     text-align: left;
-    line-height: 2em;
-    font-size: 120%;
+    line-height: 1.75em;
+    font-size: 100%;
     -webkit-transition: all 0.44s linear;
     -webkit-transition-delay: 0s !important;
     -moz-transition: all 0.44s linear 0s !important;
     -o-transition: all 0.44s linear 0s !important;
     transition: all 0.44s linear 0s !important; }
-    /* line 395, style.sass */
+    /* line 424, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1; }
-    /* line 398, style.sass */
+    /* line 427, style.sass */
     div.day div.message.showing-false {
       opacity: 0; }
-    /* line 401, style.sass */
+    /* line 430, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important; }
-    /* line 406, style.sass */
+    /* line 433, style.sass */
+    div.day div.message ul.items {
+      margin-top: 0.375em; }
+    /* line 436, style.sass */
     div.day div.message li.oi span.title {
       display: none; }
-    /* line 408, style.sass */
-    div.day div.message li.oi span.value {
-      font-weight: 600; }
-  /* line 411, style.sass */
+  /* line 439, style.sass */
   div.day .positive-true {
     color: #b0ad64; }
-  /* line 413, style.sass */
+  /* line 441, style.sass */
   div.day .positive-false {
     color: #d77167; }
 
-/* line 417, style.sass */
+/* line 445, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
@@ -1440,46 +1477,46 @@ div.day-progress-meter {
   height: 100%;
   background-color: #cad68a; }
 
-/* line 424, style.sass */
+/* line 452, style.sass */
 h5.day-name {
   position: relative;
   z-index: 9; }
 
-/* line 428, style.sass */
+/* line 456, style.sass */
 div.cash {
   overflow: hidden;
   font-weight: 500;
   font-size: 1.375em;
   text-align: center;
   color: #cad68a; }
-  /* line 435, style.sass */
+  /* line 463, style.sass */
   div.cash .positive-false {
     color: #d77167; }
-  /* line 439, style.sass */
+  /* line 467, style.sass */
   div.cash h3.cash-title {
     text-decoration: underline;
     font-size: 1.375em;
     margin-bottom: 0; }
-    /* line 443, style.sass */
+    /* line 471, style.sass */
     div.cash h3.cash-title span.title {
       font-size: 65%; }
-  /* line 445, style.sass */
+  /* line 473, style.sass */
   div.cash strong.cash-value {
     display: block;
-    font-size: 1.25em;
+    font-size: 1.125em;
     margin: 0.125em 0 0.625em; }
 
-/* line 450, style.sass */
+/* line 478, style.sass */
 div.assets {
   position: relative;
   box-sizing: border-box;
   height: 50em; }
 
-/* line 455, style.sass */
+/* line 483, style.sass */
 div.assets-container {
   position: relative; }
 
-/* line 458, style.sass */
+/* line 486, style.sass */
 div.asset {
   position: absolute;
   width: 100%;
@@ -1492,25 +1529,25 @@ div.asset {
   -moz-transition: all 0.24s linear 0s;
   -o-transition: all 0.24s linear 0s;
   transition: all 0.24s linear 0s; }
-  /* line 467, style.sass */
+  /* line 495, style.sass */
   div.asset.ng-enter, div.asset.ng-leave {
     -webkit-transition: all 0.24s linear;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.24s linear 0s;
     -o-transition: all 0.24s linear 0s;
     transition: all 0.24s linear 0s; }
-  /* line 471, style.sass */
+  /* line 499, style.sass */
   div.asset.ng-leave.ng-leave-active, div.asset.ng-enter {
     opacity: 0; }
-  /* line 475, style.sass */
+  /* line 503, style.sass */
   div.asset.ng-leave, div.asset.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 479, style.sass */
+  /* line 507, style.sass */
   div.asset span.expiry {
     display: block;
     float: right; }
 
-/* line 483, style.sass */
+/* line 511, style.sass */
 div.announcements {
   position: absolute;
   z-index: 10;
@@ -1518,12 +1555,12 @@ div.announcements {
   height: 100%;
   top: 0;
   left: 0; }
-  /* line 491, style.sass */
+  /* line 519, style.sass */
   div.announcements.displaying-false {
     display: none;
     pointer-events: none; }
 
-/* line 495, style.sass */
+/* line 523, style.sass */
 div.announcement {
   box-sizing: border-box;
   margin: 2% auto 0;
@@ -1534,35 +1571,35 @@ div.announcement {
   height: 41.25em;
   background-color: white;
   text-align: center; }
-  /* line 507, style.sass */
+  /* line 535, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -webkit-transition: opacity 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: opacity 0.8s ease-out 0s;
     -o-transition: opacity 0.8s ease-out 0s;
     transition: opacity 0.8s ease-out 0s; }
-  /* line 511, style.sass */
+  /* line 539, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 515, style.sass */
+  /* line 543, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 519, style.sass */
+  /* line 547, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333333; }
-  /* line 526, style.sass */
+  /* line 554, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 530, style.sass */
+  /* line 558, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333333; }
-  /* line 534, style.sass */
+  /* line 562, style.sass */
   div.announcement button.accept, div.announcement button.reject {
     outline: none;
     cursor: pointer;
@@ -1577,30 +1614,30 @@ div.announcement {
     border-radius: 0.25em;
     width: 47.5%;
     background: none; }
-    /* line 544, style.sass */
+    /* line 572, style.sass */
     div.announcement button.accept span, div.announcement button.reject span {
       font-size: 1.75em; }
-    /* line 546, style.sass */
+    /* line 574, style.sass */
     div.announcement button.accept:hover, div.announcement button.reject:hover {
       opacity: 0.85; }
-      /* line 548, style.sass */
+      /* line 576, style.sass */
       div.announcement button.accept:hover .hotkey-button, div.announcement button.reject:hover .hotkey-button {
         display: inline-block; }
-    /* line 551, style.sass */
+    /* line 579, style.sass */
     div.announcement button.accept .hotkey-button, div.announcement button.reject .hotkey-button {
       display: none;
       margin-top: 0.25em;
       color: #333333;
       font-size: 1em; }
-  /* line 557, style.sass */
+  /* line 585, style.sass */
   div.announcement button.accept {
     color: #b0ad64;
     margin-right: 5%; }
-  /* line 561, style.sass */
+  /* line 589, style.sass */
   div.announcement button.reject {
     color: #d77167; }
 
-/* line 564, style.sass */
+/* line 592, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;

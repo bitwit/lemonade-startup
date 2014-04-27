@@ -135,6 +135,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
     day.announce dayHistory
 
+    businessObject.assessBusinessState()
     businessObject.predictBusinessValue()
     businessObject.generateForecast() #add something new to the forecast
 
@@ -259,7 +260,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     else
       flags.cashOnHandIsPositive = false
 
-    if stats.cash + stats.creditLimit > 0
+    if stats.cash > 0
       flags.doesHaveAvailableFunds = true
       flags.isBroke = false
     else
@@ -331,7 +332,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     developmentModifier = stats.development + 1
     researchModifier = stats.research + 1
     #perform actual calculation
-    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52 * 0.25) + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1)
+    newValue = stats.cash + (businessObject.getRevenueHistory(7) * 52 * 0.25) # + (stats.averageDemand * marketingModifier * developmentModifier) + (researchModifier * developmentModifier) + (stats.fundraising * -0.1)
     #update value
     stats.projectedValue = newValue
 

@@ -109,7 +109,7 @@ div.view-container
   width: 100%
   height: 100%
 
-div.intro-view
+div.intro-view, div.end-view
   height: 100%
   overflow: hidden
   background-color: $color-grey-dark
@@ -148,6 +148,28 @@ button.game-start
   span.title
     font-size: 24/$em
 
+div.ending
+  color: $color-yellow
+  width: 40%
+  margin: 0 auto
+  text-align: center
+
+  span.ending-icon
+    font-size: 96/$em
+
+  p.ending-description
+    margin: 20/$em 0
+    font-size: 28/$em
+
+h2.end-title
+  font-size: 42/$em
+
+h3.end-title
+  font-size: 32/$em
+  color: $color-yellow
+  span.lemon-drop
+    font-size: 24/$em
+
 
 div.main-view
   &.ng-enter,
@@ -180,14 +202,22 @@ div.instructions
   li.instruction
     margin-bottom: 14/$em
 
-
 div.main-column
+  position: relative
   float: left
   width: 70%
   height: 100%
   padding: 0 0 0 1%
   box-sizing: border-box
   background-color: $color-grey-medium-dark
+
+div.credits
+  position: absolute
+  color: #fff
+  font-size: 80%
+  padding: 4/$em 0
+  a.credit
+    color: $color-blue
 
 div.status-column
   float: left
@@ -211,7 +241,6 @@ div.forecast
   div.weather-condition
     font-size: 18/$em
     margin: 0 20/$em 8/$em
-
 
 div.task, div.job, div.asset
   position: relative
@@ -389,7 +418,7 @@ div.day
     //border: 2/$em solid $color-yellow
     opacity: 0.8
     text-align: left
-    line-height: 32/$em
+    line-height: 28/$em
     font-size: 100%
     +single-transition(all, 0.44s, linear, 0s !important)
     &.showing-true, &.showing-true-add, &.showing-true-add-active
@@ -401,7 +430,8 @@ div.day
     &.showing-false-add, &.showing-false-add-active
       opacity: 0 !important
       //top: 0 !important
-
+    ul.items
+      margin-top: 6/$em
     li.oi
       span.title
         display: none
