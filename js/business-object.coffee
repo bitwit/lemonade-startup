@@ -24,20 +24,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new AverageWeatherCard()
   ]
 
-  victoryConditions = [
-    new StagnantEnding()
-    new BankruptEnding()
-    new AcquiredEnding()
-    new BootstrapEnding()
-    new HostileTakeoverEnding()
-    new SoftHostileTakeoverEnding()
-    new ALittleBetterEnding()
-  ]
-
   businessHistory = []
+  dailyRevenueHistory = [] #stores the cashDelta for every day
+  forecast = []
 
   businessObject =
-    forecast: []
     stats:
       cash: 50
       creditLimit: 1000
@@ -70,7 +61,6 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       hasPassedHighThreshold_MarketSize: false
       isBroke: false
       isUnderLowThreshold_Cash: false
-      playerHasSoldOut: false
 
     tracking:
       highestPrice: 0
@@ -81,7 +71,6 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       mostCashOnHand: 0
       leastCashOnHand: 0
     assets: []
-    dailyRevenueHistory: [] #stores the cashDelta for every day
 
   businessObject.onDayStart = ->
     #to perform any start of day functions
@@ -111,7 +100,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
         break
 
     #get the weather before calculating
-    weather = businessObject.forecast.shift()
+    weather = forecast.shift()
     businessObject.stats.averageDemand = businessObject.calculateDemand(weather,day)
     numCustomers = businessObject.stats.averageDemand
     if numCustomers > businessObject.stats.potentialMarketSize
@@ -125,12 +114,16 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     cashDelta += numCustomers * day.price
     stats.cash = stats.cash + cashDelta
 
-    businessObject.dailyRevenueHistory.push cashDelta
+    dailyRevenueHistory.push cashDelta
+
+    #create history object
     dayHistory = clone businessObject
+    dayHistory.cashDelta = cashDelta
+    dayHistory.weather = weather
     businessHistory.push dayHistory
     console.log 'biz history', businessHistory
 
-    console.log(businessObject.dailyRevenueHistory)
+    console.log(dailyRevenueHistory)
 
     day.announce dayHistory
 
@@ -144,36 +137,21 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("Sprint #{sprintNumber} completed")
     businessObject.setCosts(sprintNumber)
     businessObject.setCreditLimit()
-    #if sprintNumber is 10 #GAME OVER!
-     # businessObject.processEndGame()
+    if sprintNumber is 10 #GAME OVER!
+      businessObject.processEndGame()
 
   businessObject.processEndGame = ->
     console.log("Game over!")
 
-    #stats = businessObject.stats
-    #flags = businessObject.flags
-
-    validConditions = []
-    for condition in victoryConditions
-      if condition.hasBusinessMetConditions(businessObject)
-        validConditions.push(condition)
-
-    selectedCondition = validConditions[0]
-
-    for i in [0...validConditions.length]
-      if validConditions[i].priority > selectedCondition.priority
-        selectedCondition = validConditions[i]
-
-    return selectedCondition
-
-    #needs to return a card
+    stats = businessObject.stats
+    flags = businessObject.flags
 
 
   businessObject.generateForecast = ->
-    while businessObject.forecast.length < 3
+    while forecast.length < 3
       shuffle(weatherCards)
-      businessObject.forecast.push weatherCards.pop()
-    weatherCards = weatherCards.concat businessObject.forecast
+      forecast.push weatherCards.pop()
+    weatherCards = weatherCards.concat forecast
 
   businessObject.setCosts = (sprintNumber) ->
     console.log("Updating fixed costs")
@@ -311,11 +289,6 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     else
       flags.isUnderLowThreshold_Cash = false
 
-    if stats.equity < 50
-      flags.playerHasSoldOut = true
-    else
-      flags.playerHasSoldOut = false
-
   businessObject.predictBusinessValue = ->
     newValue = 0
     #cash on hand + previous week's revenue * factor + marketing * research * ___ + average demand * factor - fundraising * factor
@@ -336,15 +309,15 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.getRevenueHistory = (interval) ->
     runningTotal = 0
-    if businessObject.dailyRevenueHistory.length >= interval
+    if dailyRevenueHistory.length >= interval
       for i in [0...interval]
         #console.log("entry", i)
-        runningTotal += businessObject.dailyRevenueHistory[businessObject.dailyRevenueHistory.length - (interval - i)]
-    else if businessObject.dailyRevenueHistory.length is 0
+        runningTotal += dailyRevenueHistory[dailyRevenueHistory.length - (interval - i)]
+    else if dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else
-      #console.log("fewer entries than interval", businessObject.dailyRevenueHistory.length)
-      for entry in businessObject.dailyRevenueHistory
+      #console.log("fewer entries than interval", dailyRevenueHistory.length)
+      for entry in dailyRevenueHistory
         runningTotal += entry
 
     console.log("runningtotal", runningTotal)
@@ -352,7 +325,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
 
   businessObject.generateForecast()
   $rootScope.game = businessObject
-  console.log 'starting forecast', businessObject.forecast
+  console.log 'starting forecast', forecast
   return businessObject
 ]
 

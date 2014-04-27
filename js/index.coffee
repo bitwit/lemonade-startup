@@ -44,6 +44,7 @@ appModule.config ['hotkeysProvider', (hotkeysProvider) ->
   hotkeysProvider.includeCheatSheet = no
 ]
 
+
 appModule.controller "RootController", ["$rootScope", ($rootScope) ->
   $rootScope.currentView = "main"
 
@@ -209,6 +210,8 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.nextSprint = ->
     $scope.sprint++
     if $scope.sprint > $scope.maxSprints
+      endResult = bizObject.processEndGame()
+      console.log 'end game result', endResult
       $rootScope.switchView 'end'
     else
       $scope.currentDay = -1
@@ -309,7 +312,7 @@ appModule.directive 'lsDay', [ ->
     <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
         <div class="message showing-{{(isShowingMessage)}}">
-          <span class="value">{{result.dailyRevenueHistory[result.dailyRevenueHistory.length - 1] | currency:"$"}}</span>
+          <span class="value">{{result.cashDelta | currency:"$"}}</span>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
         <div ng-repeat="task in day.tasks track by $index" ls-task></div>

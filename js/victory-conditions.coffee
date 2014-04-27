@@ -16,10 +16,8 @@ class VictoryCondition
       hasPassedHighThreshold_Sales: false
       hasPassedHighThreshold_Fundraising: false
       hasPassedHighThreshold_MarketSize: false
-      hasPassedLowThreshold_Cash: false
       isBroke: false
       isUnderLowThreshold_Cash: false
-      playerHasSoldOut: false
     }
 
   hasBusinessMetConditions: (business) ->
@@ -59,35 +57,12 @@ class VictoryCondition
       @criteria.doesHaveAvailableFunds = true
       @priority = 9
 
-  class HostileTakeoverEnding extends VictoryCondition
-    constructor: ->
-      super "You Can't Fire me!","sal","thumbs-up"
-      @description = "Oh. You can? But ... This was ... Seriously? You're having security escort me out?"
-      @criteria.isBroke = true
-      @criteria.playerHasSoldOut = true
-      @priority = 7
-
-  class SoftHostileTakeoverEnding extends VictoryCondition
-    constructor: ->
-      super "'Voluntary' Resignation","sal","thumbs-up"
-      @description = "You just wait. Lemons are so passé. I'm onto Agave now."
-      @criteria.playerHasSoldOut = true
-      @criteria.isUnderLowThreshold_Cash = true
-      @priority = 8
-
   class BankruptEnding extends VictoryCondition
     constructor: ->
-      super "Bankrupt","sal","thumbs-down"
-      @description = "The lemonade stand? Oh, no, I work at Starbucks now."
-      @criteria.isBroke = true
-      @priority = 1
-
-  class ALittleBetterEnding extends VictoryCondition
-    constructor: ->
-      super "Still in Business","sal","thumbs-down"
-      @description = "I can pay myself now!"
+      super "Bankrupt","sal","thumbs-up"
+      @description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
+      @criteria.hasPassedHighThreshold_Fundraising = true
+      @criteria.hasPassedHighThreshold_Development = true
+      @criteria.hasPassedHighThreshold_Marketing = true
       @criteria.doesHaveAvailableFunds = true
-      @criteria.doesHaveAvailableEquity = true
-      @criteria.hasPassedLowThreshold_Cash = true
-      @priority = 1
-
+      @priority = 9
