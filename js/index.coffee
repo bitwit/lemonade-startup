@@ -193,12 +193,11 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     if $scope.currentDay > 13
       console.log 'sprint simulation complete'
       bizObj.sprintComplete $scope.sprint
-      $scope.nextSprint()
+      $timeout $scope.nextSprint, 5000
     else
       if didCompleteDay
         day = $scope.sprintDays[$scope.currentDay]
         newPrice = $scope.prices[$scope.price]
-        console.log 'NEW PRICE, PRICE INDEX', newPrice, $scope.price
         day.price = newPrice
         day.isInteractive = no
 
@@ -310,13 +309,17 @@ appModule.directive 'lsDay', [ ->
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
         <div class="message showing-{{day.result != null && (isShowingMessage || isSelected) }}">
           <span class="oi" data-glyph="{{day.result.weather.icon}}"></span>
-          <span class="temperature">{{day.result.weather.temperature}}</span>
-          <dl>
-            <dt>Customers</dt>
-            <dd>{{day.result.stats.averageDemand | number:0}}</dd>
-            <dt>Cash</dt>
-            <dd class="positive-{{result.cashDelta > 0}}">{{day.result.cashDelta | currency:"$"}}</dd>
-          </dl>
+          <span class="temperature">{{day.result.weather.temperature}}&deg;C</span>
+          <ul>
+            <li class="oi" data-glyph="people">
+              <span class="title">Customers</span>
+              <span class="value">{{day.result.stats.averageDemand | number:0}}</span>
+            </li>
+            <li class="oi" data-glyph="bar-chart">
+              <span class="title">Cash</span>
+              <span class="value positive-{{day.result.cashDelta > 0}}">{{day.result.cashDelta | currency:"$"}}</dd>
+            </li>
+          </ul>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
         <div ng-repeat="task in day.tasks track by $index" ls-task></div>

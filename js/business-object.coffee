@@ -18,10 +18,6 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new AverageWeatherCard()
     new AverageWeatherCard()
     new AverageWeatherCard()
-    new AverageWeatherCard()
-    new AverageWeatherCard()
-    new AverageWeatherCard()
-    new AverageWeatherCard()
   ]
 
   victoryConditions = [
@@ -130,7 +126,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     #create history object
     dayHistory = clone businessObject
     dayHistory.cashDelta = cashDelta
-    dayHistory.weather = weather
+    dayHistory.weather = clone weather
+    dayHistory.weather.calculateTemperature()
     businessHistory.push dayHistory
     console.log 'biz history', businessHistory
 
