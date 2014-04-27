@@ -44,7 +44,7 @@ class PRAgentEventCard extends EventCard
       task.marketing = task.marketing * 1.5
     business.stats.marketing += 1
 
-class GoneViralCard_Good extends EventCard
+class GoneViralCardGood extends EventCard
   constructor: ->
     super "Gone Viral", "mkt", "rss"
     @description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?"

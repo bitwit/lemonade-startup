@@ -52,7 +52,6 @@ appModule.controller "RootController", ["$rootScope", ($rootScope) ->
 ]
 
 appModule.controller 'IntroController', ['$scope', ($scope) ->
-
 ]
 
 appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, bizObj, hotkeys) ->
@@ -118,6 +117,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.tickSpeed = 40
   $scope.selectedTaskIndex = 0
   $scope.countdownProgress = 0
+  $scope.announcements = []
 
   $scope.setSelectedTaskIndex = (index) ->
     $scope.selectedTaskIndex = index
@@ -199,8 +199,10 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
       day.tasks = []
       day.isInteractive = yes
 
-  $rootScope.announceEvent = (event) ->
-    $rootScope.announcements = [event]
+  $scope.$on 'eventCardOccured', ($e, eventCard) ->
+    $scope.announcements.length = 0
+    $scope.announcements.push eventCard
+    console.log 'announcements', $scope.announcements
 
   $scope.$on 'taskMoved', ($e, task) ->
     console.log 'main controller task moved'
