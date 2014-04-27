@@ -24,6 +24,16 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new AverageWeatherCard()
   ]
 
+  victoryConditions = [
+    new StagnantEnding()
+    new BankruptEnding()
+    new AcquiredEnding()
+    new BootstrapEnding()
+    new HostileTakeoverEnding()
+    new SoftHostileTakeoverEnding()
+    new ALittleBetterEnding()
+  ]
+
   businessHistory = []
   dailyRevenueHistory = [] #stores the cashDelta for every day
   forecast = []
@@ -61,6 +71,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       hasPassedHighThreshold_MarketSize: false
       isBroke: false
       isUnderLowThreshold_Cash: false
+      playerHasSoldOut: false
 
     tracking:
       highestPrice: 0
@@ -137,14 +148,29 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log("Sprint #{sprintNumber} completed")
     businessObject.setCosts(sprintNumber)
     businessObject.setCreditLimit()
-    if sprintNumber is 10 #GAME OVER!
-      businessObject.processEndGame()
+    #if sprintNumber is 10 #GAME OVER!
+     # businessObject.processEndGame()
 
   businessObject.processEndGame = ->
     console.log("Game over!")
 
-    stats = businessObject.stats
-    flags = businessObject.flags
+    #stats = businessObject.stats
+    #flags = businessObject.flags
+
+    validConditions = []
+    for condition in victoryConditions
+      if condition.hasBusinessMetConditions(businessObject)
+        validConditions.push(condition)
+
+    selectedCondition = validConditions[0]
+
+    for i in [0...validConditions.length]
+      if validConditions[i].priority > selectedCondition.priority
+        selectedCondition = validConditions[i]
+
+    return selectedCondition
+
+    #needs to return a card
 
 
   businessObject.generateForecast = ->
@@ -288,6 +314,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       flags.isUnderLowThreshold_Cash = true
     else
       flags.isUnderLowThreshold_Cash = false
+
+    if stats.equity < 50
+      flags.playerHasSoldOut = true
+    else
+      flags.playerHasSoldOut = false
 
   businessObject.predictBusinessValue = ->
     newValue = 0
