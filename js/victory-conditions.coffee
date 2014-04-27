@@ -56,3 +56,13 @@ class VictoryCondition
       @criteria.hasPassedHighThreshold_Marketing = true
       @criteria.doesHaveAvailableFunds = true
       @priority: 9
+
+  class BankruptEnding extends VictoryCondition
+    constructor: ->
+      super "Bankrupt","sal","thumbs-up"
+      @description: "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
+      @criteria.hasPassedHighThreshold_Fundraising = true
+      @criteria.hasPassedHighThreshold_Development = true
+      @criteria.hasPassedHighThreshold_Marketing = true
+      @criteria.doesHaveAvailableFunds = true
+      @priority: 9
