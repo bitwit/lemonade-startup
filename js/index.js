@@ -596,6 +596,7 @@ EventCard = (function() {
     this.icon = icon;
     this.expiry = -1;
     this.description = "An event occurred";
+    this.isRejectable = true;
     this.acceptText = "Accept";
     this.rejectText = "Reject";
     this.cost = 0;
@@ -607,7 +608,8 @@ EventCard = (function() {
       sales: 0,
       fundraising: 0,
       productivity: 0,
-      cash: 0
+      cash: 0,
+      equity: 0
     };
   }
 
@@ -647,6 +649,8 @@ PRAgentEventCard = (function(_super) {
   function PRAgentEventCard() {
     PRAgentEventCard.__super__.constructor.call(this, "PR Agent", "mkt", "rss");
     this.description = "A PR Agent has agreed to help work with your team for the next few days";
+    this.acceptText = "Great";
+    this.rejectText = "Gross";
     this.expiry = 3;
     this.thresholds.marketing = 2;
   }
@@ -671,6 +675,7 @@ GoneViralCardGood = (function(_super) {
   function GoneViralCardGood() {
     GoneViralCardGood.__super__.constructor.call(this, "Gone Viral", "mkt", "rss");
     this.description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?";
+    this.isRejectable = false;
     this.expiry = 3;
     this.thresholds.marketing = 3;
   }
@@ -680,7 +685,7 @@ GoneViralCardGood = (function(_super) {
     GoneViralCardGood.__super__.tick.call(this, business, tasks);
     for (_i = 0, _len = tasks.length; _i < _len; _i++) {
       task = tasks[_i];
-      task.marketing = task.marketing * 1.5;
+      task.marketing *= 1.5;
     }
     business.stats.marketing += 3;
     return business.stats.cash += 10;
@@ -696,13 +701,14 @@ ProductMarketFitCard = (function(_super) {
   function ProductMarketFitCard() {
     ProductMarketFitCard.__super__.constructor.call(this, "Product Market Fit", "res", "graph");
     this.description = "Word from our market research team is looking good...";
+    this.isRejectable = false;
     this.expiry = 0;
     this.thresholds.research = 5;
   }
 
   ProductMarketFitCard.prototype.tick = function(business, tasks) {
     ProductMarketFitCard.__super__.tick.call(this, business, tasks);
-    return business.stats.potentialMarketSize += 1000;
+    return business.stats.potentialMarketSize *= 1.1;
   };
 
   return ProductMarketFitCard;
@@ -736,6 +742,7 @@ CrowdfundingCampaignCard = (function(_super) {
   function CrowdfundingCampaignCard() {
     CrowdfundingCampaignCard.__super__.constructor.call(this, "Kick my Lemons", "fun", "credit-card");
     this.description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt.";
+    this.isRejectable = false;
     this.expiry = 0;
     this.thresholds.marketing = 5;
     this.thresholds.fundraising = 10;
@@ -756,15 +763,18 @@ SeedInvestmentCard = (function(_super) {
 
   function SeedInvestmentCard() {
     SeedInvestmentCard.__super__.constructor.call(this, "Ignore the Horns", "fun", "credit-card");
-    this.description = "A lovely gentleman with a dashing goatee offered some seed money...";
-    this.expiry = -1;
+    this.description = "A lovely gentleman with a dashing goatee offered $200,000 for 20% equity...";
+    this.acceptText = "Thanks!";
+    this.rejectText = "No way.";
+    this.expiry = 0;
     this.thresholds.fundraising = 15;
+    this.thresholds.equity = 20;
   }
 
   SeedInvestmentCard.prototype.tick = function(business, tasks) {
     SeedInvestmentCard.__super__.tick.call(this, business, tasks);
-    business.stats.cash += 20000;
-    return business.stats.equity -= 10;
+    business.stats.cash += 200000;
+    return business.stats.equity -= 20;
   };
 
   return SeedInvestmentCard;
@@ -777,6 +787,7 @@ GreatSalesPitchCard = (function(_super) {
   function GreatSalesPitchCard() {
     GreatSalesPitchCard.__super__.constructor.call(this, "Silver Tongue", "sal", "comment-square");
     this.description = "Your pitch is so practiced, even the mirror is thirsty.";
+    this.isRejectable = false;
     this.expiry = 0;
     this.thresholds.sales = 3;
   }
@@ -795,10 +806,13 @@ BrandAmbassadorCard = (function(_super) {
 
   function BrandAmbassadorCard() {
     BrandAmbassadorCard.__super__.constructor.call(this, "Brand Ambassador", "sal", "musical-note");
-    this.description = "Turns out, 50 Cent's cousin's friend likes our lemonade! She's agreed to represent us for a few days.";
+    this.description = "Turns out, 50 Cent's cousin's friend likes our lemonade! She's agreed to represent us for a few days. And $10,000.";
+    this.acceptText = "Sign us up!";
+    this.rejectText = "Err ... no?";
     this.expiry = 5;
     this.thresholds.marketing = 5;
     this.thresholds.sales = 5;
+    this.thresholds.cash = 10000;
   }
 
   BrandAmbassadorCard.prototype.tick = function(business, tasks) {
@@ -810,7 +824,8 @@ BrandAmbassadorCard = (function(_super) {
       task.sales = task.sales * 1.5;
     }
     business.stats.marketing += 5;
-    return business.stats.potentialMarketSize += 1000;
+    business.stats.potentialMarketSize *= 1.25;
+    return business.stats.cash -= 10000;
   };
 
   return BrandAmbassadorCard;

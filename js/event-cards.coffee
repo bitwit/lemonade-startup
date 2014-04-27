@@ -2,6 +2,7 @@ class EventCard
   constructor: (@name, @id ,@icon) ->
     @expiry = -1 #never expires
     @description = "An event occurred"
+    @isRejectable = true
     @acceptText = "Accept"
     @rejectText = "Reject"
     @cost = 0
@@ -14,6 +15,7 @@ class EventCard
       fundraising: 0
       productivity: 0
       cash: 0
+      equity: 0
     }
 
   hasBusinessMetConditions: (business) ->
@@ -38,6 +40,8 @@ class PRAgentEventCard extends EventCard
   constructor: ->
     super "PR Agent", "mkt", "rss"
     @description = "A PR Agent has agreed to help work with your team for the next few days"
+    @acceptText = "Great"
+    @rejectText = "Gross"
     @expiry = 3 #3 days after receipt
     @thresholds.marketing = 2
 
@@ -51,13 +55,14 @@ class GoneViralCardGood extends EventCard
   constructor: ->
     super "Gone Viral", "mkt", "rss"
     @description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?"
+    @isRejectable = false
     @expiry = 3 #3 days after receipt
     @thresholds.marketing = 3
 
   tick: (business, tasks) ->
     super business, tasks
     for task in tasks
-      task.marketing = task.marketing * 1.5
+      task.marketing *= 1.5
     business.stats.marketing += 3
     business.stats.cash += 10
 
@@ -66,12 +71,13 @@ class ProductMarketFitCard extends EventCard
   constructor: ->
     super "Product Market Fit", "res", "graph"
     @description = "Word from our market research team is looking good..."
+    @isRejectable = false
     @expiry = 0
     @thresholds.research = 5
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.potentialMarketSize += 1000
+    business.stats.potentialMarketSize *= 1.1
 
 #fundraising cards
 class MoneyFromDadCard extends EventCard
@@ -91,6 +97,7 @@ class CrowdfundingCampaignCard extends EventCard
   constructor: ->
     super "Kick my Lemons", "fun", "credit-card"
     @description = "Our crowdfunding campaign took off! People really want your lemonade. Or at least the t-shirt."
+    @isRejectable = false
     @expiry = 0
     @thresholds.marketing = 5
     @thresholds.fundraising = 10
@@ -103,20 +110,24 @@ class CrowdfundingCampaignCard extends EventCard
 class SeedInvestmentCard extends EventCard
   constructor: ->
     super "Ignore the Horns", "fun", "credit-card"
-    @description = "A lovely gentleman with a dashing goatee offered some seed money..."
-    @expiry = -1
+    @description = "A lovely gentleman with a dashing goatee offered $200,000 for 20% equity..."
+    @acceptText = "Thanks!"
+    @rejectText = "No way."
+    @expiry = 0
     @thresholds.fundraising = 15
+    @thresholds.equity = 20
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.cash += 20000
-    business.stats.equity -= 10
+    business.stats.cash += 200000
+    business.stats.equity -= 20
 
 #sales cards
 class GreatSalesPitchCard extends EventCard
   constructor: ->
     super "Silver Tongue", "sal", "comment-square"
     @description = "Your pitch is so practiced, even the mirror is thirsty."
+    @isRejectable = false
     @expiry = 0
     @thresholds.sales = 3
 
@@ -127,10 +138,13 @@ class GreatSalesPitchCard extends EventCard
 class BrandAmbassadorCard extends EventCard
   constructor: ->
     super "Brand Ambassador", "sal", "musical-note"
-    @description = "Turns out, 50 Cent's cousin's friend likes our lemonade! She's agreed to represent us for a few days."
+    @description = "Turns out, 50 Cent's cousin's friend likes our lemonade! She's agreed to represent us for a few days. And $10,000."
+    @acceptText = "Sign us up!"
+    @rejectText = "Err ... no?"
     @expiry = 5
     @thresholds.marketing = 5
     @thresholds.sales = 5
+    @thresholds.cash = 10000
 
   tick: (business, tasks) ->
     super business, tasks
@@ -138,7 +152,8 @@ class BrandAmbassadorCard extends EventCard
       task.marketing = task.marketing * 2
       task.sales = task.sales * 1.5
     business.stats.marketing += 5
-    business.stats.potentialMarketSize += 1000
+    business.stats.potentialMarketSize *= 1.25
+    business.stats.cash -= 10000
 
 #development cards
 class CaffinatedLemonsCard extends EventCard
