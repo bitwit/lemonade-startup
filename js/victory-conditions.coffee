@@ -24,7 +24,7 @@ class VictoryCondition
 
   hasBusinessMetConditions: (business) ->
     criteriaMet = yes
-    for flag, value of criteria
+    for flag, value of @criteria
       if value != false
         if business.flags[flag] != true
           criteriaMet = no
