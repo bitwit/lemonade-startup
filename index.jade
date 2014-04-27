@@ -17,20 +17,28 @@ html
 					| 1 Lemonade Stand
 					br
 					br
-					| $50 Profit
+					| $50 Life savings
 					br
 					br
 					| Time to bootstrap this baby
 					br
 					| into a Lemonade Startup
 				button.game-start(ng-click="switchView('main')")
-					span.title Let's Get Agile
+					span.title.oi(data-glyph="check") &nbsp;Let's Get Agile
+
+			div.intro-view.view-container.ng-cloak(ng-switch-when="end")
+				h1.intro-title
+					span.lemon-drop.oi(data-glyph="droplet")
+					br
+					| Game Over
 
 			div.main-view.view-container.ng-cloak(ng-controller="MainController", ng-switch-when="main")
 				div.tasks-column
 					h1.main-title.oi(data-glyph="droplet")
 						br
-						span.title Lemons
+						span.title Lemon
+							br
+							| Startup
 					div.jobs(ng-model="tasks", data-jqyoui-options="taskListOptions", jqyoui-droppable="{multiple:true}")
 						h3 Tasks
 						div(ng-repeat="task in tasks", ls-job)
@@ -41,12 +49,12 @@ html
 
 				div.main-column
 					div.price-selector
-						h3 Price: ${{prices[price]}}
+						h3.price-title Price: {{prices[price] | currency}}
 						input.price-input(type="range", ng-model="price", min="0", max="9")
 					div.days
 						h2.sprint-title
 							span.title Sprint {{sprint}}
-							span.countdown(ng-if="countdownProgress > 0") starts in {{countdownProgress/1000 | number:2}}s
+							span.countdown(ng-if="countdownProgress > 0") &nbsp;starts in {{countdownProgress/1000 | number:2}}s
 						div.calendar
 							div.day(ng-repeat="day in sprintDays", ls-day)
 
@@ -57,42 +65,43 @@ html
 					div.assets
 						dl.stats
 							dt(class="positive-{{game.stats.cash > 0}}") Cash
-							dd(class="positive-{{game.stats.cash > 0}}") ${{game.stats.cash | currency:""}}
+							dd(class="positive-{{game.stats.cash > 0}}") {{game.stats.cash | currency}}
 							dt(class="positive-{{game.stats.projectedValue > 0}}") Company Value
-							dd(class="positive-{{game.stats.projectedValue > 0}}") ${{game.stats.projectedValue| currency:""}}
+							dd(class="positive-{{game.stats.projectedValue > 0}}") {{game.stats.projectedValue| currency}}
 						h2.section-title.oi(data-glyph="list")
 							br
 							span.title Assets
 						div.asset(class="type-{{asset.id}}", ng-repeat="asset in game.assets")
-							span.title {{asset.name}}
+							span.title.oi(data-glyph="{{asset.icon}}") &nbsp;{{asset.name}}
 							span.expiry(ng-if="asset.expiry > 0") {{asset.expiry}}
 
-						h3 Options
-						div.debug-buttons(style="text-align: center;")
-							label Tick Speed
-							input(type="text",ng-model="tickSpeed")
-							label Countdown Progress
-							input(type="text",ng-model="countdownProgress")
-							button.hotkey(ng-click="startSimulation()")
-								span Start Simulation
-							button.hotkey(ng-click="autoPopulateDays()")
-								span Auto Populate
-						h3 Debug
-						dl
-							dt Development
-							dd {{game.stats.development}}
-							dt Design
-							dd {{game.stats.design}}
-							dt Marketing
-							dd {{game.stats.marketing}}
-							dt Research
-							dd {{game.stats.research}}
-							dt Sales
-							dd {{game.stats.sales}}
-							dt Fundraising
-							dd {{game.stats.fundraising}}
-							dt Productivity
-							dd {{game.stats.productivity}}
+						//
+							h3 Options
+							div.debug-buttons(style="text-align: center;")
+								label Tick Speed
+								input(type="text",ng-model="tickSpeed")
+								label Countdown Progress
+								input(type="text",ng-model="countdownProgress")
+								button.hotkey(ng-click="startSimulation()")
+									span Start Simulation
+								button.hotkey(ng-click="autoPopulateDays()")
+									span Auto Populate
+							h3 Debug
+							dl
+								dt Development
+								dd {{game.stats.development}}
+								dt Design
+								dd {{game.stats.design}}
+								dt Marketing
+								dd {{game.stats.marketing}}
+								dt Research
+								dd {{game.stats.research}}
+								dt Sales
+								dd {{game.stats.sales}}
+								dt Fundraising
+								dd {{game.stats.fundraising}}
+								dt Productivity
+								dd {{game.stats.productivity}}
 
 				div.announcements.ng-cloak
 					div.announcement(class="type-{{event.id}}", ng-repeat="event in announcements")
@@ -101,7 +110,7 @@ html
 						div.oi(data-glyph="{{event.icon}}")
 						p.description {{event.description}}
 						button.confirm(ng-click="resumeSimulation()")
-							span.title OK
+							span.title.oi(data-glyph="check") OK
 
 		script(src='js/vendor/jquery/jquery.min.js')
 		script(src='js/vendor/jquery/jquery-ui.min.js')
