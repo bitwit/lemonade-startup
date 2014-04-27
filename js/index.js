@@ -837,13 +837,11 @@ CaffinatedLemonsCard = (function(_super) {
 
 })(EventCard);
 
-var VictoryCondition,
+var ALittleBetterEnding, AcquiredEnding, BankruptEnding, BootstrapEnding, HostileTakeoverEnding, SoftHostileTakeoverEnding, StagnantEnding, VictoryCondition,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 VictoryCondition = (function() {
-  var AcquiredEnding, BankruptEnding, BootstrapEnding, StagnantEnding;
-
   function VictoryCondition(name, id, icon) {
     this.name = name;
     this.id = id;
@@ -864,8 +862,10 @@ VictoryCondition = (function() {
       hasPassedHighThreshold_Sales: false,
       hasPassedHighThreshold_Fundraising: false,
       hasPassedHighThreshold_MarketSize: false,
+      hasPassedLowThreshold_Cash: false,
       isBroke: false,
-      isUnderLowThreshold_Cash: false
+      isUnderLowThreshold_Cash: false,
+      playerHasSoldOut: false
     };
   }
 
@@ -883,75 +883,118 @@ VictoryCondition = (function() {
     return criteriaMet;
   };
 
-  BootstrapEnding = (function(_super) {
-    __extends(BootstrapEnding, _super);
-
-    function BootstrapEnding() {
-      BootstrapEnding.__super__.constructor.call(this, "Bootstrapped", "sal", "dollar");
-      this.description = "Squeezing lemons by hand? Nope. Now, you just roll over them with a Ferrari. I guess that means you made it?";
-      this.criteria.doesHaveAvailableFunds = true;
-      this.criteria.playerHasTotalOwnership = true;
-      this.criteria.hasPassedHighThreshold_Cash = true;
-      this.priority = 10;
-    }
-
-    return BootstrapEnding;
-
-  })(VictoryCondition);
-
-  StagnantEnding = (function(_super) {
-    __extends(StagnantEnding, _super);
-
-    function StagnantEnding() {
-      StagnantEnding.__super__.constructor.call(this, "Still Here", "sal", "dollar");
-      this.description = "Yesterday, I squeezed lemons, today I am squeezing lemons, and tomorrow I will squeeze lemons. Lemon, lemon, something, lemon.";
-      this.criteria.doesHaveAvailableFunds = true;
-      this.criteria.doesHaveAvailableEquity = true;
-      this.criteria.isUnderLowThreshold_Cash = true;
-      this.priority = 1;
-    }
-
-    return StagnantEnding;
-
-  })(VictoryCondition);
-
-  AcquiredEnding = (function(_super) {
-    __extends(AcquiredEnding, _super);
-
-    function AcquiredEnding() {
-      AcquiredEnding.__super__.constructor.call(this, "JuiceBook is Calling", "sal", "thumbs-up");
-      this.description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris.";
-      this.criteria.hasPassedHighThreshold_Fundraising = true;
-      this.criteria.hasPassedHighThreshold_Development = true;
-      this.criteria.hasPassedHighThreshold_Marketing = true;
-      this.criteria.doesHaveAvailableFunds = true;
-      this.priority = 9;
-    }
-
-    return AcquiredEnding;
-
-  })(VictoryCondition);
-
-  BankruptEnding = (function(_super) {
-    __extends(BankruptEnding, _super);
-
-    function BankruptEnding() {
-      BankruptEnding.__super__.constructor.call(this, "Bankrupt", "sal", "thumbs-up");
-      this.description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris.";
-      this.criteria.hasPassedHighThreshold_Fundraising = true;
-      this.criteria.hasPassedHighThreshold_Development = true;
-      this.criteria.hasPassedHighThreshold_Marketing = true;
-      this.criteria.doesHaveAvailableFunds = true;
-      this.priority = 9;
-    }
-
-    return BankruptEnding;
-
-  })(VictoryCondition);
-
   return VictoryCondition;
 
 })();
+
+BootstrapEnding = (function(_super) {
+  __extends(BootstrapEnding, _super);
+
+  function BootstrapEnding() {
+    BootstrapEnding.__super__.constructor.call(this, "Bootstrapped", "sal", "dollar");
+    this.description = "Squeezing lemons by hand? Nope. Now, you just roll over them with a Ferrari. I guess that means you made it?";
+    this.criteria.doesHaveAvailableFunds = true;
+    this.criteria.playerHasTotalOwnership = true;
+    this.criteria.hasPassedHighThreshold_Cash = true;
+    this.priority = 10;
+  }
+
+  return BootstrapEnding;
+
+})(VictoryCondition);
+
+StagnantEnding = (function(_super) {
+  __extends(StagnantEnding, _super);
+
+  function StagnantEnding() {
+    StagnantEnding.__super__.constructor.call(this, "Still Here", "sal", "dollar");
+    this.description = "Yesterday, I squeezed lemons, today I am squeezing lemons, and tomorrow I will squeeze lemons. Lemon, lemon, something, lemon.";
+    this.criteria.doesHaveAvailableFunds = true;
+    this.criteria.doesHaveAvailableEquity = true;
+    this.criteria.isUnderLowThreshold_Cash = true;
+    this.priority = 1;
+  }
+
+  return StagnantEnding;
+
+})(VictoryCondition);
+
+AcquiredEnding = (function(_super) {
+  __extends(AcquiredEnding, _super);
+
+  function AcquiredEnding() {
+    AcquiredEnding.__super__.constructor.call(this, "JuiceBook is Calling", "sal", "thumbs-up");
+    this.description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris.";
+    this.criteria.hasPassedHighThreshold_Fundraising = true;
+    this.criteria.hasPassedHighThreshold_Development = true;
+    this.criteria.hasPassedHighThreshold_Marketing = true;
+    this.criteria.doesHaveAvailableFunds = true;
+    this.priority = 9;
+  }
+
+  return AcquiredEnding;
+
+})(VictoryCondition);
+
+HostileTakeoverEnding = (function(_super) {
+  __extends(HostileTakeoverEnding, _super);
+
+  function HostileTakeoverEnding() {
+    HostileTakeoverEnding.__super__.constructor.call(this, "You Can't Fire me!", "sal", "thumbs-up");
+    this.description = "Oh. You can? But ... This was ... Seriously? You're having security escort me out?";
+    this.criteria.isBroke = true;
+    this.criteria.playerHasSoldOut = true;
+    this.priority = 7;
+  }
+
+  return HostileTakeoverEnding;
+
+})(VictoryCondition);
+
+SoftHostileTakeoverEnding = (function(_super) {
+  __extends(SoftHostileTakeoverEnding, _super);
+
+  function SoftHostileTakeoverEnding() {
+    SoftHostileTakeoverEnding.__super__.constructor.call(this, "'Voluntary' Resignation", "sal", "thumbs-up");
+    this.description = "You just wait. Lemons are so passé. I'm onto Agave now.";
+    this.criteria.playerHasSoldOut = true;
+    this.criteria.isUnderLowThreshold_Cash = true;
+    this.priority = 8;
+  }
+
+  return SoftHostileTakeoverEnding;
+
+})(VictoryCondition);
+
+BankruptEnding = (function(_super) {
+  __extends(BankruptEnding, _super);
+
+  function BankruptEnding() {
+    BankruptEnding.__super__.constructor.call(this, "Bankrupt", "sal", "thumbs-down");
+    this.description = "The lemonade stand? Oh, no, I work at Starbucks now.";
+    this.criteria.isBroke = true;
+    this.priority = 1;
+  }
+
+  return BankruptEnding;
+
+})(VictoryCondition);
+
+ALittleBetterEnding = (function(_super) {
+  __extends(ALittleBetterEnding, _super);
+
+  function ALittleBetterEnding() {
+    ALittleBetterEnding.__super__.constructor.call(this, "Still in Business", "sal", "thumbs-down");
+    this.description = "I can pay myself now!";
+    this.criteria.doesHaveAvailableFunds = true;
+    this.criteria.doesHaveAvailableEquity = true;
+    this.criteria.hasPassedLowThreshold_Cash = true;
+    this.priority = 1;
+  }
+
+  return ALittleBetterEnding;
+
+})(VictoryCondition);
 
 var AverageWeatherCard, ColdWeatherCard, GoodWeatherCard, HeatWaveWeatherCard, RainyWeatherCard, WeatherCard,
   __hasProp = {}.hasOwnProperty,
@@ -1035,9 +1078,10 @@ ColdWeatherCard = (function(_super) {
 
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
-    var businessHistory, businessObject, dailyRevenueHistory, eventCards, forecast, weatherCards;
+    var businessHistory, businessObject, dailyRevenueHistory, eventCards, forecast, victoryConditions, weatherCards;
     eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard(), new SeedInvestmentCard(), new CaffinatedLemonsCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
+    victoryConditions = [new StagnantEnding(), new BankruptEnding(), new AcquiredEnding(), new BootstrapEnding(), new HostileTakeoverEnding(), new SoftHostileTakeoverEnding(), new ALittleBetterEnding()];
     businessHistory = [];
     dailyRevenueHistory = [];
     forecast = [];
@@ -1074,7 +1118,8 @@ appModule.service("BusinessObject", [
         hasPassedHighThreshold_Fundraising: false,
         hasPassedHighThreshold_MarketSize: false,
         isBroke: false,
-        isUnderLowThreshold_Cash: false
+        isUnderLowThreshold_Cash: false,
+        playerHasSoldOut: false
       },
       tracking: {
         highestPrice: 0,
@@ -1141,16 +1186,25 @@ appModule.service("BusinessObject", [
     businessObject.sprintComplete = function(sprintNumber) {
       console.log("Sprint " + sprintNumber + " completed");
       businessObject.setCosts(sprintNumber);
-      businessObject.setCreditLimit();
-      if (sprintNumber === 10) {
-        return businessObject.processEndGame();
-      }
+      return businessObject.setCreditLimit();
     };
     businessObject.processEndGame = function() {
-      var flags, stats;
+      var condition, i, selectedCondition, validConditions, _i, _j, _len, _ref;
       console.log("Game over!");
-      stats = businessObject.stats;
-      return flags = businessObject.flags;
+      validConditions = [];
+      for (_i = 0, _len = victoryConditions.length; _i < _len; _i++) {
+        condition = victoryConditions[_i];
+        if (condition.hasBusinessMetConditions(businessObject)) {
+          validConditions.push(condition);
+        }
+      }
+      selectedCondition = validConditions[0];
+      for (i = _j = 0, _ref = validConditions.length; 0 <= _ref ? _j < _ref : _j > _ref; i = 0 <= _ref ? ++_j : --_j) {
+        if (validConditions[i].priority > selectedCondition.priority) {
+          selectedCondition = validConditions[i];
+        }
+      }
+      return selectedCondition;
     };
     businessObject.generateForecast = function() {
       while (forecast.length < 3) {
@@ -1299,9 +1353,14 @@ appModule.service("BusinessObject", [
         flags.hasPassedHighThreshold_MarketSize = true;
       }
       if (stats.cash > 0 && stats.cash < 100000) {
-        return flags.isUnderLowThreshold_Cash = true;
+        flags.isUnderLowThreshold_Cash = true;
       } else {
-        return flags.isUnderLowThreshold_Cash = false;
+        flags.isUnderLowThreshold_Cash = false;
+      }
+      if (stats.equity < 50) {
+        return flags.playerHasSoldOut = true;
+      } else {
+        return flags.playerHasSoldOut = false;
       }
     };
     businessObject.predictBusinessValue = function() {
