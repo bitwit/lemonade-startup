@@ -22,6 +22,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new AverageWeatherCard()
   ]
 
+  businessHistory = []
+
   businessObject =
     forecast: []
     stats:
@@ -66,7 +68,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
       if eventCard.hasBusinessMetConditions businessObject
         didTriggerEvent = yes
         event = eventCards.splice(i, 1)[0]  # discarding this event from eventsCards[] for good
-        businessObject.assets.push event  # putting it into assets (where it can expire, or persist indefinitely)
+        #businessObject.assets.unshift event  # putting it into assets (where it can expire, or persist indefinitely)
         $rootScope.$broadcast 'eventCardOccured', event  # announcing the event to the UI, which pauses the simulation timer until dismiss
         break
 
@@ -86,9 +88,13 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     stats.cash = stats.cash + cashDelta
 
     businessObject.dailyRevenueHistory.push cashDelta
+    dayHistory = clone businessObject
+    businessHistory.push dayHistory
+    console.log 'biz history', businessHistory
+
     console.log(businessObject.dailyRevenueHistory)
 
-    day.announce cashDelta
+    day.announce dayHistory
 
     businessObject.predictBusinessValue()
     businessObject.generateForecast() #add something new to the forecast

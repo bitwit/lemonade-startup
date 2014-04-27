@@ -168,7 +168,15 @@ h1.main-title, h2.section-title
 div.tasks-column
   float: left
   width: 15%
+  height: 100%
   background-color: $color-grey-dark
+
+div.instructions
+  margin: 0 20/$em
+  color: white
+  li.instruction
+    margin-bottom: 14/$em
+
 
 div.main-column
   float: left
@@ -180,13 +188,14 @@ div.main-column
 
 div.status-column
   float: left
+  box-sizing: border-box
   width: 15%
+  padding: 0 10/$em
   background-color: $color-grey-dark
   color: #FFF
 
 div.jobs
   box-sizing: border-box
-  height: 800/$em
   h3
     color: #FFF
 
@@ -259,6 +268,8 @@ div.price-selector
 
   h3.price-title
     margin: 0 0 10/$em
+    span.title
+      font-size: 24/$em
 
   input.price-input
     margin: 20/$em 0
@@ -387,7 +398,7 @@ h5.day-name
   position: relative
   z-index: 1
 
-dl.stats
+div.cash
   overflow: hidden
   font:
     weight: 500
@@ -396,16 +407,35 @@ dl.stats
   color: $color-green
   .positive-false
     color: $color-red
-  dt
+
+  h3.cash-title
     text-decoration: underline
-  dd
-    margin: 6/$em 0 10/$em
+    font-size: 22/$em
+    margin-bottom: 0
+    span.title
+      font-size: 65%
+  strong.cash-value
+    display: block
+    font-size: 20/$em
+    margin: 2/$em 0 10/$em
 
 div.assets
+  position: relative
   box-sizing: border-box
   height: 800/$em
 
+div.assets-container
+  position: relative
+
 div.asset
+  position: absolute
+  width: 100%
+  margin: 0
+  box-sizing: border-box
+  height: 36/$em
+  overflow: visible
+  +single-transition(all, 0.24s, linear, 0s)
+
   &.ng-enter,
   &.ng-leave
     +single-transition(all, 0.24s, linear, 0s)
@@ -433,14 +463,14 @@ div.announcement
   border-width: 10/$em
   border-style: solid
   padding: 0 40/$em
-  width: 40%
-  height: 80%
+  width: 500/$em
+  height: 660/$em
   background-color: #FFF
   text-align: center
 
   &.ng-enter,
   &.ng-leave
-    +single-transition(all, 0.80s, ease-out, 0s)
+    +single-transition(opacity, 0.80s, ease-out, 0s)
 
   &.ng-leave.ng-leave-active,
   &.ng-enter
@@ -465,17 +495,35 @@ div.announcement
     font-size: 28/$em
     color: $color-grey-dark
 
-  button.confirm
+  button.accept, button.reject
+    outline: none
     cursor: pointer
-    margin: 20/$em 0
-    width: 30%
     font-size: 16/$em
-    border: 1/$em solid inherit
-    background: inherit
+    margin: 20/$em 0
+    padding: 10/$em 0
+    border: 2/$em dotted inherit
+    +border-radius(4/$em)
+    width: 47.5%
+    background: none
     span
       font-size: 28/$em
     &:hover
       opacity: 0.85
+      .hotkey-button
+        display: inline-block
+
+    .hotkey-button
+      display: none
+      margin-top: 4/$em
+      color: $color-grey-dark
+      font-size: 16/$em
+
+  button.accept
+    color: $color-green-dark
+    margin-right: 5%
+
+  button.reject
+    color: $color-red
 
 .hotkey-button
   line-height: 24/$em
