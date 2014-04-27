@@ -93,7 +93,8 @@ module.exports = (grunt) ->
               'js/job-cards.coffee',
               'js/event-cards.coffee',
               'js/weather-cards.coffee',
-              'js/business-object.coffee'
+              'js/business-object.coffee',
+              'js/victory-conditions.coffee'
             ]
           }
         ]
