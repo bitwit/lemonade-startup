@@ -46,8 +46,7 @@ appModule.config ['hotkeysProvider', (hotkeysProvider) ->
 
 
 appModule.controller "RootController", ["$rootScope", ($rootScope) ->
-  $rootScope.currentView = "main"
-
+  $rootScope.currentView = "intro"
   $rootScope.switchView = (viewName) ->
     $rootScope.currentView = viewName
 ]
@@ -141,7 +140,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log $scope.sprintDays
 
   $scope.startCountdown = ->
-    $scope.countdownProgress = 2000
+    $scope.countdownProgress = 15000
     $timeout $scope.tickCountdown, $scope.tickSpeed
 
   $scope.tickCountdown = ->
