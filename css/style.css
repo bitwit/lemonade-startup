@@ -987,7 +987,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .oi[data-glyph=zoom-out]:before {
   content: '\e0d9'; }
 
-/* line 30, style.sass */
+/* line 32, style.sass */
 * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -996,84 +996,84 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   -ms-user-select: none;
   user-select: none; }
 
-/* line 38, style.sass */
+/* line 40, style.sass */
 html {
   height: 100%;
   overflow: hidden; }
 
-/* line 42, style.sass */
+/* line 44, style.sass */
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 300;
   overflow: hidden;
   height: 100%; }
 
-/* line 49, style.sass */
+/* line 51, style.sass */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
   text-align: center; }
 
-/* line 54, style.sass */
+/* line 56, style.sass */
 h1 {
   margin: 1.25em 0;
   font-size: 2em; }
 
-/* line 58, style.sass */
+/* line 60, style.sass */
 h2 {
   margin: 1.25em 0;
   font-size: 1.75em; }
 
-/* line 62, style.sass */
+/* line 64, style.sass */
 h3 {
   margin: 0.625em 0;
   font-size: 1.5em; }
 
-/* line 66, style.sass */
+/* line 68, style.sass */
 .ng-cloak {
   display: none; }
 
-/* line 69, style.sass */
+/* line 71, style.sass */
 .type-dev {
-  color: #d99c77;
-  background-color: #d99c77;
-  border-color: #d99c77; }
+  color: #adaddc;
+  background-color: #adaddc;
+  border-color: #adaddc; }
 
-/* line 74, style.sass */
+/* line 76, style.sass */
 .type-res {
-  color: #b9dcee;
-  background-color: #b9dcee;
-  border-color: #b9dcee; }
+  color: #add9e0;
+  background-color: #add9e0;
+  border-color: #add9e0; }
 
-/* line 79, style.sass */
+/* line 81, style.sass */
 .type-mkt {
   color: #cda575;
   background-color: #cda575;
   border-color: #cda575; }
 
-/* line 84, style.sass */
+/* line 86, style.sass */
 .type-sal {
   color: #d77167;
   background-color: #d77167;
   border-color: #d77167; }
 
-/* line 89, style.sass */
+/* line 91, style.sass */
 .type-des {
-  color: #e7b8e1;
-  background-color: #e7b8e1;
-  border-color: #e7b8e1; }
+  color: #d8a9d2;
+  background-color: #d8a9d2;
+  border-color: #d8a9d2; }
 
-/* line 94, style.sass */
+/* line 96, style.sass */
 .type-fun {
   color: #b0ad64;
   background-color: #b0ad64;
   border-color: #b0ad64; }
 
-/* line 99, style.sass */
+/* line 101, style.sass */
 div.views {
   height: 100%;
   overflow: hidden; }
 
-/* line 103, style.sass */
+/* line 105, style.sass */
 div.view-container {
   position: absolute;
   top: 0;
@@ -1081,149 +1081,158 @@ div.view-container {
   width: 100%;
   height: 100%; }
 
-/* line 110, style.sass */
+/* line 112, style.sass */
 div.intro-view {
   height: 100%;
   overflow: hidden;
   background-color: #333333; }
-  /* line 114, style.sass */
+  /* line 116, style.sass */
   div.intro-view.ng-enter, div.intro-view.ng-leave {
     -webkit-transition: all 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.8s ease-out 0s;
     -o-transition: all 0.8s ease-out 0s;
     transition: all 0.8s ease-out 0s; }
-  /* line 118, style.sass */
+  /* line 120, style.sass */
   div.intro-view.ng-leave.ng-leave-active, div.intro-view.ng-enter {
     left: -100%; }
-  /* line 122, style.sass */
+  /* line 124, style.sass */
   div.intro-view.ng-leave, div.intro-view.ng-enter.ng-enter-active {
     left: 0; }
 
-/* line 126, style.sass */
+/* line 128, style.sass */
 h1.intro-title {
   font-size: 3em;
   color: #fbdd8e; }
-  /* line 129, style.sass */
+  /* line 131, style.sass */
   h1.intro-title span.lemon-drop {
     font-size: 4em; }
 
-/* line 132, style.sass */
+/* line 134, style.sass */
 button.game-start {
   display: block;
+  cursor: pointer;
+  outline: none;
   margin: 0 auto;
   font-size: 1em;
   width: 18.75em;
-  height: 5em; }
+  height: 5em;
+  background: none;
+  border: 0.125em solid #b0ad64;
+  color: #b0ad64; }
+  /* line 145, style.sass */
+  button.game-start:hover {
+    border-color: #cad68a;
+    color: #cad68a; }
+  /* line 148, style.sass */
+  button.game-start span.title {
+    font-size: 1.5em; }
 
-/* line 140, style.sass */
+/* line 153, style.sass */
 div.main-view.ng-enter, div.main-view.ng-leave {
   -webkit-transition: all 0.8s ease-out;
   -webkit-transition-delay: 0s;
   -moz-transition: all 0.8s ease-out 0s;
   -o-transition: all 0.8s ease-out 0s;
   transition: all 0.8s ease-out 0s; }
-/* line 144, style.sass */
+/* line 157, style.sass */
 div.main-view.ng-leave.ng-leave-active, div.main-view.ng-enter {
   left: 100%; }
-/* line 148, style.sass */
+/* line 161, style.sass */
 div.main-view.ng-leave, div.main-view.ng-enter.ng-enter-active {
   left: 0; }
 
-/* line 152, style.sass */
+/* line 165, style.sass */
 h1.main-title, h2.section-title {
   color: #fbdd8e; }
 
-/* line 155, style.sass */
+/* line 168, style.sass */
 div.tasks-column {
   float: left;
   width: 15%;
   background-color: #333333; }
 
-/* line 160, style.sass */
+/* line 173, style.sass */
 div.main-column {
   float: left;
   width: 70%;
+  height: 100%;
   padding: 0 0 0 1%;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  background-color: #454545; }
 
-/* line 166, style.sass */
+/* line 181, style.sass */
 div.status-column {
   float: left;
   width: 15%;
   background-color: #333333;
   color: white; }
 
-/* line 172, style.sass */
+/* line 187, style.sass */
 div.jobs {
   box-sizing: border-box;
   height: 50em; }
-  /* line 175, style.sass */
+  /* line 190, style.sass */
   div.jobs h3 {
     color: white; }
 
-/* line 178, style.sass */
+/* line 193, style.sass */
 div.task, div.job, div.asset {
   position: relative;
   cursor: move;
   margin: 0.625em;
   border: 0.0625em solid white;
-  padding: 0.375em;
   -webkit-border-radius: 0.1875em;
   -moz-border-radius: 0.1875em;
   -ms-border-radius: 0.1875em;
   -o-border-radius: 0.1875em;
   border-radius: 0.1875em;
+  padding: 0.375em;
   height: 1.5em;
   color: #333333;
   line-height: 1.5em;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
-  /* line 191, style.sass */
+  /* line 206, style.sass */
   div.task:hover, div.job:hover, div.asset:hover {
     color: #f07848;
     background: #f0cdc0; }
 
-/* line 195, style.sass */
+/* line 210, style.sass */
 div.job {
   margin: 0 auto 0.625em;
   width: 6.25em;
-  left: 0; }
-  /* line 199, style.sass */
-  div.job.selected-true-add, div.job.selected-false-add {
-    -webkit-transition: all 0.16s linear;
-    -webkit-transition-delay: 0s !important;
-    -moz-transition: all 0.16s linear 0s !important;
-    -o-transition: all 0.16s linear 0s !important;
-    transition: all 0.16s linear 0s !important;
-    position: relative; }
-  /* line 202, style.sass */
-  div.job.selected-true, div.job.selected-true-add-active {
-    position: relative;
+  left: 0;
+  -webkit-transition: left 0.16s linear;
+  -webkit-transition-delay: 0s !important;
+  -moz-transition: left 0.16s linear 0s !important;
+  -o-transition: left 0.16s linear 0s !important;
+  transition: left 0.16s linear 0s !important; }
+  /* line 216, style.sass */
+  div.job.selected-true, div.job.selected-true.selected-true-add-active {
     left: 1.25em; }
-  /* line 205, style.sass */
-  div.job.selected-false, div.job.selected-false-add-active {
-    position: relative;
+  /* line 218, style.sass */
+  div.job.selected-false.selected-false-add-active {
     left: 0; }
-  /* line 209, style.sass */
+  /* line 221, style.sass */
   div.job.ui-draggable-dragging {
     -webkit-transition: none !important;
     transition: none !important; }
-  /* line 213, style.sass */
+  /* line 225, style.sass */
   div.job span.title {
     display: inline-block;
     text-indent: 0.375em;
     text-transform: capitalize; }
-  /* line 218, style.sass */
+  /* line 230, style.sass */
   div.job .hotkey-button {
     float: right; }
 
-/* line 222, style.sass */
+/* line 234, style.sass */
 div.task span.title {
   font-size: 0.875em;
   text-transform: capitalize; }
-/* line 225, style.sass */
+/* line 237, style.sass */
 div.task span.delete {
   display: block;
   position: absolute;
@@ -1234,59 +1243,122 @@ div.task span.delete {
   right: 0;
   cursor: pointer;
   text-align: center; }
-  /* line 235, style.sass */
+  /* line 247, style.sass */
   div.task span.delete:hover {
     font-weight: bold; }
 
-/* line 238, style.sass */
+/* line 250, style.sass */
 div.days {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  margin-top: 1.25em; }
 
-/* line 241, style.sass */
+/* line 254, style.sass */
 div.price-selector {
+  overflow: hidden;
   width: 80%;
-  margin: 0 10%; }
+  margin: 3.75em 10% 0;
+  color: #cad68a; }
+  /* line 260, style.sass */
+  div.price-selector h3.price-title {
+    margin: 0 0 0.625em; }
+  /* line 263, style.sass */
+  div.price-selector input.price-input {
+    margin: 1.25em 0;
+    outline: none;
+    cursor: ew-resize; }
+  /* line 268, style.sass */
+  div.price-selector input[type='range'] {
+    -webkit-appearance: none;
+    border-radius: 0.3125em;
+    background-color: #999999;
+    height: 0.625em;
+    vertical-align: middle; }
+  /* line 275, style.sass */
+  div.price-selector input[type='range']::-moz-range-track {
+    -moz-appearance: none;
+    border-radius: 0.3125em;
+    background-color: #999999;
+    height: 0.625em; }
+  /* line 281, style.sass */
+  div.price-selector input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    -moz-appearance: none;
+    border-radius: 1.25em;
+    height: 5em;
+    width: 5em;
+    font-size: 1em; }
+    /* line 288, style.sass */
+    div.price-selector input[type='range']::-webkit-slider-thumb:after {
+      position: relative;
+      top: 0.25em;
+      content: "\e055";
+      display: block;
+      color: #fbdd8e;
+      font-family: Icons, sans-serif;
+      font-size: 3em;
+      text-align: center; }
+  /* line 299, style.sass */
+  div.price-selector input[type='range']::-moz-range-thumb {
+    -webkit-appearance: none !important;
+    -moz-appearance: none;
+    border-radius: 1.25em;
+    height: 5em;
+    width: 5em;
+    font-size: 1em; }
+    /* line 306, style.sass */
+    div.price-selector input[type='range']::-moz-range-thumb:after {
+      position: relative;
+      top: 0.25em;
+      content: "\e055";
+      display: block;
+      color: #fbdd8e;
+      font-family: Icons, sans-serif;
+      font-size: 3em;
+      text-align: center; }
 
-/* line 245, style.sass */
+/* line 317, style.sass */
 input.price-input {
   width: 100%;
   display: inline-block; }
 
-/* line 249, style.sass */
+/* line 321, style.sass */
 div.price {
   float: left;
   width: 10%;
   text-align: right; }
 
-/* line 254, style.sass */
+/* line 326, style.sass */
 h2.sprint-title {
+  color: #333333;
   box-sizing: border-box;
-  margin: 2.5em 0 0;
-  border: 0.125em solid #cdcdcd;
-  border-bottom: 0.0625em solid #cdcdcd;
+  margin: 0;
+  border: 0.125em solid #fbdd8e;
+  border-bottom: 0.0625em solid #fbdd8e;
+  background-color: #fdecbf;
   width: 98%;
   padding: 0.625em 0; }
 
-/* line 262, style.sass */
+/* line 336, style.sass */
 div.day {
   cursor: cell;
+  color: #333333;
   box-sizing: border-box;
   position: relative;
-  border: 0.125em solid #cdcdcd;
-  background: #ededed;
+  border: 0.125em solid #fbdd8e;
+  background-color: #fefbf1;
   width: 14%;
-  height: 7.5em;
+  height: 8.75em;
   float: left; }
-  /* line 264, style.sass */
+  /* line 337, style.sass */
   div.day.full-true {
     cursor: pointer; }
-  /* line 273, style.sass */
+  /* line 348, style.sass */
   div.day:hover {
-    background-color: #dcd095; }
-  /* line 275, style.sass */
+    background-color: #fce4a7; }
+  /* line 350, style.sass */
   div.day:nth-child(7n+1) {
     clear: left; }
-  /* line 278, style.sass */
+  /* line 353, style.sass */
   div.day div.message {
     position: absolute;
     z-index: 20;
@@ -1302,24 +1374,24 @@ div.day {
     -moz-transition: all 0.34s linear 0s !important;
     -o-transition: all 0.34s linear 0s !important;
     transition: all 0.34s linear 0s !important; }
-    /* line 290, style.sass */
+    /* line 365, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1;
       top: -2.1875em; }
-    /* line 293, style.sass */
+    /* line 368, style.sass */
     div.day div.message.showing-false {
       opacity: 0;
       top: 0; }
-    /* line 296, style.sass */
+    /* line 371, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important;
       top: 0 !important; }
-    /* line 299, style.sass */
+    /* line 374, style.sass */
     div.day div.message span.value {
       font-weight: bold;
       font-size: 1.5em; }
 
-/* line 304, style.sass */
+/* line 379, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
@@ -1327,52 +1399,52 @@ div.day-progress-meter {
   height: 100%;
   background-color: #cad68a; }
 
-/* line 311, style.sass */
+/* line 386, style.sass */
 h5.day-name {
   position: relative;
   z-index: 1; }
 
-/* line 315, style.sass */
+/* line 390, style.sass */
 dl.stats {
   overflow: hidden;
   font-weight: 500;
   font-size: 1.375em;
   text-align: center;
   color: #cad68a; }
-  /* line 322, style.sass */
+  /* line 397, style.sass */
   dl.stats .positive-false {
     color: #d77167; }
-  /* line 324, style.sass */
+  /* line 399, style.sass */
   dl.stats dt {
     text-decoration: underline; }
-  /* line 326, style.sass */
+  /* line 401, style.sass */
   dl.stats dd {
     margin: 0.375em 0 0.625em; }
 
-/* line 329, style.sass */
+/* line 404, style.sass */
 div.assets {
   box-sizing: border-box;
   height: 50em; }
 
-/* line 334, style.sass */
+/* line 409, style.sass */
 div.asset.ng-enter, div.asset.ng-leave {
   -webkit-transition: all 0.24s linear;
   -webkit-transition-delay: 0s;
   -moz-transition: all 0.24s linear 0s;
   -o-transition: all 0.24s linear 0s;
   transition: all 0.24s linear 0s; }
-/* line 338, style.sass */
+/* line 413, style.sass */
 div.asset.ng-leave.ng-leave-active, div.asset.ng-enter {
   opacity: 0; }
-/* line 342, style.sass */
+/* line 417, style.sass */
 div.asset.ng-leave, div.asset.ng-enter.ng-enter-active {
   opacity: 1; }
-/* line 346, style.sass */
+/* line 421, style.sass */
 div.asset span.expiry {
   display: block;
   float: right; }
 
-/* line 350, style.sass */
+/* line 425, style.sass */
 div.announcement {
   position: absolute;
   z-index: 10;
@@ -1387,35 +1459,35 @@ div.announcement {
   height: 80%;
   background-color: white;
   text-align: center; }
-  /* line 366, style.sass */
+  /* line 441, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -webkit-transition: all 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.8s ease-out 0s;
     -o-transition: all 0.8s ease-out 0s;
     transition: all 0.8s ease-out 0s; }
-  /* line 370, style.sass */
+  /* line 445, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 374, style.sass */
+  /* line 449, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 378, style.sass */
+  /* line 453, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333333; }
-  /* line 385, style.sass */
+  /* line 460, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 389, style.sass */
+  /* line 464, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333333; }
-  /* line 393, style.sass */
+  /* line 468, style.sass */
   div.announcement button.confirm {
     cursor: pointer;
     margin: 1.25em 0;
@@ -1423,14 +1495,14 @@ div.announcement {
     font-size: 1em;
     border: 0.0625em solid inherit;
     background: inherit; }
-    /* line 400, style.sass */
+    /* line 475, style.sass */
     div.announcement button.confirm span {
       font-size: 1.75em; }
-    /* line 402, style.sass */
+    /* line 477, style.sass */
     div.announcement button.confirm:hover {
       opacity: 0.85; }
 
-/* line 405, style.sass */
+/* line 480, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;

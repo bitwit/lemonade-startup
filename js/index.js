@@ -170,6 +170,7 @@ appModule.controller('MainController', [
     $scope.prices = [0, 0.5, 1, 1.5, 2, 3, 4, 5, 7, 10];
     $scope.price = 3;
     $scope.sprint = 1;
+    $scope.maxSprints = 10;
     $scope.currentDay = -1;
     $scope.progress = 0;
     $scope.timerPromise = null;
@@ -196,7 +197,7 @@ appModule.controller('MainController', [
       return console.log($scope.sprintDays);
     };
     $scope.startCountdown = function() {
-      $scope.countdownProgress = 20000;
+      $scope.countdownProgress = 15000;
       return $timeout($scope.tickCountdown, $scope.tickSpeed);
     };
     $scope.tickCountdown = function() {
@@ -237,7 +238,7 @@ appModule.controller('MainController', [
     };
     $scope.resumeSimulation = function() {
       if ($scope.hasStarted && ($scope.timerPromise == null)) {
-        $scope.announcements = [];
+        $scope.announcements.length = 0;
         return $scope.tick();
       }
     };
@@ -271,18 +272,21 @@ appModule.controller('MainController', [
       }
     };
     $scope.nextSprint = function() {
-      var day, _i, _len, _ref, _results;
+      var day, _i, _len, _ref;
       $scope.sprint++;
-      $scope.currentDay = -1;
-      $scope.progress = 0;
-      _ref = $scope.sprintDays;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        day = _ref[_i];
-        day.tasks = [];
-        _results.push(day.isInteractive = true);
+      if ($scope.sprint > $scope.maxSprints) {
+        return $rootScope.switchView('end');
+      } else {
+        $scope.currentDay = -1;
+        $scope.progress = 0;
+        _ref = $scope.sprintDays;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          day = _ref[_i];
+          day.tasks = [];
+          day.isInteractive = true;
+        }
+        return $scope.startCountdown();
       }
-      return _results;
     };
     $scope.$on('eventCardOccured', function($e, eventCard) {
       $scope.announcements.length = 0;

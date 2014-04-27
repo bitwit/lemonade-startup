@@ -8,13 +8,15 @@ $em: $font-size / 1em
 // Shorthand for outputting ems
 
 $color-grey-dark: #333
+$color-grey-medium-dark: #454545
 $color-grey: #888
 $color-grey-light: #CDCDCD
 $color-grey-ultra-light: #EDEDED
 
 //Color Scheme, new
-$color-pink: #e7b8e1
-$color-blue: #b9dcee
+$color-pink: #d8a9d2
+$color-purple: #adaddc
+$color-blue: #add9e0
 $color-yellow: #fbdd8e
 $color-red: #d77167
 $color-green: #cad68a
@@ -67,9 +69,9 @@ h3
   display: none
 
 .type-dev
-  color: $color-orange-medium
-  background-color: $color-orange-medium
-  border-color: $color-orange-medium
+  color: $color-purple
+  background-color: $color-purple
+  border-color: $color-purple
 
 .type-res
   color: $color-blue
@@ -131,10 +133,21 @@ h1.intro-title
 
 button.game-start
   display: block
+  cursor: pointer
+  outline: none
   margin: 0 auto
   font-size: 16/$em
   width: 300/$em
   height: 80/$em
+  background: none
+  border: 2/$em solid $color-green-dark
+  color: $color-green-dark
+  &:hover
+    border-color: $color-green
+    color: $color-green
+  span.title
+    font-size: 24/$em
+
 
 div.main-view
   &.ng-enter,
@@ -160,8 +173,10 @@ div.tasks-column
 div.main-column
   float: left
   width: 70%
+  height: 100%
   padding: 0 0 0 1%
   box-sizing: border-box
+  background-color: $color-grey-medium-dark
 
 div.status-column
   float: left
@@ -196,14 +211,11 @@ div.job
   margin: 0 auto 10/$em
   width: 100/$em
   left: 0
-  &.selected-true-add, &.selected-false-add
-    +single-transition(all, 0.16s, linear, 0s !important)
-    position: relative
-  &.selected-true, &.selected-true-add-active
-    position: relative
+  +single-transition(left, 0.16s, linear, 0s !important)
+
+  &.selected-true, &.selected-true.selected-true-add-active
     left: 20/$em
-  &.selected-false, &.selected-false-add-active
-    position: relative
+  &.selected-false.selected-false-add-active
     left: 0
 
   &.ui-draggable-dragging
@@ -237,10 +249,70 @@ div.task
 
 div.days
   box-sizing: border-box
+  margin-top: 20/$em
 
 div.price-selector
+  overflow: hidden
   width: 80%
-  margin: 0 10%
+  margin: 60/$em 10% 0
+  color: $color-green
+
+  h3.price-title
+    margin: 0 0 10/$em
+
+  input.price-input
+    margin: 20/$em 0
+    outline: none
+    cursor: ew-resize
+
+  input[type='range'] 
+    -webkit-appearance: none
+    border-radius: 5/$em
+    background-color: #999
+    height: 10/$em
+    vertical-align: middle
+
+  input[type='range']::-moz-range-track 
+    -moz-appearance: none
+    border-radius: 5/$em
+    background-color: #999
+    height: 10/$em
+
+  input[type='range']::-webkit-slider-thumb
+    -webkit-appearance: none !important
+    -moz-appearance: none
+    border-radius: 20/$em
+    height: 80/$em
+    width: 80/$em
+    font-size: 16/$em
+    &:after
+      position: relative
+      top: 4/$em
+      content: "\e055"
+      display: block
+      color: $color-yellow
+      font:
+        family: Icons, sans-serif
+        size: 48/$em
+      text-align: center
+
+  input[type='range']::-moz-range-thumb
+    -webkit-appearance: none !important
+    -moz-appearance: none
+    border-radius: 20/$em
+    height: 80/$em
+    width: 80/$em
+    font-size: 16/$em
+    &:after
+      position: relative
+      top: 4/$em
+      content: "\e055"
+      display: block
+      color: $color-yellow
+      font:
+        family: Icons, sans-serif
+        size: 48/$em
+      text-align: center
 
 input.price-input
   width: 100%
@@ -252,26 +324,29 @@ div.price
   text-align: right
 
 h2.sprint-title
+  color: $color-grey-dark
   box-sizing: border-box
-  margin: 40/$em 0 0
-  border: 2/$em solid $color-grey-light
-  border-bottom: 1/$em solid $color-grey-light
+  margin: 0
+  border: 2/$em solid $color-yellow
+  border-bottom: 1/$em solid $color-yellow
+  background-color: lighten($color-yellow, 10%)
   width: 98%
   padding: 10/$em 0
 
 div.day
-  cursor: cell
   &.full-true
     cursor: pointer
+  cursor: cell
+  color: $color-grey-dark
   box-sizing: border-box
   position: relative
-  border: 2/$em solid $color-grey-light
-  background: $color-grey-ultra-light
+  border: 2/$em solid $color-yellow
+  background-color: lighten($color-yellow, 20%)
   width: 14%
-  height: 120/$em
+  height: 140/$em
   float: left
   &:hover
-    background-color: $color-beige
+    background-color: lighten($color-yellow, 5%)
   &:nth-child(7n+1)
     clear: left
 

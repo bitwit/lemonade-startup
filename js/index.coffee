@@ -52,6 +52,7 @@ appModule.controller "RootController", ["$rootScope", ($rootScope) ->
 ]
 
 appModule.controller 'IntroController', ['$scope', ($scope) ->
+
 ]
 
 appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, bizObj, hotkeys) ->
@@ -110,6 +111,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.price = 3
   $scope.sprint = 1
+  $scope.maxSprints = 10
   $scope.currentDay = -1
   $scope.progress = 0
   $scope.timerPromise = null
@@ -135,7 +137,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log $scope.sprintDays
 
   $scope.startCountdown = ->
-    $scope.countdownProgress = 20000
+    $scope.countdownProgress = 15000
     $timeout $scope.tickCountdown, $scope.tickSpeed
 
   $scope.tickCountdown = ->
@@ -162,7 +164,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.resumeSimulation = ->
     if $scope.hasStarted and !$scope.timerPromise?
-      $scope.announcements = []
+      $scope.announcements.length = 0
       $scope.tick()
 
   $scope.tick = ->
@@ -193,11 +195,15 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.nextSprint = ->
     $scope.sprint++
-    $scope.currentDay = -1
-    $scope.progress = 0
-    for day in $scope.sprintDays
-      day.tasks = []
-      day.isInteractive = yes
+    if $scope.sprint > $scope.maxSprints
+      $rootScope.switchView 'end'
+    else
+      $scope.currentDay = -1
+      $scope.progress = 0
+      for day in $scope.sprintDays
+        day.tasks = []
+        day.isInteractive = yes
+      $scope.startCountdown()
 
   $scope.$on 'eventCardOccured', ($e, eventCard) ->
     $scope.announcements.length = 0
