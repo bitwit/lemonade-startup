@@ -32,37 +32,37 @@ class VictoryCondition
   class BootstrapEnding extends VictoryCondition
     constructor: ->
       super "Bootstrapped","sal","dollar"
-      @description: "Squeezing lemons by hand? Nope. Now, you just roll over them with a Ferrari. I guess that means you made it?"
+      @description = "Squeezing lemons by hand? Nope. Now, you just roll over them with a Ferrari. I guess that means you made it?"
       @criteria.doesHaveAvailableFunds = true
       @criteria.playerHasTotalOwnership = true
       @criteria.hasPassedHighThreshold_Cash = true
-      @priority: 10
+      @priority = 10
 
   class StagnantEnding extends VictoryCondition
     constructor: ->
       super "Still Here","sal","dollar"
-      @description: "Yesterday, I squeezed lemons, today I am squeezing lemons, and tomorrow I will squeeze lemons. Lemon, lemon, something, lemon."
+      @description = "Yesterday, I squeezed lemons, today I am squeezing lemons, and tomorrow I will squeeze lemons. Lemon, lemon, something, lemon."
       @criteria.doesHaveAvailableFunds = true
       @criteria.doesHaveAvailableEquity = true
       @criteria.isUnderLowThreshold_Cash = true
-      @priority: 1
+      @priority = 1
 
   class AcquiredEnding extends VictoryCondition
     constructor: ->
       super "JuiceBook is Calling","sal","thumbs-up"
-      @description: "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
+      @description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
       @criteria.hasPassedHighThreshold_Fundraising = true
       @criteria.hasPassedHighThreshold_Development = true
       @criteria.hasPassedHighThreshold_Marketing = true
       @criteria.doesHaveAvailableFunds = true
-      @priority: 9
+      @priority = 9
 
   class BankruptEnding extends VictoryCondition
     constructor: ->
       super "Bankrupt","sal","thumbs-up"
-      @description: "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
+      @description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
       @criteria.hasPassedHighThreshold_Fundraising = true
       @criteria.hasPassedHighThreshold_Development = true
       @criteria.hasPassedHighThreshold_Marketing = true
       @criteria.doesHaveAvailableFunds = true
-      @priority: 9
+      @priority = 9
