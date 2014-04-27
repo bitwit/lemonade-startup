@@ -1155,13 +1155,17 @@ div.tasks-column {
 
 /* line 174, style.sass */
 div.instructions {
-  margin: 0 1.25em;
+  margin: 2.5em auto;
+  width: 40%;
   color: white; }
-  /* line 177, style.sass */
+  /* line 178, style.sass */
+  div.instructions ul.instructions {
+    list-style-type: decimal; }
+  /* line 180, style.sass */
   div.instructions li.instruction {
     margin-bottom: 0.875em; }
 
-/* line 181, style.sass */
+/* line 184, style.sass */
 div.main-column {
   float: left;
   width: 70%;
@@ -1170,7 +1174,7 @@ div.main-column {
   box-sizing: border-box;
   background-color: #454545; }
 
-/* line 189, style.sass */
+/* line 192, style.sass */
 div.status-column {
   float: left;
   box-sizing: border-box;
@@ -1179,14 +1183,27 @@ div.status-column {
   background-color: #333333;
   color: white; }
 
-/* line 197, style.sass */
+/* line 200, style.sass */
+h3.sub-title {
+  color: #fbdd8e; }
+
+/* line 203, style.sass */
 div.jobs {
   box-sizing: border-box; }
-  /* line 199, style.sass */
-  div.jobs h3 {
-    color: white; }
 
-/* line 202, style.sass */
+/* line 206, style.sass */
+div.forecast {
+  text-align: center;
+  color: white; }
+  /* line 209, style.sass */
+  div.forecast div.weather-conditions {
+    position: relative; }
+  /* line 211, style.sass */
+  div.forecast div.weather-condition {
+    font-size: 1.125em;
+    margin: 0 1.25em 0.5em; }
+
+/* line 216, style.sass */
 div.task, div.job, div.asset {
   position: relative;
   cursor: move;
@@ -1204,12 +1221,12 @@ div.task, div.job, div.asset {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
-  /* line 215, style.sass */
+  /* line 229, style.sass */
   div.task:hover, div.job:hover, div.asset:hover {
     color: #f07848;
     background: #f0cdc0; }
 
-/* line 219, style.sass */
+/* line 233, style.sass */
 div.job {
   margin: 0 auto 0.625em;
   width: 6.25em;
@@ -1219,30 +1236,30 @@ div.job {
   -moz-transition: left 0.16s linear 0s !important;
   -o-transition: left 0.16s linear 0s !important;
   transition: left 0.16s linear 0s !important; }
-  /* line 225, style.sass */
+  /* line 239, style.sass */
   div.job.selected-true, div.job.selected-true.selected-true-add-active {
     left: 1.25em; }
-  /* line 227, style.sass */
+  /* line 241, style.sass */
   div.job.selected-false.selected-false-add-active {
     left: 0; }
-  /* line 230, style.sass */
+  /* line 244, style.sass */
   div.job.ui-draggable-dragging {
     -webkit-transition: none !important;
     transition: none !important; }
-  /* line 234, style.sass */
+  /* line 248, style.sass */
   div.job span.title {
     display: inline-block;
     text-indent: 0.375em;
     text-transform: capitalize; }
-  /* line 239, style.sass */
+  /* line 253, style.sass */
   div.job .hotkey-button {
     float: right; }
 
-/* line 243, style.sass */
+/* line 257, style.sass */
 div.task span.title {
   font-size: 0.875em;
   text-transform: capitalize; }
-/* line 246, style.sass */
+/* line 260, style.sass */
 div.task span.delete {
   display: block;
   position: absolute;
@@ -1253,46 +1270,50 @@ div.task span.delete {
   right: 0;
   cursor: pointer;
   text-align: center; }
-  /* line 256, style.sass */
+  /* line 270, style.sass */
   div.task span.delete:hover {
     font-weight: bold; }
 
-/* line 259, style.sass */
+/* line 273, style.sass */
+div.calendar {
+  overflow: hidden; }
+
+/* line 276, style.sass */
 div.days {
   box-sizing: border-box;
   margin-top: 4.5em; }
 
-/* line 263, style.sass */
+/* line 280, style.sass */
 div.price-selector {
   overflow: hidden;
   width: 80%;
   margin: 3.75em 10% 0;
   color: #cad68a; }
-  /* line 269, style.sass */
+  /* line 286, style.sass */
   div.price-selector h3.price-title {
     margin: 0 0 0.625em; }
-    /* line 271, style.sass */
+    /* line 288, style.sass */
     div.price-selector h3.price-title span.title {
       font-size: 1.5em; }
-  /* line 274, style.sass */
+  /* line 291, style.sass */
   div.price-selector input.price-input {
     margin: 1.25em 0;
     outline: none;
     cursor: ew-resize; }
-  /* line 279, style.sass */
+  /* line 296, style.sass */
   div.price-selector input[type='range'] {
     -webkit-appearance: none;
     border-radius: 0.3125em;
     background-color: #999999;
     height: 0.625em;
     vertical-align: middle; }
-  /* line 286, style.sass */
+  /* line 303, style.sass */
   div.price-selector input[type='range']::-moz-range-track {
     -moz-appearance: none;
     border-radius: 0.3125em;
     background-color: #999999;
     height: 0.625em; }
-  /* line 292, style.sass */
+  /* line 309, style.sass */
   div.price-selector input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none !important;
     -moz-appearance: none;
@@ -1300,7 +1321,7 @@ div.price-selector {
     height: 5em;
     width: 5em;
     font-size: 1em; }
-    /* line 299, style.sass */
+    /* line 316, style.sass */
     div.price-selector input[type='range']::-webkit-slider-thumb:after {
       position: relative;
       top: 0.25em;
@@ -1310,7 +1331,7 @@ div.price-selector {
       font-family: Icons, sans-serif;
       font-size: 3em;
       text-align: center; }
-  /* line 310, style.sass */
+  /* line 327, style.sass */
   div.price-selector input[type='range']::-moz-range-thumb {
     -webkit-appearance: none !important;
     -moz-appearance: none;
@@ -1318,7 +1339,7 @@ div.price-selector {
     height: 5em;
     width: 5em;
     font-size: 1em; }
-    /* line 317, style.sass */
+    /* line 334, style.sass */
     div.price-selector input[type='range']::-moz-range-thumb:after {
       position: relative;
       top: 0.25em;
@@ -1329,18 +1350,18 @@ div.price-selector {
       font-size: 3em;
       text-align: center; }
 
-/* line 328, style.sass */
+/* line 345, style.sass */
 input.price-input {
   width: 100%;
   display: inline-block; }
 
-/* line 332, style.sass */
+/* line 349, style.sass */
 div.price {
   float: left;
   width: 10%;
   text-align: right; }
 
-/* line 337, style.sass */
+/* line 354, style.sass */
 h2.sprint-title {
   color: #333333;
   box-sizing: border-box;
@@ -1351,7 +1372,7 @@ h2.sprint-title {
   width: 98%;
   padding: 0.625em 0; }
 
-/* line 347, style.sass */
+/* line 364, style.sass */
 div.day {
   cursor: cell;
   color: #333333;
@@ -1362,16 +1383,16 @@ div.day {
   width: 14%;
   height: 8.75em;
   float: left; }
-  /* line 348, style.sass */
+  /* line 365, style.sass */
   div.day.full-true {
     cursor: pointer; }
-  /* line 359, style.sass */
+  /* line 376, style.sass */
   div.day:hover {
     background-color: #fce4a7; }
-  /* line 361, style.sass */
+  /* line 378, style.sass */
   div.day:nth-child(7n+1) {
     clear: left; }
-  /* line 364, style.sass */
+  /* line 381, style.sass */
   div.day div.message {
     position: absolute;
     z-index: 9;
@@ -1389,29 +1410,29 @@ div.day {
     -moz-transition: all 0.44s linear 0s !important;
     -o-transition: all 0.44s linear 0s !important;
     transition: all 0.44s linear 0s !important; }
-    /* line 378, style.sass */
+    /* line 395, style.sass */
     div.day div.message.showing-true, div.day div.message.showing-true-add, div.day div.message.showing-true-add-active {
       opacity: 1; }
-    /* line 381, style.sass */
+    /* line 398, style.sass */
     div.day div.message.showing-false {
       opacity: 0; }
-    /* line 384, style.sass */
+    /* line 401, style.sass */
     div.day div.message.showing-false-add, div.day div.message.showing-false-add-active {
       opacity: 0 !important; }
-    /* line 389, style.sass */
+    /* line 406, style.sass */
     div.day div.message li.oi span.title {
       display: none; }
-    /* line 391, style.sass */
+    /* line 408, style.sass */
     div.day div.message li.oi span.value {
       font-weight: 600; }
-  /* line 394, style.sass */
+  /* line 411, style.sass */
   div.day .positive-true {
     color: #b0ad64; }
-  /* line 396, style.sass */
+  /* line 413, style.sass */
   div.day .positive-false {
     color: #d77167; }
 
-/* line 400, style.sass */
+/* line 417, style.sass */
 div.day-progress-meter {
   position: absolute;
   top: 0;
@@ -1419,46 +1440,46 @@ div.day-progress-meter {
   height: 100%;
   background-color: #cad68a; }
 
-/* line 407, style.sass */
+/* line 424, style.sass */
 h5.day-name {
   position: relative;
   z-index: 9; }
 
-/* line 411, style.sass */
+/* line 428, style.sass */
 div.cash {
   overflow: hidden;
   font-weight: 500;
   font-size: 1.375em;
   text-align: center;
   color: #cad68a; }
-  /* line 418, style.sass */
+  /* line 435, style.sass */
   div.cash .positive-false {
     color: #d77167; }
-  /* line 422, style.sass */
+  /* line 439, style.sass */
   div.cash h3.cash-title {
     text-decoration: underline;
     font-size: 1.375em;
     margin-bottom: 0; }
-    /* line 426, style.sass */
+    /* line 443, style.sass */
     div.cash h3.cash-title span.title {
       font-size: 65%; }
-  /* line 428, style.sass */
+  /* line 445, style.sass */
   div.cash strong.cash-value {
     display: block;
     font-size: 1.25em;
     margin: 0.125em 0 0.625em; }
 
-/* line 433, style.sass */
+/* line 450, style.sass */
 div.assets {
   position: relative;
   box-sizing: border-box;
   height: 50em; }
 
-/* line 438, style.sass */
+/* line 455, style.sass */
 div.assets-container {
   position: relative; }
 
-/* line 441, style.sass */
+/* line 458, style.sass */
 div.asset {
   position: absolute;
   width: 100%;
@@ -1471,25 +1492,25 @@ div.asset {
   -moz-transition: all 0.24s linear 0s;
   -o-transition: all 0.24s linear 0s;
   transition: all 0.24s linear 0s; }
-  /* line 450, style.sass */
+  /* line 467, style.sass */
   div.asset.ng-enter, div.asset.ng-leave {
     -webkit-transition: all 0.24s linear;
     -webkit-transition-delay: 0s;
     -moz-transition: all 0.24s linear 0s;
     -o-transition: all 0.24s linear 0s;
     transition: all 0.24s linear 0s; }
-  /* line 454, style.sass */
+  /* line 471, style.sass */
   div.asset.ng-leave.ng-leave-active, div.asset.ng-enter {
     opacity: 0; }
-  /* line 458, style.sass */
+  /* line 475, style.sass */
   div.asset.ng-leave, div.asset.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 462, style.sass */
+  /* line 479, style.sass */
   div.asset span.expiry {
     display: block;
     float: right; }
 
-/* line 466, style.sass */
+/* line 483, style.sass */
 div.announcements {
   position: absolute;
   z-index: 10;
@@ -1497,12 +1518,12 @@ div.announcements {
   height: 100%;
   top: 0;
   left: 0; }
-  /* line 474, style.sass */
+  /* line 491, style.sass */
   div.announcements.displaying-false {
     display: none;
     pointer-events: none; }
 
-/* line 478, style.sass */
+/* line 495, style.sass */
 div.announcement {
   box-sizing: border-box;
   margin: 2% auto 0;
@@ -1513,35 +1534,35 @@ div.announcement {
   height: 41.25em;
   background-color: white;
   text-align: center; }
-  /* line 490, style.sass */
+  /* line 507, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -webkit-transition: opacity 0.8s ease-out;
     -webkit-transition-delay: 0s;
     -moz-transition: opacity 0.8s ease-out 0s;
     -o-transition: opacity 0.8s ease-out 0s;
     transition: opacity 0.8s ease-out 0s; }
-  /* line 494, style.sass */
+  /* line 511, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 498, style.sass */
+  /* line 515, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 502, style.sass */
+  /* line 519, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333333; }
-  /* line 509, style.sass */
+  /* line 526, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 513, style.sass */
+  /* line 530, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333333; }
-  /* line 517, style.sass */
+  /* line 534, style.sass */
   div.announcement button.accept, div.announcement button.reject {
     outline: none;
     cursor: pointer;
@@ -1556,30 +1577,30 @@ div.announcement {
     border-radius: 0.25em;
     width: 47.5%;
     background: none; }
-    /* line 527, style.sass */
+    /* line 544, style.sass */
     div.announcement button.accept span, div.announcement button.reject span {
       font-size: 1.75em; }
-    /* line 529, style.sass */
+    /* line 546, style.sass */
     div.announcement button.accept:hover, div.announcement button.reject:hover {
       opacity: 0.85; }
-      /* line 531, style.sass */
+      /* line 548, style.sass */
       div.announcement button.accept:hover .hotkey-button, div.announcement button.reject:hover .hotkey-button {
         display: inline-block; }
-    /* line 534, style.sass */
+    /* line 551, style.sass */
     div.announcement button.accept .hotkey-button, div.announcement button.reject .hotkey-button {
       display: none;
       margin-top: 0.25em;
       color: #333333;
       font-size: 1em; }
-  /* line 540, style.sass */
+  /* line 557, style.sass */
   div.announcement button.accept {
     color: #b0ad64;
     margin-right: 5%; }
-  /* line 544, style.sass */
+  /* line 561, style.sass */
   div.announcement button.reject {
     color: #d77167; }
 
-/* line 547, style.sass */
+/* line 564, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;
