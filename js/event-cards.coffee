@@ -381,7 +381,7 @@ class CaffinatedLemonsCard extends EventCard
     super business, tasks
     business.stats.marketing += 10
     business.stats.sales += 3
-    business.stat.variableCostPerDay *= 1.1
+    business.stats.variableCostPerDay *= 1.1
 
 class LemonadeEyedropsCard extends EventCard
   constructor: ->
@@ -396,7 +396,7 @@ class LemonadeEyedropsCard extends EventCard
     super business, tasks
     business.stats.marketing += 5
     business.stats.sales += 1
-    business.stat.variableCostPerDay *= 1.1
+    business.stats.variableCostPerDay *= 1.1
 
 class IntravenousLemonadeCard extends EventCard
   constructor: ->
@@ -411,7 +411,7 @@ class IntravenousLemonadeCard extends EventCard
     super business, tasks
     business.stats.marketing += 15
     business.stats.sales += 10
-    business.stat.variableCostPerDay *= 1.1
+    business.stats.variableCostPerDay *= 1.1
 
 class BloodLemonsCard extends EventCard
   constructor: ->
@@ -492,3 +492,4 @@ class DesignAwardCard extends EventCard
   tick: (business, tasks) ->
     super business, tasks
     business.stats.marketing += 5
+    business.stats.cash -= 2500
