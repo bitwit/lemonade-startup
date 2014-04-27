@@ -177,6 +177,7 @@ appModule.controller('MainController', [
     $scope.tickSpeed = 40;
     $scope.selectedTaskIndex = 0;
     $scope.countdownProgress = 0;
+    $scope.announcements = [];
     $scope.setSelectedTaskIndex = function(index) {
       return $scope.selectedTaskIndex = index;
     };
@@ -283,9 +284,11 @@ appModule.controller('MainController', [
       }
       return _results;
     };
-    $rootScope.announceEvent = function(event) {
-      return $rootScope.announcements = [event];
-    };
+    $scope.$on('eventCardOccured', function($e, eventCard) {
+      $scope.announcements.length = 0;
+      $scope.announcements.push(eventCard);
+      return console.log('announcements', $scope.announcements);
+    });
     $scope.$on('taskMoved', function($e, task) {
       return console.log('main controller task moved');
     });
@@ -560,7 +563,7 @@ FundraisingCard = (function(_super) {
 
 })(Card);
 
-var BrandAmbassadorCard, CrowdfundingCampaignCard, EventCard, GoneViralCard_Good, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard,
+var BrandAmbassadorCard, CrowdfundingCampaignCard, EventCard, GoneViralCardGood, GreatSalesPitchCard, MoneyFromDadCard, PRAgentEventCard, ProductMarketFitCard,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -637,19 +640,19 @@ PRAgentEventCard = (function(_super) {
 
 })(EventCard);
 
-GoneViralCard_Good = (function(_super) {
-  __extends(GoneViralCard_Good, _super);
+GoneViralCardGood = (function(_super) {
+  __extends(GoneViralCardGood, _super);
 
-  function GoneViralCard_Good() {
-    GoneViralCard_Good.__super__.constructor.call(this, "Gone Viral", "mkt", "rss");
+  function GoneViralCardGood() {
+    GoneViralCardGood.__super__.constructor.call(this, "Gone Viral", "mkt", "rss");
     this.description = "A youtube video you made now has 10,000,000 views. That has to be good for something, right?";
     this.expiry = 3;
     this.thresholds.marketing = 3;
   }
 
-  GoneViralCard_Good.prototype.tick = function(business, tasks) {
+  GoneViralCardGood.prototype.tick = function(business, tasks) {
     var task, _i, _len;
-    GoneViralCard_Good.__super__.tick.call(this, business, tasks);
+    GoneViralCardGood.__super__.tick.call(this, business, tasks);
     for (_i = 0, _len = tasks.length; _i < _len; _i++) {
       task = tasks[_i];
       task.marketing = task.marketing * 1.5;
@@ -658,7 +661,7 @@ GoneViralCard_Good = (function(_super) {
     return business.stats.cash += 10;
   };
 
-  return GoneViralCard_Good;
+  return GoneViralCardGood;
 
 })(EventCard);
 
@@ -687,7 +690,7 @@ MoneyFromDadCard = (function(_super) {
   function MoneyFromDadCard() {
     MoneyFromDadCard.__super__.constructor.call(this, "$200 From Dad", "fun", "credit-card");
     this.description = "Your Dad doesn't want you to starve. Or eat too much.";
-    this.expiry = -1;
+    this.expiry = 0;
     this.thresholds.cash = 100;
   }
 
@@ -850,7 +853,7 @@ ColdWeatherCard = (function(_super) {
 appModule.service("BusinessObject", [
   "$rootScope", function($rootScope) {
     var businessObject, eventCards, weatherCards;
-    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCard_Good(), new MoneyFromDadCard(), new CrowdfundingCampaignCard()];
+    eventCards = [new PRAgentEventCard(), new BrandAmbassadorCard(), new GreatSalesPitchCard(), new ProductMarketFitCard(), new GoneViralCardGood(), new MoneyFromDadCard(), new CrowdfundingCampaignCard()];
     weatherCards = [new HeatWaveWeatherCard(), new GoodWeatherCard(), new RainyWeatherCard(), new ColdWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard(), new AverageWeatherCard()];
     businessObject = {
       forecast: [],
@@ -876,26 +879,29 @@ appModule.service("BusinessObject", [
     };
     businessObject.onDayStart = function() {};
     businessObject.dayComplete = function(day) {
-      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+      var asset, card, cashDelta, didTriggerEvent, event, eventCard, i, numCustomers, stats, weather, _i, _j, _k, _len, _len1, _ref, _ref1;
       console.log('day complete', day);
-      _ref = businessObject.assets;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        asset = _ref[_i];
-        asset.tick(businessObject, day.tasks);
+      if (businessObject.assets.length > 0) {
+        for (i = _i = _ref = businessObject.assets.length - 1; _ref <= 0 ? _i <= 0 : _i >= 0; i = _ref <= 0 ? ++_i : --_i) {
+          console.log('get object', i);
+          asset = businessObject.assets[i];
+          asset.tick(businessObject, day.tasks);
+        }
       }
       _ref1 = day.tasks;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
         card = _ref1[_j];
         card.merge(businessObject);
       }
       didTriggerEvent = false;
-      for (i = _k = 0, _len2 = eventCards.length; _k < _len2; i = ++_k) {
+      for (i = _k = 0, _len1 = eventCards.length; _k < _len1; i = ++_k) {
         eventCard = eventCards[i];
         if (eventCard.hasBusinessMetConditions(businessObject)) {
           didTriggerEvent = true;
           event = eventCards.splice(i, 1)[0];
           businessObject.assets.push(event);
-          $rootScope.announceEvent(event);
+          $rootScope.$broadcast('eventCardOccured', event);
+          break;
         }
       }
       weather = businessObject.forecast.shift();

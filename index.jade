@@ -65,7 +65,7 @@ html
 							span.title Assets
 						div.asset(class="type-{{asset.id}}", ng-repeat="asset in game.assets")
 							span.title {{asset.name}}
-							span.expiry {{asset.expiry}}
+							span.expiry(ng-if="asset.expiry > 0") {{asset.expiry}}
 
 						h3 Options
 						div.debug-buttons(style="text-align: center;")

@@ -4,7 +4,7 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     new BrandAmbassadorCard()
     new GreatSalesPitchCard()
     new ProductMarketFitCard()
-    new GoneViralCard_Good()
+    new GoneViralCardGood()
     new MoneyFromDadCard()
     new CrowdfundingCampaignCard()
   ]
@@ -50,8 +50,11 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
     console.log 'day complete', day
 
     #First tick assets, which can modify day cards
-    for asset in businessObject.assets
-      asset.tick businessObject, day.tasks
+    if businessObject.assets.length > 0
+      for i in [(businessObject.assets.length - 1)..0]
+        console.log 'get object', i
+        asset = businessObject.assets[i]
+        asset.tick businessObject, day.tasks
 
     #Then merge the cards of the day to the business
     for card in day.tasks
@@ -64,7 +67,8 @@ appModule.service "BusinessObject", ["$rootScope", ($rootScope) ->
         didTriggerEvent = yes
         event = eventCards.splice(i, 1)[0]  # discarding this event from eventsCards[] for good
         businessObject.assets.push event  # putting it into assets (where it can expire, or persist indefinitely)
-        $rootScope.announceEvent event  # announcing the event to the UI, which pauses the simulation timer until dismiss
+        $rootScope.$broadcast 'eventCardOccured', event  # announcing the event to the UI, which pauses the simulation timer until dismiss
+        break
 
     #get the weather before calculating
     weather = businessObject.forecast.shift()
