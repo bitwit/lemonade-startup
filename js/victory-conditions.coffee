@@ -2,100 +2,105 @@ class VictoryCondition
   constructor: (@name, @id ,@icon) ->
     @description = "An event occurred"
     @priority = 0
-    @criteria = { #false here means that the criteria is not considered for the VC. If true, the value of the flag from the business is checked for true.
-      doesHaveAvailableFunds: false
-      doesHaveAvailableEquity: false
-      playerHasMajorityEquity: false
-      playerHasTotalOwnership: false
-      cashOnHandIsPositive: false
-      hasPassedHighThreshold_Cash: false
-      hasPassedHighThreshold_Research: false
-      hasPassedHighThreshold_Development: false
-      hasPassedHighThreshold_Design: false
-      hasPassedHighThreshold_Marketing: false
-      hasPassedHighThreshold_Sales: false
-      hasPassedHighThreshold_Fundraising: false
-      hasPassedHighThreshold_MarketSize: false
-      hasPassedLowThreshold_Cash: false
-      isBroke: false
-      isUnderLowThreshold_Cash: false
-      playerHasSoldOut: false
-    }
 
   hasBusinessMetConditions: (business) ->
-    console.log "#{@name} conditions being checked"
-    criteriaMet = yes
-    for flag, value of @criteria
-      if value != false
-        console.log "checking #{flag}", value, business.flags[flag], business.flags
-        if business.flags[flag] != true
-          criteriaMet = no
-
-    if criteriaMet
-      console.log "#{@name} condition was met"
-    else
-      console.log "#{@name} condition was NOT met"
-
-    return criteriaMet
+    return no
 
 
 class BootstrapEnding extends VictoryCondition
   constructor: ->
     super "Bootstrapped","sal","dollar"
     @description = "Squeezing lemons by hand? Nope. Now, you just roll over them with a Ferrari. I guess that means you made it?"
-    @criteria.doesHaveAvailableFunds = true
-    @criteria.playerHasTotalOwnership = true
-    @criteria.hasPassedHighThreshold_Cash = true
     @priority = 10
+
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.cash < 100000
+      conditionsMet = no
+    if business.stats.equity < 100
+      conditionsMet = no
+    return conditionsMet
+
+class ALittleBetterEnding extends VictoryCondition
+  constructor: ->
+    super "Still in Business","sal","thumb-up"
+    @description = "I can pay myself now!"
+    @priority = 1
+
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.cash < 25000
+      conditionsMet = no
+    if business.stats.equity <= 0
+      conditionsMet = no
+    return conditionsMet
 
 class StagnantEnding extends VictoryCondition
   constructor: ->
     super "Still Here","sal","dollar"
     @description = "Yesterday, I squeezed lemons, today I am squeezing lemons, and tomorrow I will squeeze lemons. Lemon, lemon, something, lemon."
-    @criteria.doesHaveAvailableFunds = true
-    @criteria.doesHaveAvailableEquity = true
-    @criteria.isUnderLowThreshold_Cash = true
     @priority = 1
+
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.cash >= 25000
+      conditionsMet = no
+    if business.stats.equity <= 0
+      conditionsMet = no
+    return conditionsMet
 
 class AcquiredEnding extends VictoryCondition
   constructor: ->
     super "JuiceBook is Calling","sal","thumb-up"
-    @description = "Lemons? Have fun with that. I'm out. See you in Paris. No, not that one - secret Paris."
-    @criteria.hasPassedHighThreshold_Fundraising = true
-    @criteria.hasPassedHighThreshold_Development = true
-    @criteria.hasPassedHighThreshold_Marketing = true
-    @criteria.doesHaveAvailableFunds = true
+    @description = "Lemons? Have fun with that. I'm out. See you in Paris."
     @priority = 9
 
-class HostileTakeoverEnding extends VictoryCondition
-  constructor: ->
-    super "You Can't Fire me!","sal","thumb-up"
-    @description = "Oh. You can? But ... This was ... Seriously? You're having security escort me out?"
-    @criteria.isBroke = true
-    @criteria.playerHasSoldOut = true
-    @priority = 7
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.projectedValue < 5000000
+      conditionsMet = no
+    if business.stats.fundraising < 50
+      conditionsMet = no
+    if business.stats.development < 20
+      conditionsMet = no
+    if business.stats.marketing < 30
+      conditionsMet = no
+    return conditionsMet
 
 class SoftHostileTakeoverEnding extends VictoryCondition
   constructor: ->
     super "'Voluntary' Resignation","sal","thumb-up"
-    @description = "The board pushed your out. But you got paid. Lemons are so passé anyway. Time to disrupt the world of Agave."
-    @criteria.playerHasSoldOut = true
-    @criteria.isUnderLowThreshold_Cash = true
+    @description = "The board pushed you out. But you got paid. Lemons are so passé anyway. Time to disrupt the world of Agave."
+    @priority = 7
+
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.equity > 50
+      conditionsMet = no
+    return conditionsMet
+
+class HostileTakeoverEnding extends VictoryCondition
+  constructor: ->
+    super "Hostile Takeover","sal","thumb-down"
+    @description = "You barely own the business anymore and you weren't doing the business any favours"
     @priority = 8
+
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.cash > 15000
+      conditionsMet = no
+    if business.stats.equity > 50
+      conditionsMet = no
+    return conditionsMet
 
 class BankruptEnding extends VictoryCondition
   constructor: ->
-      super "Bankrupt","sal","thumb-down"
-      @description = "The lemonade stand? Oh, no, I work at Starbucks now."
-      @criteria.isBroke = true
-      @priority = 1
-
-class ALittleBetterEnding extends VictoryCondition
-  constructor: ->
-    super "Still in Business","sal","thumbs-down"
-    @description = "I can pay myself now!"
-    @criteria.doesHaveAvailableFunds = true
-    @criteria.doesHaveAvailableEquity = true
-    @criteria.hasPassedLowThreshold_Cash = true
+    super "Bankrupt","sal","thumb-down"
+    @description = "The lemonade stand? Oh, no, I work at Starbucks now."
     @priority = 1
 
+  hasBusinessMetConditions: (business) ->
+    conditionsMet = yes
+    if business.stats.cash > 0
+      conditionsMet = no
+    return conditionsMet

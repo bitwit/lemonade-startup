@@ -122,7 +122,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.progress = 0
   $scope.timerPromise = null
   $scope.hasStarted = no
-  $scope.tickSpeed = 30
+  $scope.tickSpeed = 5
   $scope.selectedTaskIndex = 0
   $scope.countdownProgress = 0
   $scope.announcements = []
@@ -143,7 +143,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log $scope.sprintDays
 
   $scope.startCountdown = ->
-    $scope.countdownProgress = 10000
+    $scope.countdownProgress = 5000
     $timeout $scope.tickCountdown, $scope.tickSpeed
 
   $scope.tickCountdown = ->
@@ -170,13 +170,13 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.acceptEvent = ->
     event = $scope.announcements.shift()
-    bizObj.stats.cash -= event.cost
-    bizObj.stats.equity -= event.equity
+    event.onAccept bizObj
     bizObj.assets.unshift event
     $scope.resumeSimulation()
 
   $scope.rejectEvent = ->
     event = $scope.announcements.shift()
+    event.onReject bizObj
     $scope.resumeSimulation()
 
   $scope.resumeSimulation = ->
@@ -312,16 +312,18 @@ appModule.directive 'lsDay', [ ->
     <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" ng-mouseenter="isSelected=true;" ng-mouseleave="isSelected=false;" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
         <div class="message showing-{{day.result != null && (isShowingMessage || isSelected) }}">
-          <span class="oi" data-glyph="{{day.result.weather.icon}}"></span>
-          <span class="temperature">{{day.result.weather.temperature}}&deg;C</span>
           <ul class="items">
+            <li class="oi" data-glyph="{{day.result.weather.icon}}">
+              <span class="title">Temperature</span>
+              <span class="value">{{day.result.weather.temperature}}&deg;C</dd>
+            </li>
             <li class="oi" data-glyph="dollar">
               <span class="title">Price</span>
               <span class="value">{{day.price | currency:"$"}}</dd>
             </li>
             <li class="oi" data-glyph="people">
               <span class="title">Customers</span>
-              <span class="value">{{day.result.stats.averageDemand | number:0}}</span>
+              <span class="value">{{day.result.customerCount | number:0}}</span>
             </li>
             <li class="oi" data-glyph="bar-chart">
               <span class="title">Cash</span>
@@ -330,6 +332,10 @@ appModule.directive 'lsDay', [ ->
           </ul>
         </div>
         <h5 class="day-name">{{day.name}}</h5>
+        <ul class="task-placeholders">
+          <li class="task-placeholder">AM</li>
+          <li class="task-placeholder">PM</li>
+        </ul>
         <div ng-repeat="task in day.tasks track by $index" ls-task></div>
     </div>
   """

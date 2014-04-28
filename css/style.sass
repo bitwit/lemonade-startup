@@ -43,6 +43,7 @@ html
 
 body
   font:
+    size: $font-size * 1px
     family: Helvetica Neue, Helvetica, Arial, sans-serif
     weight: 300
   overflow: hidden
@@ -101,6 +102,10 @@ h3
 div.views
   height: 100%
   overflow: hidden
+
+  @media all and (max-width: 1200px)
+    font-size: 80%
+
 
 div.view-container
   position: absolute
@@ -276,9 +281,11 @@ div.job
 
   span.title
     display: inline-block
+    font-size: 13/$em
     text:
       indent: 6/$em
       transform: capitalize
+
   .hotkey-button
     float: right
 
@@ -317,10 +324,20 @@ div.price-selector
     span.title
       font-size: 24/$em
 
+  strong.price-mark
+    text-align: center
+    width: 10%
+    display: block
+    float: left
+    font-size: 36/$em
+
   input.price-input
+    float: left
     margin: 20/$em 0
     outline: none
     cursor: ew-resize
+    width: 80%
+    display: inline-block
 
   input[type='range'] 
     -webkit-appearance: none
@@ -370,10 +387,6 @@ div.price-selector
         family: Icons, sans-serif
         size: 48/$em
       text-align: center
-
-input.price-input
-  width: 100%
-  display: inline-block
 
 div.price
   float: left
@@ -440,6 +453,15 @@ div.day
     color: $color-green-dark
   .positive-false
     color: $color-red
+
+  ul.task-placeholders
+    position: absolute
+    top: 30/$em
+    left: 10/$em
+
+  li.task-placeholder
+    margin-bottom: 40/$em
+
 
 
 div.day-progress-meter

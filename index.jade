@@ -7,7 +7,7 @@ html
 		meta(name="viewport",content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi")
 		link(rel="stylesheet", type="text/css", href="css/style.css")
 		link(rel="stylesheet", type="text/css", href="css/hotkeys.min.css")
-		title Lemon Startup
+		title Lemonade Startup
 	body(id="document-body", ng-controller="RootController")
 		div.views(ng-switch="", on="currentView")
 			div.intro-view.view-container.ng-cloak(ng-controller="IntroController", ng-switch-when="intro")
@@ -75,7 +75,9 @@ html
 					div.price-selector
 						h3.price-title
 							span.title Price: {{prices[price] | currency}}
+						strong.price-mark.low $0
 						input.price-input(type="range", ng-model="price", min="0", max="9")
+						strong.price-mark.high $10
 					div.days
 						h2.sprint-title
 							span.title Sprint &#35;{{sprint}} of {{maxSprints}}
@@ -103,9 +105,9 @@ html
 						strong.cash-value(class="positive-{{game.stats.projectedValue > 0}}") {{game.stats.projectedValue| currency}}
 
 					div.assets
-						h2.section-title.oi(data-glyph="timer")
+						h2.section-title.oi(data-glyph="spreadsheet")
 							br
-							span.title Events
+							span.title Assets
 						div.assets-container
 							div.asset(class="type-{{asset.id}}", ng-repeat="asset in game.assets", style="top: {{$index * 40}}px;")
 								span.title.oi(data-glyph="{{asset.icon}}") &nbsp;{{asset.name}}

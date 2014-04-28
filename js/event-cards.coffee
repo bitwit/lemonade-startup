@@ -34,25 +34,18 @@ class EventCard
       if @expiry <= 0
         index = business.assets.indexOf @
         business.assets.splice index, 1
+        @onDestroy(business)
 
+  onAccept: (business) ->
+    business.stats.cash -= @cost
+    business.stats.equity -= @equity
+
+  onReject: (business) ->
+
+  onDestroy: (business) ->
 
 #marketing cards
 class PRAgentEventCard extends EventCard
-  constructor: ->
-    super "PR Agent", "mkt", "rss"
-    @description = "A PR Agent has agreed to help work with your team for the next few days"
-    @acceptText = "Great"
-    @rejectText = "Nah"
-    @expiry = 3 #3 days after receipt
-    @thresholds.marketing = 25
-
-  tick: (business, tasks) ->
-    super business, tasks
-    for task in tasks
-      task.marketing = task.marketing * 1.5
-    business.stats.marketing += 1
-
-class PRAgentEventCard_B extends EventCard
   constructor: ->
     super "PR Agent", "mkt", "rss"
     @description = "A PR Agent has agreed to help work with your team for the next few days"
@@ -64,10 +57,25 @@ class PRAgentEventCard_B extends EventCard
   tick: (business, tasks) ->
     super business, tasks
     for task in tasks
-      task.marketing = task.marketing * 1.4
-    business.stats.marketing += 2
-    business.stats.averageDemand += 20
+      task.marketing = task.marketing * 1.2
+    business.stats.averageDemand += 10
+    business.stats.potentialMarketSize += 10
 
+class PRAgentEventCard_B extends EventCard
+  constructor: ->
+    super "PR Agent", "mkt", "rss"
+    @description = "A PR Agent has agreed to help work with your team for the next few days"
+    @acceptText = "Great"
+    @rejectText = "Nah"
+    @expiry = 3 #3 days after receipt
+    @thresholds.marketing = 120
+
+  tick: (business, tasks) ->
+    super business, tasks
+    for task in tasks
+      task.marketing = task.marketing * 1.4
+    business.stats.averageDemand += 20
+    business.stats.potentialMarketSize += 20
 
 class GoneViralCardGood extends EventCard
   constructor: ->
@@ -195,10 +203,11 @@ class CrowdfundingCampaignCard_B extends EventCard
       task.cash += Math.round((Math.random() * (200 - 10)) + 10)
     business.stats.marketing += 2
 
+
 class SeedInvestmentCard extends EventCard
   constructor: ->
     super "Ignore the Horns", "fun", "credit-card"
-    @description = "A lovely gentleman with a dashing goatee offered $20,000 for 20% equity. And some fine print."
+    @description = "A gentleman with a dashing goatee offered $20,000 for 20%. And some fine print."
     @acceptText = "Thanks!"
     @rejectText = "No way."
     @expiry = 0
@@ -210,30 +219,45 @@ class SeedInvestmentCard extends EventCard
     business.stats.cash += 20000
     business.stats.equity -= 20
 
+
 class SeedInvestmentCard_B extends EventCard
   constructor: ->
     super "Thirsty Banker", "fun", "credit-card"
-    @description = "An investment banker passed by, and needed to hide the booze on his breath. He sees an opportunity. For 20%."
+    @description = "An investment banker passed by. He sees an opportunity. $30,000 for 20%."
     @acceptText = "Great"
     @rejectText = "Nope"
     @expiry = 0
     @thresholds.development = 15
     @thresholds.equity = 20
+    @equity = 20
 
-  tick: (business, tasks) ->
-    super business, tasks
-    business.stats.cash += 10000
-    business.stats.equity -= 20
+  onAccept: (business) ->
+    super business
+    business.stats.cash += 30000
 
+
+class SeedInvestmentCard_C extends EventCard
+  constructor: ->
+    super "Angel Investor", "fun", "credit-card"
+    @description = "A veteran investor wants in. $30,000 for 20%."
+    @acceptText = "Great"
+    @rejectText = "Nope"
+    @expiry = 0
+    @thresholds.fundraising = 30
+    @equity = 20
+
+  onAccept: (business) ->
+    super business
+    business.stats.cash += 30000
 
 #sales cards
 class GreatSalesPitchCard extends EventCard
   constructor: ->
-    super "Perfect Sales Pitch", "sal", "comment-square"
+    super "Perfect Pitch", "sal", "comment-square"
     @description = "You've practiced your elevator speech and it's ready."
     @isRejectable = false
-    @expiry = 0
-    @thresholds.sales = 20
+    @expiry = -1
+    @thresholds.sales = 30
     @acceptText = "Use it"
     @rejectText = "Too shy"
 
@@ -254,15 +278,19 @@ class DowntownPermitCard extends EventCard
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.marketing -= 3
-    business.stats.sales += 5
-    business.stats.potentialMarketSize *= 1.07
-    business.stats.fixedCostPerDay *= 1.05
+    business.stats.marketing += 8
+    business.stats.sales += 6
+
+  onAccept: (business) ->
+    super business
+    business.stats.potentialMarketSize += 8000
+    business.stats.fixedCostPerDay += 80
+
 
 class SuburbanPermitCard extends EventCard
   constructor: ->
     super "Suburban Vending Permit", "sal", "comment-square"
-    @description = "A permit opened up for a spot in a residential neighbourhood. Want it? Only $10000..."
+    @description = "A permit opened up for a spot in a residential neighbourhood. Want it? $10000."
     @isRejectable = false
     @expiry = -1
     @thresholds.sales = 40
@@ -270,30 +298,37 @@ class SuburbanPermitCard extends EventCard
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.marketing -= 5
-    business.stats.sales += 5
-    business.stats.potentialMarketSize *= 1.03
-    business.stats.fixedCostPerDay *= 1.02
+    business.stats.marketing += 5
+    business.stats.sales += 2
+
+  onAccept: (business) ->
+    super business
+    business.stats.potentialMarketSize += 4000
+    business.stats.fixedCostPerDay += 50
+
 
 class FranchiseCard extends EventCard
   constructor: ->
     super "Second Cart Life", "sal", "comment-square"
-    @description = "We could open another cart. It would only cost about $25000, and 10%"
+    @description = "We could open another cart. It would cost about $50000"
     @isRejectable = false
     @expiry = -1
     @thresholds.sales = 40
     @thresholds.marketing = 40
     @thresholds.cash = 25000
     @thresholds.equity = 10
-    @cost = 25000
+    @cost = 50000
     @equity = 10
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.marketing += 2
-    business.stats.sales += 2
-    business.stats.potentialMarketSize *= 1.10
-    business.stats.fixedCostPerDay *= 1.07
+    business.stats.marketing += 10
+    business.stats.sales += 4
+
+  onAccept: (business) ->
+    super business
+    business.stats.potentialMarketSize += 10000
+    business.stats.fixedCostPerDay += 100
 
 class BrandAmbassadorCard extends EventCard
   constructor: ->
@@ -305,6 +340,7 @@ class BrandAmbassadorCard extends EventCard
     @thresholds.marketing = 15
     @thresholds.sales = 25
     @thresholds.cash = 10000
+    @cost = 10000
 
   tick: (business, tasks) ->
     super business, tasks
@@ -313,7 +349,6 @@ class BrandAmbassadorCard extends EventCard
       task.sales = task.sales * 1.5
     business.stats.marketing += 5
     business.stats.potentialMarketSize *= 1.25
-    business.stats.cash -= 2000
 
 class BrandAmbassadorCard_B extends EventCard
   constructor: ->
@@ -338,19 +373,18 @@ class BrandAmbassadorCard_B extends EventCard
 class CrossPromotionCard extends EventCard
   constructor: ->
     super "Cross Promotion", "sal", "musical-note"
-    @description = "Know what goes with lemonade? Salmon! They want to co-market with us, for 5%."
+    @description = "Know what goes with lemonade? Salmon! They want to co-market with us."
     @acceptText = "Yum"
     @rejectText = "Gross"
     @expiry = 3
     @thresholds.marketing = 8
     @thresholds.sales = 7
-    @thresholds.equity = 5
 
   tick: (business, tasks) ->
     super business, tasks
     for task in tasks
-      task.marketing = task.marketing * 1.1
-      task.sales = task.sales * 1.1
+      task.marketing = task.marketing * 2
+      task.sales = task.sales * 2
     business.stats.marketing += 7
     business.stats.potentialMarketSize *= 1.1
     business.stats.equity -= 5
@@ -363,14 +397,12 @@ class CaffinatedLemonsCard extends EventCard
     @acceptText = "Oh yeah!"
     @rejectText = "Nope"
     @expiry = -1
-    @thresholds.development = 30
+    @thresholds.development = 80
 
-  tick: (business, tasks) ->
-    super business, tasks
-    business.stats.marketing += 1
-    business.stats.sales += 1
-    business.stats.variableCostPerDay *= 1.03
-    business.stats.averageDemand += 20
+  onAccept: (business) ->
+    super business
+    business.stats.variableCostPerDay += 0.10
+    business.stats.potentialMarketSize += 20000
 
 class LemonadeEyedropsCard extends EventCard
   constructor: ->
@@ -379,13 +411,12 @@ class LemonadeEyedropsCard extends EventCard
     @acceptText = "Do it"
     @rejectText = "Uh..."
     @expiry = -1
-    @thresholds.development = 20
+    @thresholds.development = 30
 
-  tick: (business, tasks) ->
-    super business, tasks
-    business.stats.marketing -= 1
-    business.stats.sales -= 1
-    business.stats.variableCostPerDay *= 1.02
+  onAccept: (business) ->
+    super business
+    business.stats.variableCostPerDay += 0.10
+    business.stats.potentialMarketSize += 5000
 
 class IntravenousLemonadeCard extends EventCard
   constructor: ->
@@ -394,29 +425,31 @@ class IntravenousLemonadeCard extends EventCard
     @acceptText = "Okay"
     @rejectText = "No"
     @expiry = -1
-    @thresholds.development = 30
+    @thresholds.development = 60
 
-  tick: (business, tasks) ->
-    super business, tasks
-    business.stats.marketing += 15
-    business.stats.sales += 10
-    business.stat.variableCostPerDay *= 1.1
+  onAccept: (business) ->
+    super business
+    business.stats.variableCostPerDay += 0.10
+    business.stats.potentialMarketSize += 10000
 
 class BloodLemonsCard extends EventCard
   constructor: ->
-    super "Blood Lemons", "dev", "comment-square"
+    super "Blood Lemons", "res", "comment-square"
     @description = "You've sourced some cheap lemons from abroad and they taste fine. Use them?"
     @acceptText = "Oh yeah!"
     @rejectText = "Nope"
     @expiry = -1
-    @thresholds.development = 10
+    @thresholds.research = 10
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.marketing -= 2
-    business.stats.potentialMarketSize *= 1.1
-    business.stats.variableCostPerDay *= 0.98
+    business.stats.marketing -= 1
 
+  onAccept: (business) ->
+    super business
+    business.stats.variableCostPerDay -= 0.15
+
+###
 class GoneViralBadCard extends EventCard
   constructor: ->
     super "Gone Viral", "dev", "bug"
@@ -440,6 +473,7 @@ class GoneViralBadCard extends EventCard
     business.stats.sales -= 10
     business.stats.potentialMarketSize *= 0.75
 
+###
 
 class SlickPackagingCard extends EventCard
   constructor: ->
@@ -452,8 +486,8 @@ class SlickPackagingCard extends EventCard
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.marketing += 2
-    business.stats.design += 2
+    business.stats.averageDemand += 15
+    business.stats.marketing += 1
 
 class SuperSlickPackagingCard extends EventCard
   constructor: ->
@@ -461,13 +495,14 @@ class SuperSlickPackagingCard extends EventCard
     @description = "Don't you think this looks cooler?"
     @acceptText = "Sure"
     @rejectText = "Meh"
-    @expiry = 0
-    @thresholds.design = 30
+    @expiry = -1
+    @thresholds.design = 40
 
   tick: (business, tasks) ->
     super business, tasks
-    business.stats.marketing += 10
-    business.stats.variableCostPerDay *= 1.02
+    business.stats.averageDemand += 100
+    business.stats.marketing += 2
+    business.stats.sales += 1
 
 class DesignAwardCard extends EventCard
   constructor: ->
@@ -475,11 +510,15 @@ class DesignAwardCard extends EventCard
     @description = "So, we won a design award. But we need to pay to accept it. Worth $2500?"
     @acceptText = "Sure"
     @rejectText = "No way"
-    @expiry = 0
-    @thresholds.design = 40
+    @expiry = -1
+    @thresholds.design = 60
+    @cost = 2500
 
   tick: (business, tasks) ->
     super business, tasks
+    business.stats.averageDemand += 60
     business.stats.marketing += 5
-    business.stats.cash -= 2500
-    business.stats.sales += 1
+
+  onAccept: (business) ->
+    super business
+    business.stats.potentialMarketSize += 4000

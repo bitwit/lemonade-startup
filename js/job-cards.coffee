@@ -6,6 +6,7 @@ class Card
     @research = 0
     @sales = 0
     @fundraising = 0
+    @potentialMarketSize = 0
     @productivity = 0
     @fixedCostPerDay = 0
     @variableCostPerDay = 0
@@ -19,6 +20,7 @@ class Card
     stats.research += @research
     stats.sales += @sales
     stats.fundraising += @fundraising
+    stats.potentialMarketSize += @potentialMarketSize
     stats.productivity += @productivity
     stats.fixedCostPerDay += @fixedCostPerDay
     stats.variableCostPerDay += @variableCostPerDay
@@ -28,7 +30,7 @@ class MarketingCard extends Card
   constructor: ->
     super "Marketing", "mkt", "target"
     @marketing = 2
-    @averageDemand = 10
+    @potentialMarketSize = 20
 
 class DevelopmentCard extends Card
   constructor: ->
@@ -40,7 +42,7 @@ class ResearchCard extends Card
   constructor: ->
     super "Research", "res", "lightbulb"
     @research = 2
-    @fixedCostPerDay = -10
+    @fixedCostPerDay = -2
 
 class DesignCard extends Card
   constructor: ->
