@@ -122,7 +122,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.progress = 0
   $scope.timerPromise = null
   $scope.hasStarted = no
-  $scope.tickSpeed = 5
+  $scope.tickSpeed = 30
   $scope.selectedTaskIndex = 0
   $scope.countdownProgress = 0
   $scope.announcements = []
@@ -143,7 +143,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     console.log $scope.sprintDays
 
   $scope.startCountdown = ->
-    $scope.countdownProgress = 5000
+    $scope.countdownProgress = 10000
     $timeout $scope.tickCountdown, $scope.tickSpeed
 
   $scope.tickCountdown = ->

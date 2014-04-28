@@ -5,9 +5,25 @@ html
 		meta(name="format-detection", content="telephone=no")
 		// WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 --
 		meta(name="viewport",content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi")
+		title Lemonade Startup
+
+		meta(property="og:type", content="website")
+		meta(property="og:url", content="http://lemonstartup.com")
+		meta(property="og:site_name", content="Lemonade Startup")
+		meta(property="og:image", content="http://lemonstartup.com/img/cover-image.png")
+		meta(property="og:title", content="Lemonade Startup")
+		meta(property="og:description", content="It's time to turn this lemonade stand into a lemonade startup!")
+
+		meta(name="twitter:card",content="summary")
+		meta(name="twitter:creator", content="@kylnew")
+		meta(name="twitter:url", content="http://lemonstartup.com")
+		meta(name="twitter:title", content="Lemonade Startup")
+		meta(name="twitter:description", content="It's time to turn this lemonade stand into a lemonade startup!")
+		meta(name="twitter:image", content="http://lemonstartup.com/img/cover-image.png")
+
 		link(rel="stylesheet", type="text/css", href="css/style.css")
 		link(rel="stylesheet", type="text/css", href="css/hotkeys.min.css")
-		title Lemonade Startup
+
 	body(id="document-body", ng-controller="RootController")
 		div.views(ng-switch="", on="currentView")
 			div.intro-view.view-container.ng-cloak(ng-controller="IntroController", ng-switch-when="intro")
@@ -66,6 +82,9 @@ html
 
 				div.main-column
 					div.credits
+						a(href="https://twitter.com/share", class="twitter-share-button", data-lang="en") Tweet
+						script.
+							!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 						p.developed-by Made by&nbsp;
 							a.credit(target="_blank", href="http://twitter.com/kylnew") Kyle
 							| &nbsp;&amp;&nbsp;
@@ -74,6 +93,8 @@ html
 							a.credit(target="_blank", href="http://tojam.ca") Toronto Game Jam #9
 							| .&nbsp;
 							a.credit(target="_blank", href="http://github.com/bitwit/lemonade-startup") Available on Github
+
+
 					div.price-selector
 						h3.price-title
 							span.title Price: {{prices[price] | currency}}
