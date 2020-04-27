@@ -1,41 +1,216 @@
-###
-  Convenience Functions
-###
+Vue.use(Vuex)
 
-#Clone @ http://stackoverflow.com/questions/11060631/how-do-i-clone-copy-an-instance-of-an-object-in-coffeescript
-clone = (obj) ->
-  return obj  if obj is null or typeof (obj) isnt "object"
-  temp = new obj.constructor()
-  for key of obj
-    temp[key] = clone(obj[key])
-  temp
+const store = new Vuex.Store({
+  state: 
+    sprintDays: [
+      #first week
+      {name: "Monday", tasks: [], isInteractive: yes, price: null}
+      {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
+      {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
+      {name: "Thursday", tasks: [], isInteractive: yes, price: null}
+      {name: "Friday", tasks: [], isInteractive: yes, price: null}
+      {name: "Saturday", tasks: [], isInteractive: yes, price: null}
+      {name: "Sunday", tasks: [], isInteractive: yes, price: null}
+      #second week
+      {name: "Monday", tasks: [], isInteractive: yes, price: null}
+      {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
+      {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
+      {name: "Thursday", tasks: [], isInteractive: yes, price: null}
+      {name: "Friday", tasks: [], isInteractive: yes, price: null}
+      {name: "Saturday", tasks: [], isInteractive: yes, price: null}
+      {name: "Sunday", tasks: [], isInteractive: yes, price: null}
+    ]
+    tasks: [
+      new DevelopmentCard()
+      new ResearchCard()
+      new MarketingCard()
+      new DesignCard()
+      new SalesCard()
+      new FundraisingCard()
+    ]
+    prices: [
+      0
+      0.5
+      1
+      1.5
+      2
+      3
+      4
+      5
+      7
+      10
+    ]
+    currentView: 'intro'
+    price:  3
+    sprint: 1
+    maxSprints: 4
+    currentDay: -1
+    progress: 0
+    hasStarted: no
+    tickSpeed: 30
+    isPaused: no
+    selectedTaskIndex: 0
+    countdownProgress: 0
+    announcements: []
+    businessObject: new BusinessObject()
+    ending: null
+  
+  mutations: {
+    setSelectedTaskIndex: (state, index) ->
+      state.selectedTaskIndex = index
 
-#Suffle @ http://jsfromhell.com/array/shuffle [v1.0]
-shuffle = (array) ->
-  counter = array.length;
-  #While there are elements in the array
-  while (counter > 0)
-    #Pick a random index
-    index = Math.floor(Math.random() * counter)
-    #Decrease counter by 1
-    counter--
-    #And swap the last element with it
-    temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
-  return array;
+    startSimulation: (state) ->
+      state.hasStarted = yes
+      state.currentDay = 0
+      day = state.sprintDays[state.currentDay]
+      day.price = state.prices[state.price]
+      day.isInteractive = no
 
-###
-  Device setup
-###
-user_agent = navigator.userAgent;
-Device =
-  isAndroid: user_agent.toLowerCase().indexOf("android") >= 0
-  isIOS: (user_agent.match(/iPhone/i) || user_agent.match(/iPod/i) || user_agent.match(/iPad/i))?
-Device.isMobile = Device.isAndroid or Device.isIOS
+    resetCountDown: (state) ->
+      state.countdownProgress = 10000 
+
+    clearAnnouncements: (state) ->
+      state.announcements.length = 0
+
+    switchView: (state, newView) ->
+      state.currentView = newView
+
+    nextSprint: (state) ->
+      state.sprint++
+      if state.sprint > state.maxSprints
+        endResult = state.businessObject.processEndGame()
+        console.log 'end game result', endResult
+        state.ending = endResult
+        state.currentView = 'end'
+      else
+        state.currentDay = -1
+        state.progress = 0
+        for day in state.sprintDays
+          day.result = null
+          day.tasks.length = 0
+          day.isInteractive = yes
+
+    autoPopulateDays: (state) ->
+      for day in state.sprintDays
+        while day.tasks.length < 2
+          state.selectedTaskIndex = Math.floor((Math.random() * 6))
+          day.tasks.push state.getCurrentSelectedTask()
+    
+    acceptFirstEvent: (state) ->
+      event = state.announcements.shift()
+      event.onAccept state.businessObject
+      # Add it to our current assets
+      state.businessObject.assets.unshift event
+
+    rejectFirstEvent: (state) ->
+      event = state.announcements.shift()
+      event.onReject state.businessObject
+
+    tickCountdown: (state) ->
+      state.countdownProgress -= state.tickSpeed
+      if state.countdownProgress <= 0
+        state.countdownProgress = 0
+
+    tick: (state) ->
+      state.progress += 0.1
+      didCompleteDay = no
+      if state.progress > 10
+        didCompleteDay = yes
+        state.isPaused = state.businessObject.dayComplete(
+          state.sprintDays[state.currentDay],
+          (event) ->
+            state.announcements.length = 0
+            state.announcements.push eventCard
+            console.log 'announcements', state.announcements
+        )
+        state.progress = 0.1
+        state.currentDay++
+
+      if state.currentDay > 13
+        console.log 'sprint simulation complete'
+        state.businessObject.sprintComplete state.sprint
+      else
+        if didCompleteDay
+          day = state.sprintDays[state.currentDay]
+          newPrice = state.prices[state.price]
+          day.price = newPrice
+          day.isInteractive = no
+  }
+
+  actions: {
+    startCountdown: (context) ->
+      context.commit 'resetCountdown'
+      context.dispatch 'tickCountdown'
+
+    tickCountdown = (context) ->
+      context.commit 'tickCountdown'
+      if context.state.countdownProgress <= 0
+        context.dispatch 'startSimulation'
+      else
+        setTimeout( => 
+          context.dispatch 'tickCountdown'
+        , context.state.tickSpeed)
+
+    startSimulation: (context) ->
+      context.commit 'startSimulation'
+      context.dispatch 'tick'
+
+    tick: (context) ->
+      context.commit 'tick'
+      if context.state.currentDay > 13
+        setTimeout( => 
+          context.dispatch 'nextSprint'
+        , 3000)
+      else if !context.state.shouldPause
+        setTimeout( => 
+          context.dispatch 'tick'
+        , context.state.tickSpeed)
+
+    acceptEvent: (context) ->
+      context.commit 'acceptFirstEvent'
+      context.dispatch 'resumeSimulation'
+
+    rejectEvent: (context) ->
+      context.commit 'rejectFirstEvent'
+      context.dispatch 'resumeSimulation'
+
+    resumeSimulation: (context) ->
+      if context.state.hasStarted and !context.state.timerPromise?
+        context.commit 'clearAnnouncements'
+        context.dispatch 'tick'
+
+    nextSprint: (context) ->
+      context.commit 'nextSprint'
+      context.dispatch 'startCountdown'
+    }
+})
+
+new Vue
+  el: '#app',
+  store: store,
+  methods:
+    newGame: () ->
+      @$store.dispatch 'switchView', 'main'
+      @$store.dispatch 'startCountdown'
+
+    switchView: (viewName) ->
+      @$store.commit 'switchView', viewName
+
+    getCurrentSelectedTask: ->
+      task = @$store.state.tasks[@$store.state.selectedTaskIndex]
+      return clone task
+
+    getDayPlan: ->
+      console.log $scope.sprintDays
+
+    restart: ->
+      window.location.reload()
+
 
 ###
   Begin Angular
+###
+
 ###
 appModule = angular.module 'appModule', ['cfp.hotkeys', 'ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']
 
@@ -44,21 +219,7 @@ appModule.config ['hotkeysProvider', (hotkeysProvider) ->
   hotkeysProvider.includeCheatSheet = no
 ]
 
-
-appModule.controller "RootController", ["$rootScope", ($rootScope) ->
-  $rootScope.currentView = "intro"
-  $rootScope.switchView = (viewName) ->
-    $rootScope.currentView = viewName
-
-  $rootScope.restart = ->
-    window.location.reload()
-]
-
-appModule.controller 'IntroController', ['$scope', ($scope) ->
-
-]
-
-appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, bizObj, hotkeys) ->
+appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, businessObject, hotkeys) ->
   $scope.testMessage = "Successfully using AngularJS!"
 
   hotkeys.add "1", "Development", -> $scope.selectedTaskIndex = 0
@@ -170,13 +331,13 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
 
   $scope.acceptEvent = ->
     event = $scope.announcements.shift()
-    event.onAccept bizObj
-    bizObj.assets.unshift event
+    event.onAccept businessObject
+    businessObject.assets.unshift event
     $scope.resumeSimulation()
 
   $scope.rejectEvent = ->
     event = $scope.announcements.shift()
-    event.onReject bizObj
+    event.onReject businessObject
     $scope.resumeSimulation()
 
   $scope.resumeSimulation = ->
@@ -189,13 +350,13 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
     didCompleteDay = no
     if $scope.progress > 10
       didCompleteDay = yes
-      shouldPause = bizObj.dayComplete $scope.sprintDays[$scope.currentDay]
+      shouldPause = businessObject.dayComplete $scope.sprintDays[$scope.currentDay]
       $scope.progress = 0.1
       $scope.currentDay++
 
     if $scope.currentDay > 13
       console.log 'sprint simulation complete'
-      bizObj.sprintComplete $scope.sprint
+      businessObject.sprintComplete $scope.sprint
       $timeout $scope.nextSprint, 3000
     else
       if didCompleteDay
@@ -212,7 +373,7 @@ appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'Bus
   $scope.nextSprint = ->
     $scope.sprint++
     if $scope.sprint > $scope.maxSprints
-      endResult = bizObj.processEndGame()
+      endResult = businessObject.processEndGame()
       console.log 'end game result', endResult
       $rootScope.ending = endResult
       $rootScope.switchView 'end'

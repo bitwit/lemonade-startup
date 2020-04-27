@@ -8,79 +8,6 @@ module.exports = (grunt) ->
     banner: '/* Copyright (c) <%= grunt.template.today("yyyy") %> ' + 'Kyle Newsome Licensed MIT */\n'
   # Task configuration.
 
-    gitclone:
-      mousetrap:
-        options:
-          repository: 'https://github.com/ccampbell/mousetrap.git'
-          branch: 'master'
-          directory: 'app/other_components/mousetrap'
-      hotkeys:
-        options:
-          repository: 'https://github.com/chieffancypants/angular-hotkeys.git'
-          branch: 'master'
-          directory: 'app/other_components/hotkeys'
-
-    copy:
-      dist:
-        files: [
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/bower_components'
-            dest: 'js/vendor/jquery'
-            src: 'jquery/dist/jquery.min.js'
-          },
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/bower_components'
-            dest: 'js/vendor/jquery'
-            src: 'jquery-ui/ui/minified/jquery-ui.min.js'
-          },
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/bower_components'
-            dest: 'js/vendor/angularjs'
-            src: 'angular*/*.min.js*'
-          },
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/bower_components'
-            dest: 'js/vendor/angularjs'
-            src: 'angular-dragdrop/src/*.min.js*'
-          },
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/other_components/hotkeys/build'
-            dest: 'js/vendor/angularjs'
-            src: 'hotkeys.min.js'
-          },
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/other_components/hotkeys/build'
-            dest: 'css'
-            src: 'hotkeys.min.css'
-          },
-          {
-            expand: true
-            flatten: true
-            dot: true
-            cwd: 'app/other_components/mousetrap'
-            dest: 'js/vendor/mousetrap'
-            src: 'mousetrap.min.js'
-          }
-        ]
-
     coffee:
       compile:
         options:
@@ -89,13 +16,19 @@ module.exports = (grunt) ->
         files: [
           {
             'js/index.js': [
-              'js/index.coffee',
+              'js/utilities.coffee',
+              'js/components/day.coffee',
+              'js/components/job.coffee',
+              'js/components/task.coffee',
+
               'js/job-cards.coffee',
               'js/event-cards.coffee',
               'js/victory-conditions.coffee',
               'js/weather-cards.coffee',
+              'js/victory-conditions.coffee',
               'js/business-object.coffee',
-              'js/victory-conditions.coffee'
+
+              'js/index.coffee',
             ]
           }
         ]
@@ -136,5 +69,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-git'
 
   # Default task.
-  grunt.registerTask 'default', ['copy', 'jade', 'compass', 'coffee', 'watch']
-  grunt.registerTask 'robert', ['jade', 'coffee', 'watch']
+  grunt.registerTask 'default', ['jade', 'compass', 'coffee', 'watch']

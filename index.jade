@@ -24,9 +24,9 @@ html
 		link(rel="stylesheet", type="text/css", href="css/style.css")
 		link(rel="stylesheet", type="text/css", href="css/hotkeys.min.css")
 
-	body(id="document-body", ng-controller="RootController")
+	body(id="app")
 		div.views(ng-switch="", on="currentView")
-			div.intro-view.view-container.ng-cloak(ng-controller="IntroController", ng-switch-when="intro")
+			div.intro-view.view-container(v-if="currentView == 'intro'")
 				h1.intro-title
 					span.lemon-drop.oi(data-glyph="droplet")
 					br
@@ -39,10 +39,10 @@ html
 					| Time to bootstrap this baby
 					br
 					| into a Lemonade Startup
-				button.game-start(ng-click="switchView('main')")
+				button.game-start(v-on:click="newGame()")
 					span.title.oi(data-glyph="check") &nbsp;Let's Get Agile
 
-			div.end-view.view-container.ng-cloak(ng-switch-when="end")
+			div.end-view.view-container(v-if="currentView == 'end'")
 				div.ending
 					h2.end-title {{ending.name}}
 					span.oi.ending-icon(data-glyph="{{ending.icon}}")
@@ -60,7 +60,7 @@ html
 					button.game-start(ng-click="restart()")
 						span.title.oi(data-glyph="reload") &nbsp;Restart
 
-			div.main-view.view-container.ng-cloak(ng-controller="MainController", ng-switch-when="main")
+			div.main-view.view-container(v-if="currentView == 'main'")
 				div.tasks-column
 					h1.main-title.oi(data-glyph="droplet")
 						br
@@ -178,18 +178,7 @@ html
 							br
 							span.hotkey-button esc
 
-		//- script(src='js/vendor/jquery/jquery.min.js')
-		//- script(src='js/vendor/jquery/jquery-ui.min.js')
-		//- script(src='js/vendor/angularjs/angular.min.js')
-		//- script(src='js/vendor/angularjs/angular-route.min.js')
-		//- script(src='js/vendor/angularjs/angular-touch.min.js')
-		//- script(src='js/vendor/angularjs/angular-animate.min.js')
-		//- script(src='js/vendor/angularjs/angular-dragdrop.min.js')
-		//- script(src='js/vendor/angularjs/hotkeys.min.js')
 		script(src='js/vendor/vue/vue.min.js')
+		script(src='js/vendor/vue/vuex.min.js')
 
 		script(src='js/index.js')
-		script.
-			angular.element(document).ready( function(){
-				angular.bootstrap(document, ['appModule']);
-			});

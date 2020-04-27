@@ -1,24 +1,24 @@
 Vue.component 'ls-day', {
   template: """
-    <div class="day full-{{day.tasks.length >= 2}}" ng-click="addSelectedTask()" ng-mouseenter="isSelected=true;" ng-mouseleave="isSelected=false;" data-drop="true" ng-model="day.tasks" data-jqyoui-options="sprintDayOptions($index)" jqyoui-droppable="{onDrop:'taskOnDrop', multiple:true}">
+    <div class="day full-{{day.tasks.length >= 2}}" v-on:click="addSelectedTask()" v-on:mouseover="isSelected = true" v-on:mouseleave="isSelected = false">
         <div class="day-progress-meter" ng-style="progressMeterStyles($index)"></div>
-        <div class="message showing-{{day.result != null && (isShowingMessage || isSelected) }}">
+        <div class="message showing-{{businessResult != null && (isShowingMessage || isSelected) }}">
           <ul class="items">
-            <li class="oi" data-glyph="{{day.result.weather.icon}}">
+            <li class="oi" data-glyph="{{businessResult.weather.icon}}">
               <span class="title">Temperature</span>
-              <span class="value">{{day.result.weather.temperature}}&deg;C</dd>
+              <span class="value">{{businessResult.weather.temperature}}&deg;C</dd>
             </li>
             <li class="oi" data-glyph="dollar">
               <span class="title">Price</span>
-              <span class="value">{{day.price | currency:"$"}}</dd>
+              <span class="value">{{day.price}}</dd>
             </li>
             <li class="oi" data-glyph="people">
               <span class="title">Customers</span>
-              <span class="value">{{day.result.customerCount | number:0}}</span>
+              <span class="value">{{businessResult.customerCount | number:0}}</span>
             </li>
             <li class="oi" data-glyph="bar-chart">
               <span class="title">Cash</span>
-              <span class="value positive-{{day.result.cashDelta > 0}}">{{day.result.cashDelta | currency:"$"}}</dd>
+              <span class="value positive-{{businessResult.cashDelta > 0}}">{{businessResult.cashDelta}}</dd>
             </li>
           </ul>
         </div>
@@ -27,13 +27,50 @@ Vue.component 'ls-day', {
           <li class="task-placeholder">AM</li>
           <li class="task-placeholder">PM</li>
         </ul>
-        <div ng-repeat="task in day.tasks track by $index" ls-task></div>
+        <ls-task v-for="task in day.tasks" v-bind:task="task" v-bind:day="day">
     </div>
   """ 
   props:
+    index: Number
+    currentDay: Number
+    progress: Number
     day: Object
+    businessResult: Object
+  data: ->
+    isSelected: no
+    isShowingMessage: no
   methods:
     addSelectedTask: ->
+      @$emit 'add-current-task-to-selected-day'
+
+    progressMeterStyles = () ->
+      if @currentDay > @index
+        width = "100%"
+      else if @currentDay is @index
+        width = (@progress * 10) + "%"
+      else
+        width = 0
+      return {
+        width: width
+      }
+
+    announce = () ->
+      @isShowingMessage = yes
+      $timeout(
+        =>
+          @isShowingMessage = no
+      , 2500)
+
+    removeTask = (e, task) ->
+      if e?
+        e.stopPropagation()
+        e.preventDefault()
+      leftOverTasks = []
+      for dayTask in $scope.day.tasks
+        if task != dayTask
+          leftOverTasks.push dayTask
+      @day.tasks = leftOverTasks
+
 }
 
 
