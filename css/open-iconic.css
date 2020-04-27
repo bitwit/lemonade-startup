@@ -4,7 +4,6 @@
   src: url("../fonts/iconic/open-iconic.eot?#iconic-sm") format("embedded-opentype"), url("../fonts/iconic/open-iconic.woff") format("woff"), url("../fonts/iconic/open-iconic.ttf") format("truetype"), url("../fonts/iconic/open-iconic.otf") format("opentype"), url("../fonts/iconic/open-iconic.svg#iconic-sm") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 /* line 11, open-iconic.scss */
 .oi[data-glyph].oi-text-replace {
   font-size: 0;
