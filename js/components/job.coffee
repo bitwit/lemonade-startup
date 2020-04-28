@@ -1,6 +1,6 @@
 Vue.component 'ls-job', {
   template: """
-  <div class="job type-{{task.id}} selected-{{isSelected}} oi" v-on:click="onSelect()" data-glyph="{{task.icon}}">
+  <div v-bind:class="typeClass" v-on:click="onSelect()" v-bind:data-glyph="task.icon">
     <span class="title">{{task.name}}</span>
     <span class="hotkey-button">{{hotkeyButton}}</span>
   </div>
@@ -10,6 +10,15 @@ Vue.component 'ls-job', {
     index: Number
     isSelected: Boolean
     task: Object
+  computed:
+    typeClass: () ->
+      obj = {
+        job: yes
+        oi: yes
+      }
+      obj["type-#{@task.id}"] = yes
+      obj["selected-#{@isSelected}"] = yes
+      return obj
   methods:
     onSelect: ->
       @$emit 'select-job'

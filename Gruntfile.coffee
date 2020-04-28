@@ -17,9 +17,7 @@ module.exports = (grunt) ->
           {
             'js/index.js': [
               'js/utilities.coffee',
-              'js/components/day.coffee',
-              'js/components/job.coffee',
-              'js/components/task.coffee',
+              'js/components/**.coffee',
 
               'js/job-cards.coffee',
               'js/event-cards.coffee',
@@ -36,8 +34,7 @@ module.exports = (grunt) ->
     jade:
       dist:
         options:
-          data:
-            debug: false
+          pretty: yes
         files:
           "index.html": ["index.jade"]
 

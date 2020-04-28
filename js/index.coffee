@@ -1,6 +1,6 @@
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+store = new Vuex.Store({
   state: 
     sprintDays: [
       #first week
@@ -142,7 +142,7 @@ const store = new Vuex.Store({
       context.commit 'resetCountdown'
       context.dispatch 'tickCountdown'
 
-    tickCountdown = (context) ->
+    tickCountdown: (context) ->
       context.commit 'tickCountdown'
       if context.state.countdownProgress <= 0
         context.dispatch 'startSimulation'
@@ -182,12 +182,41 @@ const store = new Vuex.Store({
     nextSprint: (context) ->
       context.commit 'nextSprint'
       context.dispatch 'startCountdown'
-    }
+  }
 })
 
 new Vue
   el: '#app',
   store: store,
+  created: () ->
+    console.log 'App has loaded', @
+  computed:
+    Vuex.mapState({
+      currentView: "currentView"
+      tasks: "tasks"
+      prices: "prices"
+      price: "price"
+      forecast: "forecast"
+      countdownProgress: "countdownProgress"
+      sprint: "sprint"
+      sprintDays: "sprintDays"
+      maxSprints: "maxSprints"
+      game: "businessObject"
+      announcements: "announcements"
+
+      cashValuePositiveClass: (state) ->
+        obj = {}
+        name = "positive-#{state.businessObject.stats.cash > 0}"
+        obj[name] = true
+        return obj
+
+      projectedValuePositiveClass: (state) -> 
+        obj = {}
+        name = "positive-#{state.businessObject.stats.projectedValue > 0}"
+        obj[name] = true
+        return obj
+    })
+
   methods:
     newGame: () ->
       @$store.dispatch 'switchView', 'main'
@@ -206,193 +235,187 @@ new Vue
     restart: ->
       window.location.reload()
 
+# appModule = angular.module 'appModule', ['cfp.hotkeys', 'ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']
 
-###
-  Begin Angular
-###
+# appModule.config ['hotkeysProvider', (hotkeysProvider) ->
+#   console.log 'configuring cheat sheet to no'
+#   hotkeysProvider.includeCheatSheet = no
+# ]
 
-###
-appModule = angular.module 'appModule', ['cfp.hotkeys', 'ngRoute', 'ngTouch', 'ngAnimate', 'ngDragDrop']
+# appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, businessObject, hotkeys) ->
+#   $scope.testMessage = "Successfully using AngularJS!"
 
-appModule.config ['hotkeysProvider', (hotkeysProvider) ->
-  console.log 'configuring cheat sheet to no'
-  hotkeysProvider.includeCheatSheet = no
-]
+#   hotkeys.add "1", "Development", -> $scope.selectedTaskIndex = 0
+#   hotkeys.add "2", "Research", -> $scope.selectedTaskIndex = 1
+#   hotkeys.add "3", "Marketing", -> $scope.selectedTaskIndex = 2
+#   hotkeys.add "4", "Design", -> $scope.selectedTaskIndex = 3
+#   hotkeys.add "5", "Sales", -> $scope.selectedTaskIndex = 4
+#   hotkeys.add "6", "Fundraising", -> $scope.selectedTaskIndex = 5
+#   hotkeys.add "space", "Resume/Accept", ->
+#     console.log "resume simulation"
+#     $scope.acceptEvent()
+#   hotkeys.add "esc", "Resume/Reject", ->
+#     console.log "resume simulation"
+#     $scope.rejectEvent()
 
-appModule.controller 'MainController', ['$scope', '$rootScope', '$timeout', 'BusinessObject', 'hotkeys', ($scope, $rootScope, $timeout, businessObject, hotkeys) ->
-  $scope.testMessage = "Successfully using AngularJS!"
+#   $scope.sprintDays = [
+#     #first week
+#     {name: "Monday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Thursday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Friday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Saturday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Sunday", tasks: [], isInteractive: yes, price: null}
+#     #second week
+#     {name: "Monday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Thursday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Friday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Saturday", tasks: [], isInteractive: yes, price: null}
+#     {name: "Sunday", tasks: [], isInteractive: yes, price: null}
+#   ]
 
-  hotkeys.add "1", "Development", -> $scope.selectedTaskIndex = 0
-  hotkeys.add "2", "Research", -> $scope.selectedTaskIndex = 1
-  hotkeys.add "3", "Marketing", -> $scope.selectedTaskIndex = 2
-  hotkeys.add "4", "Design", -> $scope.selectedTaskIndex = 3
-  hotkeys.add "5", "Sales", -> $scope.selectedTaskIndex = 4
-  hotkeys.add "6", "Fundraising", -> $scope.selectedTaskIndex = 5
-  hotkeys.add "space", "Resume/Accept", ->
-    console.log "resume simulation"
-    $scope.acceptEvent()
-  hotkeys.add "esc", "Resume/Reject", ->
-    console.log "resume simulation"
-    $scope.rejectEvent()
+#   $scope.tasks = [
+#     new DevelopmentCard()
+#     new ResearchCard()
+#     new MarketingCard()
+#     new DesignCard()
+#     new SalesCard()
+#     new FundraisingCard()
+#   ]
 
-  $scope.sprintDays = [
-    #first week
-    {name: "Monday", tasks: [], isInteractive: yes, price: null}
-    {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
-    {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
-    {name: "Thursday", tasks: [], isInteractive: yes, price: null}
-    {name: "Friday", tasks: [], isInteractive: yes, price: null}
-    {name: "Saturday", tasks: [], isInteractive: yes, price: null}
-    {name: "Sunday", tasks: [], isInteractive: yes, price: null}
-    #second week
-    {name: "Monday", tasks: [], isInteractive: yes, price: null}
-    {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
-    {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
-    {name: "Thursday", tasks: [], isInteractive: yes, price: null}
-    {name: "Friday", tasks: [], isInteractive: yes, price: null}
-    {name: "Saturday", tasks: [], isInteractive: yes, price: null}
-    {name: "Sunday", tasks: [], isInteractive: yes, price: null}
-  ]
+#   $scope.prices =[
+#     0
+#     0.5
+#     1
+#     1.5
+#     2
+#     3
+#     4
+#     5
+#     7
+#     10
+#   ]
 
-  $scope.tasks = [
-    new DevelopmentCard()
-    new ResearchCard()
-    new MarketingCard()
-    new DesignCard()
-    new SalesCard()
-    new FundraisingCard()
-  ]
+#   $scope.price = 3
+#   $scope.sprint = 1
+#   $scope.maxSprints = 4
+#   $scope.currentDay = -1
+#   $scope.progress = 0
+#   $scope.timerPromise = null
+#   $scope.hasStarted = no
+#   $scope.tickSpeed = 30
+#   $scope.selectedTaskIndex = 0
+#   $scope.countdownProgress = 0
+#   $scope.announcements = []
 
-  $scope.prices =[
-    0
-    0.5
-    1
-    1.5
-    2
-    3
-    4
-    5
-    7
-    10
-  ]
+#   $scope.setSelectedTaskIndex = (index) ->
+#     $scope.selectedTaskIndex = index
 
-  $scope.price = 3
-  $scope.sprint = 1
-  $scope.maxSprints = 4
-  $scope.currentDay = -1
-  $scope.progress = 0
-  $scope.timerPromise = null
-  $scope.hasStarted = no
-  $scope.tickSpeed = 30
-  $scope.selectedTaskIndex = 0
-  $scope.countdownProgress = 0
-  $scope.announcements = []
+#   $scope.getCurrentSelectedTask = ->
+#     task = $scope.tasks[$scope.selectedTaskIndex] #$scope.tasks.slice $scope.selectedTaskIndex, 1
+#     return clone task
 
-  $scope.setSelectedTaskIndex = (index) ->
-    $scope.selectedTaskIndex = index
+#   $scope.taskListOptions =
+#     accept: (dragEl) ->
+#       return no
+#     helper: 'clone'
 
-  $scope.getCurrentSelectedTask = ->
-    task = $scope.tasks[$scope.selectedTaskIndex] #$scope.tasks.slice $scope.selectedTaskIndex, 1
-    return clone task
+#   $scope.getDayPlan = ->
+#     console.log $scope.sprintDays
 
-  $scope.taskListOptions =
-    accept: (dragEl) ->
-      return no
-    helper: 'clone'
+#   $scope.startCountdown = ->
+#     $scope.countdownProgress = 10000
+#     $timeout $scope.tickCountdown, $scope.tickSpeed
 
-  $scope.getDayPlan = ->
-    console.log $scope.sprintDays
+#   $scope.tickCountdown = ->
+#     $scope.countdownProgress -= $scope.tickSpeed
+#     if $scope.countdownProgress <= 0
+#       $scope.countdownProgress = 0
+#       $scope.startSimulation()
+#     else
+#       $timeout $scope.tickCountdown, $scope.tickSpeed
 
-  $scope.startCountdown = ->
-    $scope.countdownProgress = 10000
-    $timeout $scope.tickCountdown, $scope.tickSpeed
+#   $scope.startSimulation = ->
+#     $scope.hasStarted = yes
+#     $scope.currentDay = 0
+#     day = $scope.sprintDays[$scope.currentDay]
+#     day.price = $scope.prices[$scope.price]
+#     day.isInteractive = no
+#     $scope.tick()
 
-  $scope.tickCountdown = ->
-    $scope.countdownProgress -= $scope.tickSpeed
-    if $scope.countdownProgress <= 0
-      $scope.countdownProgress = 0
-      $scope.startSimulation()
-    else
-      $timeout $scope.tickCountdown, $scope.tickSpeed
+#   $scope.autoPopulateDays = ->
+#     for day in $scope.sprintDays
+#       while day.tasks.length < 2
+#         $scope.selectedTaskIndex = Math.floor((Math.random() * 6))
+#         day.tasks.push $scope.getCurrentSelectedTask()
 
-  $scope.startSimulation = ->
-    $scope.hasStarted = yes
-    $scope.currentDay = 0
-    day = $scope.sprintDays[$scope.currentDay]
-    day.price = $scope.prices[$scope.price]
-    day.isInteractive = no
-    $scope.tick()
+#   $scope.acceptEvent = ->
+#     event = $scope.announcements.shift()
+#     event.onAccept businessObject
+#     businessObject.assets.unshift event
+#     $scope.resumeSimulation()
 
-  $scope.autoPopulateDays = ->
-    for day in $scope.sprintDays
-      while day.tasks.length < 2
-        $scope.selectedTaskIndex = Math.floor((Math.random() * 6))
-        day.tasks.push $scope.getCurrentSelectedTask()
+#   $scope.rejectEvent = ->
+#     event = $scope.announcements.shift()
+#     event.onReject businessObject
+#     $scope.resumeSimulation()
 
-  $scope.acceptEvent = ->
-    event = $scope.announcements.shift()
-    event.onAccept businessObject
-    businessObject.assets.unshift event
-    $scope.resumeSimulation()
+#   $scope.resumeSimulation = ->
+#     if $scope.hasStarted and !$scope.timerPromise?
+#       $scope.announcements.length = 0
+#       $scope.tick()
 
-  $scope.rejectEvent = ->
-    event = $scope.announcements.shift()
-    event.onReject businessObject
-    $scope.resumeSimulation()
+#   $scope.tick = ->
+#     $scope.progress += 0.1
+#     didCompleteDay = no
+#     if $scope.progress > 10
+#       didCompleteDay = yes
+#       shouldPause = businessObject.dayComplete $scope.sprintDays[$scope.currentDay]
+#       $scope.progress = 0.1
+#       $scope.currentDay++
 
-  $scope.resumeSimulation = ->
-    if $scope.hasStarted and !$scope.timerPromise?
-      $scope.announcements.length = 0
-      $scope.tick()
+#     if $scope.currentDay > 13
+#       console.log 'sprint simulation complete'
+#       businessObject.sprintComplete $scope.sprint
+#       $timeout $scope.nextSprint, 3000
+#     else
+#       if didCompleteDay
+#         day = $scope.sprintDays[$scope.currentDay]
+#         newPrice = $scope.prices[$scope.price]
+#         day.price = newPrice
+#         day.isInteractive = no
 
-  $scope.tick = ->
-    $scope.progress += 0.1
-    didCompleteDay = no
-    if $scope.progress > 10
-      didCompleteDay = yes
-      shouldPause = businessObject.dayComplete $scope.sprintDays[$scope.currentDay]
-      $scope.progress = 0.1
-      $scope.currentDay++
+#       if !shouldPause
+#         $scope.timerPromise = $timeout $scope.tick, $scope.tickSpeed
+#       else
+#         $scope.timerPromise = null
 
-    if $scope.currentDay > 13
-      console.log 'sprint simulation complete'
-      businessObject.sprintComplete $scope.sprint
-      $timeout $scope.nextSprint, 3000
-    else
-      if didCompleteDay
-        day = $scope.sprintDays[$scope.currentDay]
-        newPrice = $scope.prices[$scope.price]
-        day.price = newPrice
-        day.isInteractive = no
+#   $scope.nextSprint = ->
+#     $scope.sprint++
+#     if $scope.sprint > $scope.maxSprints
+#       endResult = businessObject.processEndGame()
+#       console.log 'end game result', endResult
+#       $rootScope.ending = endResult
+#       $rootScope.switchView 'end'
+#     else
+#       $scope.currentDay = -1
+#       $scope.progress = 0
+#       for day in $scope.sprintDays
+#         day.result = null
+#         day.tasks.length = 0
+#         day.isInteractive = yes
+#       $scope.startCountdown()
 
-      if !shouldPause
-        $scope.timerPromise = $timeout $scope.tick, $scope.tickSpeed
-      else
-        $scope.timerPromise = null
+#   $scope.$on 'eventCardOccured', ($e, eventCard) ->
+#     $scope.announcements.length = 0
+#     $scope.announcements.push eventCard
+#     console.log 'announcements', $scope.announcements
 
-  $scope.nextSprint = ->
-    $scope.sprint++
-    if $scope.sprint > $scope.maxSprints
-      endResult = businessObject.processEndGame()
-      console.log 'end game result', endResult
-      $rootScope.ending = endResult
-      $rootScope.switchView 'end'
-    else
-      $scope.currentDay = -1
-      $scope.progress = 0
-      for day in $scope.sprintDays
-        day.result = null
-        day.tasks.length = 0
-        day.isInteractive = yes
-      $scope.startCountdown()
+#   $scope.$on 'taskMoved', ($e, task) ->
+#     console.log 'main controller task moved'
 
-  $scope.$on 'eventCardOccured', ($e, eventCard) ->
-    $scope.announcements.length = 0
-    $scope.announcements.push eventCard
-    console.log 'announcements', $scope.announcements
-
-  $scope.$on 'taskMoved', ($e, task) ->
-    console.log 'main controller task moved'
-
-  $scope.startCountdown() #start countdown once loaded
-]
+#   $scope.startCountdown() #start countdown once loaded
+# ]

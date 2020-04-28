@@ -53,7 +53,7 @@ victoryConditions = [
 
 class BusinessObject
 
-  @stats:
+  stats:
     cash: 50
     creditLimit: 1000
     equity: 100
@@ -70,10 +70,10 @@ class BusinessObject
     averageDemand: 20
     potentialMarketSize: 100
 
-  @businessHistory: []
-  @dailyRevenueHistory: [] #stores the cashDelta for every day
+  businessHistory: []
+  dailyRevenueHistory: [] #stores the cashDelta for every day
 
-  @flags:
+  flags:
     doesHaveAvailableFunds: true
     doesHaveAvailableEquity: true
     playerHasMajorityEquity: true
@@ -91,7 +91,7 @@ class BusinessObject
     isUnderLowThreshold_Cash: false
     playerHasSoldOut: false
 
-  @tracking:
+  tracking:
     highestPrice: 0
     lowestPrice: 0
     mostCustomersInOneDay: 0
@@ -100,12 +100,12 @@ class BusinessObject
     mostCashOnHand: 0
     leastCashOnHand: 0
 
-  @assets: []
+  assets: []
 
-  @forecast: []
+  forecast: []
 
   constructor: ->
-    generateForecast(weatherCards)
+    @generateForecast(weatherCards)
 
   onDayStart: ->
     #to perform any start of day functions
@@ -155,31 +155,32 @@ class BusinessObject
     @dailyRevenueHistory.push cashDelta
 
     #create history object
-    dayHistory = clone businessObject
+    dayHistory = clone @
     dayHistory.cashDelta = cashDelta
     dayHistory.customerCount = numCustomers
     dayHistory.weather = clone weather
     dayHistory.weather.calculateTemperature()
     @businessHistory.push dayHistory
 
-    day.announce dayHistory
+    # TODO: need to announce some other way
+    # day.announce dayHistory
 
     @predictBusinessValue numCustomers
     @generateForecast() #add something new to the forecast
 
     return didTriggerEvent  # we inform the UI if an event was triggered so it knows whether to pause or not
 
-  sprintComplete = (sprintNumber) ->
+  sprintComplete: (sprintNumber) ->
     #currently passing the number of the completed sprint only
     @setCosts(sprintNumber)
     @setCreditLimit()
     #if sprintNumber is 10 #GAME OVER!
      # @processEndGame()
 
-  processEndGame = (victoryConditions) ->
+  processEndGame: (victoryConditions) ->
     validConditions = []
     for condition in victoryConditions
-      if condition.hasBusinessMetConditions(businessObject)
+      if condition.hasBusinessMetConditions(@)
         validConditions.push(condition)
 
     selectedCondition = validConditions[0]
@@ -190,7 +191,7 @@ class BusinessObject
 
     return selectedCondition
 
-  generateForecast = (weatherCards) ->
+  generateForecast: (weatherCards) ->
     cards = weatherCards.slice()
     while @forecast.length < 3
       shuffle(cards)
