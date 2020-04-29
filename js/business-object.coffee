@@ -155,20 +155,16 @@ class BusinessObject
     @dailyRevenueHistory.push cashDelta
 
     #create history object
-    dayHistory = clone @
-    dayHistory.cashDelta = cashDelta
-    dayHistory.customerCount = numCustomers
-    dayHistory.weather = clone weather
+    dayHistory =
+      cashDelta:cashDelta
+      customerCount:numCustomers
+      weather: clone weather
     dayHistory.weather.calculateTemperature()
     @businessHistory.push dayHistory
 
-    # TODO: need to announce some other way
-    # day.announce dayHistory
-
     @predictBusinessValue numCustomers
-    @generateForecast() #add something new to the forecast
-
-    return didTriggerEvent  # we inform the UI if an event was triggered so it knows whether to pause or not
+    @generateForecast(weatherCards) #add something new to the forecast
+    return { dayHistory, didTriggerEvent }  # we inform the UI if an event was triggered so it knows whether to pause or not
 
   sprintComplete: (sprintNumber) ->
     #currently passing the number of the completed sprint only

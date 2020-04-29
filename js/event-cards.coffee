@@ -63,7 +63,7 @@ class PRAgentEventCard extends EventCard
 
 class PRAgentEventCard_B extends EventCard
   constructor: ->
-    super "PR Agent", "mkt", "rss"
+    super "PR Agent 2", "mkt", "rss"
     @description = "A PR Agent has agreed to help work with your team for the next few days"
     @acceptText = "Great"
     @rejectText = "Nah"
@@ -148,7 +148,7 @@ class MoneyFromMomCard extends EventCard
     @acceptText = "Accept"
     @rejectText = "Too Proud"
     @description = "Your Mom is offering you lunch. For a week."
-    @expiry = 0
+    @expiry = -1
     @thresholds.cash = 100
 
   tick: (business, tasks) ->
@@ -352,7 +352,7 @@ class BrandAmbassadorCard extends EventCard
 
 class BrandAmbassadorCard_B extends EventCard
   constructor: ->
-    super "Brand Ambassador", "sal", "musical-note"
+    super "Brand Ambassador 2", "sal", "musical-note"
     @description = "For 10%, Ice-T's manager's favourite dog groomer will do some promotion for us!"
     @acceptText = "Do it!"
     @rejectText = "Nope"

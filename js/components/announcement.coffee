@@ -26,8 +26,7 @@ Vue.component 'ls-announcement', {
       obj["type-#{@event.id}"] = yes
   methods:
     acceptEvent: ->
-      console.log 'accept'
-
+      @$emit 'accept-event'
     rejectEvent: ->
-      console.log 'reject'
+      @$emit 'reject-event'
 }

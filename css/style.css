@@ -1553,26 +1553,14 @@ div.asset {
   -o-transition: all 0.24s linear 0s;
   -webkit-transition: all 0.24s linear;
   -webkit-transition-delay: 0s;
-  transition: all 0.24s linear 0s; }
-  /* line 524, style.sass */
-  div.asset.ng-enter, div.asset.ng-leave {
-    -moz-transition: all 0.24s linear 0s;
-    -o-transition: all 0.24s linear 0s;
-    -webkit-transition: all 0.24s linear;
-    -webkit-transition-delay: 0s;
-    transition: all 0.24s linear 0s; }
-  /* line 528, style.sass */
-  div.asset.ng-leave.ng-leave-active, div.asset.ng-enter {
-    opacity: 0; }
-  /* line 532, style.sass */
-  div.asset.ng-leave, div.asset.ng-enter.ng-enter-active {
-    opacity: 1; }
-  /* line 536, style.sass */
+  transition: all 0.24s linear 0s;
+  opacity: 1; }
+  /* line 537, style.sass */
   div.asset span.expiry {
     display: block;
     float: right; }
 
-/* line 540, style.sass */
+/* line 541, style.sass */
 div.announcements {
   position: absolute;
   z-index: 10;
@@ -1580,12 +1568,12 @@ div.announcements {
   height: 100%;
   top: 0;
   left: 0; }
-  /* line 548, style.sass */
+  /* line 549, style.sass */
   div.announcements.displaying-false {
     display: none;
     pointer-events: none; }
 
-/* line 552, style.sass */
+/* line 553, style.sass */
 div.announcement {
   box-sizing: border-box;
   margin: 2% auto 0;
@@ -1596,36 +1584,36 @@ div.announcement {
   height: 41.25em;
   background-color: #FFF;
   text-align: center; }
-  /* line 564, style.sass */
+  /* line 565, style.sass */
   div.announcement.ng-enter, div.announcement.ng-leave {
     -moz-transition: opacity 0.8s ease-out 0s;
     -o-transition: opacity 0.8s ease-out 0s;
     -webkit-transition: opacity 0.8s ease-out;
     -webkit-transition-delay: 0s;
     transition: opacity 0.8s ease-out 0s; }
-  /* line 568, style.sass */
+  /* line 569, style.sass */
   div.announcement.ng-leave.ng-leave-active, div.announcement.ng-enter {
     opacity: 0; }
-  /* line 572, style.sass */
+  /* line 573, style.sass */
   div.announcement.ng-leave, div.announcement.ng-enter.ng-enter-active {
     opacity: 1; }
-  /* line 576, style.sass */
+  /* line 577, style.sass */
   div.announcement h2.event-title {
     padding: 0.625em 0;
     background-color: inherit;
     border-width: 0.25em;
     border-style: double;
     color: #333; }
-  /* line 583, style.sass */
+  /* line 584, style.sass */
   div.announcement div.oi {
     font-size: 16em;
     color: inherit; }
-  /* line 587, style.sass */
+  /* line 588, style.sass */
   div.announcement p.description {
     font-size: 1.75em;
     color: #333;
     margin-top: 0.625em; }
-  /* line 592, style.sass */
+  /* line 593, style.sass */
   div.announcement button.accept, div.announcement button.reject {
     outline: none;
     cursor: pointer;
@@ -1638,30 +1626,30 @@ div.announcement {
     border-radius: 0.25em;
     width: 47.5%;
     background: none; }
-    /* line 602, style.sass */
+    /* line 603, style.sass */
     div.announcement button.accept span, div.announcement button.reject span {
       font-size: 1.75em; }
-    /* line 604, style.sass */
+    /* line 605, style.sass */
     div.announcement button.accept:hover, div.announcement button.reject:hover {
       opacity: 0.85; }
-      /* line 606, style.sass */
+      /* line 607, style.sass */
       div.announcement button.accept:hover .hotkey-button, div.announcement button.reject:hover .hotkey-button {
         display: inline-block; }
-    /* line 609, style.sass */
+    /* line 610, style.sass */
     div.announcement button.accept .hotkey-button, div.announcement button.reject .hotkey-button {
       display: none;
       margin-top: 0.25em;
       color: #333;
       font-size: 1em; }
-  /* line 615, style.sass */
+  /* line 616, style.sass */
   div.announcement button.accept {
     color: #b0ad64;
     margin-right: 5%; }
-  /* line 619, style.sass */
+  /* line 620, style.sass */
   div.announcement button.reject {
     color: #d77167; }
 
-/* line 622, style.sass */
+/* line 623, style.sass */
 .hotkey-button {
   line-height: 1.5em;
   border: 1px solid gray;

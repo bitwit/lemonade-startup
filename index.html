@@ -44,13 +44,13 @@
           <h1 data-glyph="droplet" class="main-title oi"><br><span class="title">Lemonade<br>Startup</span></h1>
           <div class="jobs">
             <h3 data-glyph="briefcase" class="sub-title oi"><br><span class="title">Tasks</span></h3>
-            <ls-job v-for="task in tasks" v-bind:task="task"></ls-job>
+            <ls-job v-for="task in tasks" :key="task.id" :task="task"></ls-job>
           </div>
-        </div>
-        <div class="forecast">
-          <h3 data-glyph="dashboard" class="sub-title oi"><br><span class="title">3-Day Forecast</span></h3>
-          <div class="weather-conditions">
-            <div v-for="(weather, index) in forecast" class="weather-condition"><span v-bind:data-glyph="weather.icon" class="title oi">{{weather.description}}</span></div>
+          <div class="forecast">
+            <h3 data-glyph="dashboard" class="sub-title oi"><br><span class="title">3-Day Forecast</span></h3>
+            <div class="weather-conditions">
+              <div v-for="(weather, index) in forecast" class="weather-condition"><span v-bind:data-glyph="weather.icon" class="title oi">{{weather.description}}</span></div>
+            </div>
           </div>
         </div>
         <div class="main-column">
@@ -64,7 +64,7 @@
           <div class="days">
             <h2 class="sprint-title"><span class="title">Sprint &#35;{{sprint}} of {{maxSprints}}</span><span v-if="countdownProgress &gt; 0" class="countdown">&nbsp;starts in {{countdownProgress/1000}}s</span></h2>
             <div class="calendar">
-              <ls-day v-for="day in sprintDays" v-bind:day="day" class="day"></ls-day>
+              <ls-day v-for="(day, index) in sprintDays" :key="day.id" :index="index" :day="day" :progress="progress" :current-day="currentDay" class="day"></ls-day>
             </div>
             <div class="instructions">
               <h3>Instructions</h3>
@@ -86,7 +86,7 @@
           <div class="assets">
             <h2 data-glyph="spreadsheet" class="section-title oi"><br><span class="title">Assets</span></h2>
             <div class="assets-container">
-              <ls-asset v-for="(asset, index) in game.assets" v-bind:asset="asset"></ls-asset>
+              <ls-asset v-for="(asset, index) in game.assets" :key="asset.name" :asset="asset"></ls-asset>
             </div><!--h3 Options
             <div v-bind:style="text-align: center;" class="debug-buttons">
               <label>Tick Speed</label>
@@ -116,7 +116,7 @@
           </div>
         </div>
         <div v-if="announcements.length &gt; 0" class="announcements">
-          <ls-announcement v-for="event in announcements" v-bind:event="event"></ls-announcement>
+          <ls-announcement v-for="event in announcements" :key="event.name" :event="event" @accept-event="acceptEvent()" @reject-event="rejectEvent()"></ls-announcement>
         </div>
       </div>
     </div>

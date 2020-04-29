@@ -4,21 +4,21 @@ store = new Vuex.Store({
   state: 
     sprintDays: [
       #first week
-      {name: "Monday", tasks: [], isInteractive: yes, price: null}
-      {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
-      {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
-      {name: "Thursday", tasks: [], isInteractive: yes, price: null}
-      {name: "Friday", tasks: [], isInteractive: yes, price: null}
-      {name: "Saturday", tasks: [], isInteractive: yes, price: null}
-      {name: "Sunday", tasks: [], isInteractive: yes, price: null}
+      {id: "1", name: "Monday", tasks: [], isInteractive: yes, price: null}
+      {id: "2", name: "Tuesday", tasks: [], isInteractive: yes, price: null}
+      {id: "3", name: "Wednesday", tasks: [], isInteractive: yes, price: null}
+      {id: "4", name: "Thursday", tasks: [], isInteractive: yes, price: null}
+      {id: "5", name: "Friday", tasks: [], isInteractive: yes, price: null}
+      {id: "6", name: "Saturday", tasks: [], isInteractive: yes, price: null}
+      {id: "7", name: "Sunday", tasks: [], isInteractive: yes, price: null}
       #second week
-      {name: "Monday", tasks: [], isInteractive: yes, price: null}
-      {name: "Tuesday", tasks: [], isInteractive: yes, price: null}
-      {name: "Wednesday", tasks: [], isInteractive: yes, price: null}
-      {name: "Thursday", tasks: [], isInteractive: yes, price: null}
-      {name: "Friday", tasks: [], isInteractive: yes, price: null}
-      {name: "Saturday", tasks: [], isInteractive: yes, price: null}
-      {name: "Sunday", tasks: [], isInteractive: yes, price: null}
+      {id: "8", name: "Monday", tasks: [], isInteractive: yes, price: null}
+      {id: "9", name: "Tuesday", tasks: [], isInteractive: yes, price: null}
+      {id: "10", name: "Wednesday", tasks: [], isInteractive: yes, price: null}
+      {id: "11", name: "Thursday", tasks: [], isInteractive: yes, price: null}
+      {id: "12", name: "Friday", tasks: [], isInteractive: yes, price: null}
+      {id: "13", name: "Saturday", tasks: [], isInteractive: yes, price: null}
+      {id: "14", name: "Sunday", tasks: [], isInteractive: yes, price: null}
     ]
     tasks: [
       new DevelopmentCard()
@@ -66,8 +66,8 @@ store = new Vuex.Store({
       day.price = state.prices[state.price]
       day.isInteractive = no
 
-    resetCountDown: (state) ->
-      state.countdownProgress = 10000 
+    resetCountdown: (state) ->
+      state.countdownProgress = 2000 #10000 
 
     clearAnnouncements: (state) ->
       state.announcements.length = 0
@@ -116,13 +116,16 @@ store = new Vuex.Store({
       didCompleteDay = no
       if state.progress > 10
         didCompleteDay = yes
-        state.isPaused = state.businessObject.dayComplete(
-          state.sprintDays[state.currentDay],
+        day = state.sprintDays[state.currentDay]
+        result = state.businessObject.dayComplete(
+          day,
           (event) ->
             state.announcements.length = 0
-            state.announcements.push eventCard
+            state.announcements.push event
             console.log 'announcements', state.announcements
         )
+        day.result = result.dayHistory
+        state.isPaused = result.didTriggerEvent
         state.progress = 0.1
         state.currentDay++
 
@@ -135,6 +138,9 @@ store = new Vuex.Store({
           newPrice = state.prices[state.price]
           day.price = newPrice
           day.isInteractive = no
+
+    unpause: (state) ->
+      state.isPaused = no
   }
 
   actions: {
@@ -161,7 +167,7 @@ store = new Vuex.Store({
         setTimeout( => 
           context.dispatch 'nextSprint'
         , 3000)
-      else if !context.state.shouldPause
+      else if !context.state.isPaused
         setTimeout( => 
           context.dispatch 'tick'
         , context.state.tickSpeed)
@@ -175,8 +181,9 @@ store = new Vuex.Store({
       context.dispatch 'resumeSimulation'
 
     resumeSimulation: (context) ->
-      if context.state.hasStarted and !context.state.timerPromise?
+      if context.state.hasStarted
         context.commit 'clearAnnouncements'
+        context.commit 'unpause'
         context.dispatch 'tick'
 
     nextSprint: (context) ->
@@ -198,6 +205,8 @@ new Vue
       price: "price"
       forecast: "forecast"
       countdownProgress: "countdownProgress"
+      progress: "progress"
+      currentDay: "currentDay"
       sprint: "sprint"
       sprintDays: "sprintDays"
       maxSprints: "maxSprints"
@@ -219,7 +228,7 @@ new Vue
 
   methods:
     newGame: () ->
-      @$store.dispatch 'switchView', 'main'
+      @$store.commit 'switchView', 'main'
       @$store.dispatch 'startCountdown'
 
     switchView: (viewName) ->
@@ -231,6 +240,12 @@ new Vue
 
     getDayPlan: ->
       console.log $scope.sprintDays
+
+    acceptEvent: ->
+      @$store.dispatch 'acceptEvent'
+
+    rejectEvent: ->
+      @$store.dispatch 'rejectEvent'
 
     restart: ->
       window.location.reload()

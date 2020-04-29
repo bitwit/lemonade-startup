@@ -11,4 +11,5 @@ Vue.component 'ls-asset', {
     typeClass: () ->
       obj = {}
       obj["type-#{@asset.id}"] = yes
+      return obj
 }

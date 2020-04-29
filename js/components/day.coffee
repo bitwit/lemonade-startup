@@ -2,11 +2,11 @@ Vue.component 'ls-day', {
   template: """
     <div class="day" v-bind:class="dayClasses" v-on:click="addSelectedTask()" v-on:mouseover="isSelected = true" v-on:mouseleave="isSelected = false">
         <div class="day-progress-meter" v-bind:style="progressMeterStyles"></div>
-        <div v-if="businessResult != null && (isShowingMessage || isSelected)" class="message">
+        <div v-if="day.result != null && (isShowingMessage || isSelected)" class="message">
           <ul class="items">
-            <li class="oi" v-bind:data-glyph="businessResult.weather.icon">
+            <li class="oi" v-bind:data-glyph="day.result.weather.icon">
               <span class="title">Temperature</span>
-              <span class="value">{{businessResult.weather.temperature}}&deg;C</span>
+              <span class="value">{{day.result.weather.temperature}}&deg;C</span>
             </li>
             <li class="oi" data-glyph="dollar">
               <span class="title">Price</span>
@@ -14,11 +14,11 @@ Vue.component 'ls-day', {
             </li>
             <li class="oi" data-glyph="people">
               <span class="title">Customers</span>
-              <span class="value">{{businessResult.customerCount}}</span>
+              <span class="value">{{day.result.customerCount}}</span>
             </li>
             <li class="oi" data-glyph="bar-chart">
               <span class="title">Cash</span>
-              <span class="value" v-bind:class="deltaCashPositiveClass">{{businessResult.cashDelta}}</span>
+              <span class="value" v-bind:class="deltaCashPositiveClass">{{day.result.cashDelta}}</span>
             </li>
           </ul>
         </div>
@@ -27,7 +27,7 @@ Vue.component 'ls-day', {
           <li class="task-placeholder">AM</li>
           <li class="task-placeholder">PM</li>
         </ul>
-        <ls-task v-for="task in day.tasks" v-bind:task="task" v-bind:day="day"/>
+        <ls-task v-for="(task, index) in day.tasks" :key="task.id + index" :task="task" :day="day"/>
     </div>
   """ 
   props:
@@ -35,7 +35,6 @@ Vue.component 'ls-day', {
     currentDay: Number
     progress: Number
     day: Object
-    businessResult: Object
   data: ->
     isSelected: no
     isShowingMessage: no
@@ -45,10 +44,9 @@ Vue.component 'ls-day', {
       obj["full-#{@day.tasks.length >= 2}}"] = yes
       return obj
     deltaCashPositiveClass: (state) ->
-        obj = {}
-        name = "positive-#{businessResult.cashDelta > 0}"
-        obj[name] = true
-        return obj
+      obj = {}
+      obj["positive-#{@day.result.cashDelta > 0}"] = true
+      return obj
     progressMeterStyles: (state) ->
       if @currentDay > @index
         width = "100%"
@@ -63,7 +61,6 @@ Vue.component 'ls-day', {
   methods:
     addSelectedTask: ->
       @$emit 'add-current-task-to-selected-day'
-
 
     announce: () ->
       @isShowingMessage = yes

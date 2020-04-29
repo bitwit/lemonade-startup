@@ -71,14 +71,14 @@ html
 						h3.sub-title.oi(data-glyph="briefcase")
 							br
 							span.title Tasks
-						ls-job(v-for="task in tasks", v-bind:task="task")
-				div.forecast
-					h3.sub-title.oi(data-glyph="dashboard")
-						br
-						span.title 3-Day Forecast
-					div.weather-conditions
-						div.weather-condition(v-for="(weather, index) in forecast")
-							span.title.oi(v-bind:data-glyph="weather.icon") {{weather.description}}
+						ls-job(v-for="task in tasks", :key="task.id", :task="task")
+					div.forecast
+						h3.sub-title.oi(data-glyph="dashboard")
+							br
+							span.title 3-Day Forecast
+						div.weather-conditions
+							div.weather-condition(v-for="(weather, index) in forecast")
+								span.title.oi(v-bind:data-glyph="weather.icon") {{weather.description}}
 
 				div.main-column
 					div.credits
@@ -103,7 +103,7 @@ html
 							span.title Sprint &#35;{{sprint}} of {{maxSprints}}
 							span.countdown(v-if="countdownProgress > 0") &nbsp;starts in {{countdownProgress/1000}}s
 						div.calendar
-							ls-day.day(v-for="day in sprintDays", v-bind:day="day")
+							ls-day.day(v-for="(day, index) in sprintDays", :key="day.id", :index="index", :day="day", :progress="progress", :current-day="currentDay")
 						div.instructions
 							h3 Instructions
 							ul.instructions
@@ -129,7 +129,7 @@ html
 							br
 							span.title Assets
 						div.assets-container
-							ls-asset(v-for="(asset, index) in game.assets", v-bind:asset="asset")
+							ls-asset(v-for="(asset, index) in game.assets", :key="asset.name", :asset="asset")
 
 						//h3 Options
 							div.debug-buttons(v-bind:style="text-align: center;")
@@ -159,7 +159,7 @@ html
 								dd {{game.stats.productivity}}
 
 				div.announcements(v-if="announcements.length > 0")
-					ls-announcement(v-for="event in announcements", v-bind:event="event")
+					ls-announcement(v-for="event in announcements", :key="event.name", :event="event", @accept-event="acceptEvent()", @reject-event="rejectEvent()")
 
 	script(src='js/vendor/vue/vue.js')
 	//- script(src='js/vendor/vue/vue.min.js')
