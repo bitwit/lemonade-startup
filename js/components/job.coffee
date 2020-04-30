@@ -1,12 +1,11 @@
 Vue.component 'ls-job', {
   template: """
-  <div v-bind:class="typeClass" v-on:click="onSelect()" v-bind:data-glyph="task.icon">
+  <div :class="typeClass" @click="onSelect()" :data-glyph="task.icon">
     <span class="title">{{task.name}}</span>
-    <span class="hotkey-button">{{hotkeyButton}}</span>
+    <span class="hotkey-button">{{index + 1}}</span>
   </div>
   """
   props:
-    hotkeyButton: Number
     index: Number
     isSelected: Boolean
     task: Object
@@ -17,11 +16,12 @@ Vue.component 'ls-job', {
         oi: yes
       }
       obj["type-#{@task.id}"] = yes
-      obj["selected-#{@isSelected}"] = yes
+      obj["selected-#{@$store.state.selectedTaskIndex is @index}"] = yes
       return obj
+      
   methods:
     onSelect: ->
-      @$emit 'select-job'
+      @$store.commit 'setSelectedTaskIndex', @index
 }
 
 # appModule.directive 'lsJob', [ ->

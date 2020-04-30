@@ -39,25 +39,25 @@ html
 					| Time to bootstrap this baby
 					br
 					| into a Lemonade Startup
-				button.game-start(v-on:click="newGame()")
+				button.game-start(@click="newGame()")
 					span.title.oi(data-glyph="check") &nbsp;Let's Get Agile
 
 			div.end-view.view-container(v-if="currentView == 'end'")
 				div.ending
 					h2.end-title {{ending.name}}
-					span.oi.ending-icon(v-bind:data-glyph="ending.icon")
+					span.oi.ending-icon(:data-glyph="ending.icon")
 					p.ending-description {{ending.description}}
 					div.cash
-						h3.cash-title(v-bind:class="cashValuePositiveClass")
+						h3.cash-title(:class="cashValuePositiveClass")
 							span.title Final Cash
-						strong.cash-value(v-bind:class="cashValuePositiveClass") {{game.stats.cash}}
-						h3.cash-title(v-bind:class="projectedValuePositiveClass")
+						strong.cash-value(:class="cashValuePositiveClass") {{game.stats.cash}}
+						h3.cash-title(:class="projectedValuePositiveClass")
 							span.title Final Valuation
-						strong.cash-value(v-bind:class="projectedValuePositiveClass") {{game.stats.projectedValue}}
+						strong.cash-value(:class="projectedValuePositiveClass") {{game.stats.projectedValue}}
 
 					h3.end-title Game Over
 
-					button.game-start(v-on:click="restart()")
+					button.game-start(@click="restart()")
 						span.title.oi(data-glyph="reload") &nbsp;Restart
 
 			div.main-view.view-container(v-if="currentView == 'main'")
@@ -71,14 +71,14 @@ html
 						h3.sub-title.oi(data-glyph="briefcase")
 							br
 							span.title Tasks
-						ls-job(v-for="task in tasks", :key="task.id", :task="task")
+						ls-job(v-for="(task, index) in tasks", :key="task.id", :index="index", :task="task")
 					div.forecast
 						h3.sub-title.oi(data-glyph="dashboard")
 							br
 							span.title 3-Day Forecast
 						div.weather-conditions
-							div.weather-condition(v-for="(weather, index) in forecast")
-								span.title.oi(v-bind:data-glyph="weather.icon") {{weather.description}}
+							div.weather-condition(v-for="(weather, index) in game.forecast")
+								span.title.oi(:data-glyph="weather.icon") {{weather.description}}
 
 				div.main-column
 					div.credits
@@ -96,7 +96,7 @@ html
 						h3.price-title
 							span.title Price: {{prices[price]}}
 						strong.price-mark.low $0
-						input.price-input(type="range", v-model="price", min="0", max="9")
+						input.price-input(type="range", v-model="price", @change="priceChanged", min="0", max="9")
 						strong.price-mark.high $10
 					div.days
 						h2.sprint-title
@@ -107,22 +107,22 @@ html
 						div.instructions
 							h3 Instructions
 							ul.instructions
-								li.instruction Select different tasks using their hotkeys (1-6)
-								li.instruction Add tasks to the calendar by clicking days or dragging tasks
+								li.instruction Select different tasks by clicking or hotkeys (1-6) 
+								li.instruction Add tasks to the calendar by clicking days
 								li.instruction Adjust the price dial as you please
 								li.instruction Pay attention for timely optional events
 								li.instruction Watch the weather forecast for hints at daily demand
 
 				div.status-column
 					div.cash
-						h3.cash-title.oi(v-bind:class="cashValuePositiveClass", data-glyph="dollar")
+						h3.cash-title.oi(:class="cashValuePositiveClass", data-glyph="dollar")
 							br
 							span.title Cash
-						strong.cash-value(v-bind:class="cashValuePositiveClass") {{game.stats.cash}}
-						h3.cash-title.oi(data-glyph="question-mark", v-bind:class="projectedValuePositiveClass")
+						strong.cash-value(:class="cashValuePositiveClass") {{game.stats.cash}}
+						h3.cash-title.oi(data-glyph="question-mark", :class="projectedValuePositiveClass")
 							br
 							span.title Valuation
-						strong.cash-value(v-bind:class="projectedValuePositiveClass") {{game.stats.projectedValue}}
+						strong.cash-value(:class="projectedValuePositiveClass") {{game.stats.projectedValue}}
 
 					div.assets
 						h2.section-title.oi(data-glyph="spreadsheet")
@@ -132,14 +132,14 @@ html
 							ls-asset(v-for="(asset, index) in game.assets", :key="asset.name", :asset="asset")
 
 						//h3 Options
-							div.debug-buttons(v-bind:style="text-align: center;")
+							div.debug-buttons(:style="text-align: center;")
 								label Tick Speed
 								input(type="text",v-model="tickSpeed")
 								label Countdown Progress
 								input(type="text",v-model="countdownProgress")
-								button.hotkey(v-on:click="startSimulation()")
+								button.hotkey(@click="startSimulation()")
 									span Start Simulation
-								button.hotkey(v-on:click="autoPopulateDays()")
+								button.hotkey(@click="autoPopulateDays()")
 									span Auto Populate
 							h3 Debug
 							dl

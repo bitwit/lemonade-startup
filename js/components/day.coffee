@@ -1,10 +1,10 @@
 Vue.component 'ls-day', {
   template: """
-    <div class="day" v-bind:class="dayClasses" v-on:click="addSelectedTask()" v-on:mouseover="isSelected = true" v-on:mouseleave="isSelected = false">
-        <div class="day-progress-meter" v-bind:style="progressMeterStyles"></div>
+    <div class="day" :class="dayClasses" @click="addSelectedTask()" @mouseover="isSelected = true" @mouseleave="isSelected = false">
+        <div class="day-progress-meter" :style="progressMeterStyles"></div>
         <div v-if="day.result != null && (isShowingMessage || isSelected)" class="message">
           <ul class="items">
-            <li class="oi" v-bind:data-glyph="day.result.weather.icon">
+            <li class="oi" :data-glyph="day.result.weather.icon">
               <span class="title">Temperature</span>
               <span class="value">{{day.result.weather.temperature}}&deg;C</span>
             </li>
@@ -18,7 +18,7 @@ Vue.component 'ls-day', {
             </li>
             <li class="oi" data-glyph="bar-chart">
               <span class="title">Cash</span>
-              <span class="value" v-bind:class="deltaCashPositiveClass">{{day.result.cashDelta}}</span>
+              <span class="value" :class="deltaCashPositiveClass">{{day.result.cashDelta}}</span>
             </li>
           </ul>
         </div>
@@ -41,7 +41,7 @@ Vue.component 'ls-day', {
   computed: Vuex.mapState {
     dayClasses: (state) ->
       obj = {}
-      obj["full-#{@day.tasks.length >= 2}}"] = yes
+      obj["full-#{@day.tasks.length >= 2}"] = yes
       return obj
     deltaCashPositiveClass: (state) ->
       obj = {}
@@ -60,7 +60,7 @@ Vue.component 'ls-day', {
   }
   methods:
     addSelectedTask: ->
-      @$emit 'add-current-task-to-selected-day'
+      @$store.commit 'addSelectedTaskToDay', @day
 
     announce: () ->
       @isShowingMessage = yes
@@ -68,16 +68,6 @@ Vue.component 'ls-day', {
         =>
           @isShowingMessage = no
       , 2500)
-
-    removeTask: (e, task) ->
-      if e?
-        e.stopPropagation()
-        e.preventDefault()
-      leftOverTasks = []
-      for dayTask in $scope.day.tasks
-        if task != dayTask
-          leftOverTasks.push dayTask
-      @day.tasks = leftOverTasks
 }
 
 

@@ -56,9 +56,6 @@ store = new Vuex.Store({
     ending: null
   
   mutations: {
-    setSelectedTaskIndex: (state, index) ->
-      state.selectedTaskIndex = index
-
     startSimulation: (state) ->
       state.hasStarted = yes
       state.currentDay = 0
@@ -94,17 +91,7 @@ store = new Vuex.Store({
       for day in state.sprintDays
         while day.tasks.length < 2
           state.selectedTaskIndex = Math.floor((Math.random() * 6))
-          day.tasks.push state.getCurrentSelectedTask()
-    
-    acceptFirstEvent: (state) ->
-      event = state.announcements.shift()
-      event.onAccept state.businessObject
-      # Add it to our current assets
-      state.businessObject.assets.unshift event
-
-    rejectFirstEvent: (state) ->
-      event = state.announcements.shift()
-      event.onReject state.businessObject
+          day.tasks.push clone(state.tasks[state.selectedTaskIndex])
 
     tickCountdown: (state) ->
       state.countdownProgress -= state.tickSpeed
@@ -141,6 +128,36 @@ store = new Vuex.Store({
 
     unpause: (state) ->
       state.isPaused = no
+
+    updatePrice: (state, price) ->
+      state.price = price
+
+    setSelectedTaskIndex: (state, index) ->
+      state.selectedTaskIndex = index
+
+    addSelectedTaskToDay: (state, day) ->
+      console.log 'adding selected task to day'
+      if day.tasks.length < 2 and day.isInteractive
+        task = clone state.tasks[state.selectedTaskIndex]
+        day.tasks.push task
+
+    removeTaskFromDay: (state, payload) ->
+      console.log 'remove task', arguments
+      leftOverTasks = []
+      for dayTask in payload.day.tasks
+        if payload.task != dayTask
+          leftOverTasks.push dayTask
+      payload.day.tasks = leftOverTasks
+    
+    acceptFirstEvent: (state) ->
+      event = state.announcements.shift()
+      event.onAccept state.businessObject
+      # Add it to our current assets
+      state.businessObject.assets.unshift event
+
+    rejectFirstEvent: (state) ->
+      event = state.announcements.shift()
+      event.onReject state.businessObject
   }
 
   actions: {
@@ -197,13 +214,16 @@ new Vue
   store: store,
   created: () ->
     console.log 'App has loaded', @
+    document.addEventListener 'keydown', (e) => 
+      if not e.repeat
+        @handleKeyDown e.key
+
   computed:
     Vuex.mapState({
       currentView: "currentView"
       tasks: "tasks"
       prices: "prices"
       price: "price"
-      forecast: "forecast"
       countdownProgress: "countdownProgress"
       progress: "progress"
       currentDay: "currentDay"
@@ -234,9 +254,15 @@ new Vue
     switchView: (viewName) ->
       @$store.commit 'switchView', viewName
 
-    getCurrentSelectedTask: ->
-      task = @$store.state.tasks[@$store.state.selectedTaskIndex]
-      return clone task
+    handleKeyDown: (key) ->
+      console.log 'keydown happened', key
+      switch key
+        when "1", "2", "3", "4", "5", "6"
+          @$store.commit 'setSelectedTaskIndex', (parseInt(key) - 1)
+
+    priceChanged: (event) ->
+      price = event.srcElement.value
+      @$store.commit 'updatePrice', price
 
     getDayPlan: ->
       console.log $scope.sprintDays

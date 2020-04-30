@@ -111,12 +111,10 @@ class BusinessObject
     #to perform any start of day functions
 
   dayComplete: (day, onEventOccurence) ->
-    console.log 'day complete', day
 
     #First tick assets, which can modify day cards
     if @assets.length > 0
       for i in [(@assets.length - 1)..0]
-        console.log 'get object', i
         asset = @assets[i]
         asset.tick @, day.tasks
 
@@ -136,8 +134,6 @@ class BusinessObject
     #get the weather before calculating
     weather = @forecast.shift()
     numCustomers = @calculateDemand weather, day
-
-    console.log '$neutralPrice,#customers,#marketsize', @neutralPrice(), numCustomers, @stats.potentialMarketSize
 
     if numCustomers > @stats.potentialMarketSize
       numCustomers = @stats.potentialMarketSize
@@ -217,8 +213,6 @@ class BusinessObject
 
     demand *= ratio
 
-    console.log 'calculated demand', demand
-
     return demand
 
   setCreditLimit: ->
@@ -262,12 +256,10 @@ class BusinessObject
     runningTotal = 0
     if @dailyRevenueHistory.length >= interval
       for i in [0...interval]
-        #console.log("entry", i)
         runningTotal += @dailyRevenueHistory[@dailyRevenueHistory.length - (interval - i)]
     else if @dailyRevenueHistory.length is 0
       console.log("No entries in Daily Revenue History")
     else
-      #console.log("fewer entries than interval", @dailyRevenueHistory.length)
       for entry in @dailyRevenueHistory
         runningTotal += entry
 

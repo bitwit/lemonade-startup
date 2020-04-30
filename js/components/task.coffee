@@ -1,16 +1,24 @@
 Vue.component 'ls-task', {
   template: """
-  <div class="task type-{{task.id}} oi">
+  <div class="task oi" :class="taskClasses">
     <span class="title">{{task.id}}</span>
-    <span v-if="day.isInteractive" v-on:click="removeTask($event, task)" class="delete oi" data-glyph="trash"></span>
+    <span v-if="day.isInteractive" @click="removeTask($event, task)" class="delete oi" data-glyph="trash"></span>
   </div>
   """
   props:
     day: Object
     task: Object
+  computed: 
+    taskClasses: (state) ->
+      obj = {}
+      obj["type-#{@task.id}"] = yes
+      return obj
   methods:
-    removeTask: ->
-      @$emit 'remove-task', task
+    removeTask: (e) ->
+      if e?
+        e.stopPropagation()
+        e.preventDefault()
+      @$store.commit 'removeTaskFromDay', {task: @task, day: @day}
 }
 
 # appModule.directive 'lsTask', [ ->
