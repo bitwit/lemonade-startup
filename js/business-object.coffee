@@ -169,7 +169,7 @@ class BusinessObject
     #if sprintNumber is 10 #GAME OVER!
      # @processEndGame()
 
-  processEndGame: (victoryConditions) ->
+  processEndGame: () ->
     validConditions = []
     for condition in victoryConditions
       if condition.hasBusinessMetConditions(@)

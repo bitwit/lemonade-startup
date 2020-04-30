@@ -43,7 +43,7 @@ store = new Vuex.Store({
     currentView: 'intro'
     price:  3
     sprint: 1
-    maxSprints: 4
+    maxSprints: 1
     currentDay: -1
     progress: 0
     hasStarted: no
@@ -217,7 +217,10 @@ new Vue
     document.addEventListener 'keydown', (e) => 
       if not e.repeat
         @handleKeyDown e.key
-
+  filters:
+    number: (value, decimals) ->
+      if not value then return ''
+      return parseInt(value).toFixed(parseInt(decimals))
   computed:
     Vuex.mapState({
       currentView: "currentView"
@@ -232,6 +235,7 @@ new Vue
       maxSprints: "maxSprints"
       game: "businessObject"
       announcements: "announcements"
+      ending: "ending"
 
       cashValuePositiveClass: (state) ->
         obj = {}

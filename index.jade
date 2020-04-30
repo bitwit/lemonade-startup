@@ -96,7 +96,7 @@ html
 						h3.price-title
 							span.title Price: {{prices[price]}}
 						strong.price-mark.low $0
-						input.price-input(type="range", v-model="price", @change="priceChanged", min="0", max="9")
+						input.price-input(type="range", :value="price", @change="priceChanged", min="0", max="9")
 						strong.price-mark.high $10
 					div.days
 						h2.sprint-title
@@ -118,11 +118,11 @@ html
 						h3.cash-title.oi(:class="cashValuePositiveClass", data-glyph="dollar")
 							br
 							span.title Cash
-						strong.cash-value(:class="cashValuePositiveClass") {{game.stats.cash}}
+						strong.cash-value(:class="cashValuePositiveClass") {{game.stats.cash | number(0)}}
 						h3.cash-title.oi(data-glyph="question-mark", :class="projectedValuePositiveClass")
 							br
 							span.title Valuation
-						strong.cash-value(:class="projectedValuePositiveClass") {{game.stats.projectedValue}}
+						strong.cash-value(:class="projectedValuePositiveClass") {{game.stats.projectedValue | number(0)}}
 
 					div.assets
 						h2.section-title.oi(data-glyph="spreadsheet")

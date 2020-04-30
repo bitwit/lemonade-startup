@@ -6,19 +6,19 @@ Vue.component 'ls-day', {
           <ul class="items">
             <li class="oi" :data-glyph="day.result.weather.icon">
               <span class="title">Temperature</span>
-              <span class="value">{{day.result.weather.temperature}}&deg;C</span>
+              <span class="value">{{day.result.weather.temperature | number(0)}}&deg;C</span>
             </li>
             <li class="oi" data-glyph="dollar">
               <span class="title">Price</span>
-              <span class="value">{{day.price}}</span>
+              <span class="value">{{day.price | number(2)}}</span>
             </li>
             <li class="oi" data-glyph="people">
               <span class="title">Customers</span>
-              <span class="value">{{day.result.customerCount}}</span>
+              <span class="value">{{day.result.customerCount | number(0)}}</span>
             </li>
             <li class="oi" data-glyph="bar-chart">
               <span class="title">Cash</span>
-              <span class="value" :class="deltaCashPositiveClass">{{day.result.cashDelta}}</span>
+              <span class="value" :class="deltaCashPositiveClass">{{day.result.cashDelta | number(0)}}</span>
             </li>
           </ul>
         </div>
@@ -37,8 +37,13 @@ Vue.component 'ls-day', {
     day: Object
   data: ->
     isSelected: no
-    isShowingMessage: no
+  filters:
+    number: (value, decimals) ->
+      if not value then return ''
+      return parseInt(value).toFixed(parseInt(decimals))
   computed: Vuex.mapState {
+    isShowingMessage: ->
+      @index is (@currentDay - 1)
     dayClasses: (state) ->
       obj = {}
       obj["full-#{@day.tasks.length >= 2}"] = yes

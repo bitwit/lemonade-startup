@@ -59,7 +59,7 @@
           </div>
           <div class="price-selector">
             <h3 class="price-title"><span class="title">Price: {{prices[price]}}</span></h3><strong class="price-mark low">$0</strong>
-            <input type="range" v-model="price" @change="priceChanged" min="0" max="9" class="price-input"><strong class="price-mark high">$10</strong>
+            <input type="range" :value="price" @change="priceChanged" min="0" max="9" class="price-input"><strong class="price-mark high">$10</strong>
           </div>
           <div class="days">
             <h2 class="sprint-title"><span class="title">Sprint &#35;{{sprint}} of {{maxSprints}}</span><span v-if="countdownProgress &gt; 0" class="countdown">&nbsp;starts in {{countdownProgress/1000}}s</span></h2>
@@ -80,8 +80,8 @@
         </div>
         <div class="status-column">
           <div class="cash">
-            <h3 :class="cashValuePositiveClass" data-glyph="dollar" class="cash-title oi"><br><span class="title">Cash</span></h3><strong :class="cashValuePositiveClass" class="cash-value">{{game.stats.cash}}</strong>
-            <h3 data-glyph="question-mark" :class="projectedValuePositiveClass" class="cash-title oi"><br><span class="title">Valuation</span></h3><strong :class="projectedValuePositiveClass" class="cash-value">{{game.stats.projectedValue}}</strong>
+            <h3 :class="cashValuePositiveClass" data-glyph="dollar" class="cash-title oi"><br><span class="title">Cash</span></h3><strong :class="cashValuePositiveClass" class="cash-value">{{game.stats.cash | number(0)}}</strong>
+            <h3 data-glyph="question-mark" :class="projectedValuePositiveClass" class="cash-title oi"><br><span class="title">Valuation</span></h3><strong :class="projectedValuePositiveClass" class="cash-value">{{game.stats.projectedValue | number(0)}}</strong>
           </div>
           <div class="assets">
             <h2 data-glyph="spreadsheet" class="section-title oi"><br><span class="title">Assets</span></h2>
