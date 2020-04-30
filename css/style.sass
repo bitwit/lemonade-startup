@@ -520,18 +520,19 @@ div.asset
   height: 36/$em
   overflow: visible
   +single-transition(all, 0.24s, linear, 0s)
+  opacity: 1
 
-  &.ng-enter,
-  &.ng-leave
-    +single-transition(all, 0.24s, linear, 0s)
+  // &.ng-enter,
+  // &.ng-leave
+  //   +single-transition(all, 0.24s, linear, 0s)
 
-  &.ng-leave.ng-leave-active,
-  &.ng-enter
-    opacity: 0
+  // &.ng-leave.ng-leave-active,
+  // &.ng-enter
+  //   opacity: 0
 
-  &.ng-leave,
-  &.ng-enter.ng-enter-active
-    opacity: 1
+  // &.ng-leave,
+  // &.ng-enter.ng-enter-active
+  //   opacity: 1
 
   span.expiry
     display: block
