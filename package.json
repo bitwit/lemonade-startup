@@ -2,16 +2,31 @@
     "name": "lemonade-startup",
     "version": "0.1.0",
     "private": true,
+    "scripts": {
+        "build": "rm -rf .build && tsc",
+        "webpack": "webpack --config webpack.config.js --verbose"
+    },
     "devDependencies": {
+        "css-loader": "^0.28.1",
         "grunt": "~0.4.1",
         "grunt-contrib-clean": "~0.5.0",
-        "grunt-contrib-concat": "~0.3.0",
-        "grunt-contrib-compass": "~0.2.0",
-        "grunt-contrib-jade": "~0.7.0",
         "grunt-contrib-coffee": "~0.7.0",
-        "grunt-spritesmith": "~1.26.0",
+        "grunt-contrib-compass": "~0.2.0",
+        "grunt-contrib-concat": "~0.3.0",
         "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-jade": "~0.7.0",
         "grunt-contrib-watch": "~0.4.4",
-        "grunt-git": "~0.2.7"
+        "grunt-git": "~0.2.7",
+        "grunt-spritesmith": "~1.26.0",
+        "ts-loader": "^7.0.0",
+        "typescript": "^3.8.0",
+        "webpack": "^4.0.0",
+        "webpack-cli": "^3.3.11"
+    },
+    "dependencies": {
+        "vue": "^2.6.11",
+        "vue-loader": "^15.9.1",
+        "vue-template-compiler": "^2.6.11",
+        "vuex": "^3.3.0"
     }
 }
