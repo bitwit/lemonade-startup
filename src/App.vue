@@ -1,21 +1,8 @@
 <template>
   <div id="app">
-      <div v-if="currentView == 'intro'" class="intro-view view-container">
-        <h1 class="intro-title"><span data-glyph="droplet" class="lemon-drop oi"></span><br>1 Lemonade Stand<br><br>$50 Life Savings<br><br>Time to bootstrap this baby<br>into a Lemonade Startup</h1>
-        <button @click="newGame()" class="game-start"><span data-glyph="check" class="title oi">&nbsp;Let's Get Agile</span></button>
-      </div>
-      <div v-if="currentView == 'end'" class="end-view view-container">
-        <div class="ending">
-          <h2 class="end-title">{{ending.name}}</h2><span :data-glyph="ending.icon" class="oi ending-icon"></span>
-          <p class="ending-description">{{ending.description}}</p>
-          <div class="cash">
-            <h3 :class="cashValuePositiveClass" class="cash-title"><span class="title">Final Cash</span></h3><strong :class="cashValuePositiveClass" class="cash-value">{{game.stats.cash}}</strong>
-            <h3 :class="projectedValuePositiveClass" class="cash-title"><span class="title">Final Valuation</span></h3><strong :class="projectedValuePositiveClass" class="cash-value">{{game.stats.projectedValue}}</strong>
-          </div>
-          <h3 class="end-title">Game Over</h3>
-          <button @click="restart()" class="game-start"><span data-glyph="reload" class="title oi">&nbsp;Restart</span></button>
-        </div>
-      </div>
+      <ls-intro-section v-if="currentView == 'intro'" />
+      <ls-end-section v-if="currentView == 'end'" />
+
       <div v-if="currentView == 'main'" class="main-view view-container">
         <div class="tasks-column">
           <h1 data-glyph="droplet" class="main-title oi"><br><span class="title">Lemonade<br>Startup</span></h1>
@@ -107,6 +94,9 @@ import Vuex from 'vuex'
 import { AppState } from './State'
 import AppStore from './AppStore'
 
+import IntroSection from './components/IntroSection.vue'
+import EndingSection from './components/EndSection.vue'
+
 import AnnouncementView from './components/Announcement.vue'
 import AssetView from './components/Asset.vue'
 import DayView from './components/Day.vue'
@@ -116,6 +106,8 @@ import TaskView from './components/Task.vue'
 export default Vue.extend({
   name: 'App',
   components: {
+    IntroSection,
+    EndingSection,
     AnnouncementView, 
     AssetView, 
     DayView, 
@@ -165,11 +157,6 @@ export default Vue.extend({
   }),
   methods: {
 
-    newGame: function () {
-      this.$store.commit('switchView', 'main')
-      this.$store.dispatch('startCountdown')
-    },
-
     switchView: function (viewName: string) {
       this.$store.commit('switchView', viewName)
     },
@@ -210,10 +197,6 @@ export default Vue.extend({
     rejectEvent: function () {
       this.$store.dispatch('rejectEvent')
     },
-
-    restart: function () {
-      window.location.reload()
-    }
   }
 
 });
