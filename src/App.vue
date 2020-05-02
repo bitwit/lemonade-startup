@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="format-detection" content="telephone=no">
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 ---->
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi">
-    <title>Lemonade Startup</title>
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="http://lemonstartup.com">
-    <meta property="og:site_name" content="Lemonade Startup">
-    <meta property="og:image" content="http://lemonstartup.com/img/cover-image.png">
-    <meta property="og:title" content="Lemonade Startup">
-    <meta property="og:description" content="It's time to turn this lemonade stand into a lemonade startup!">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:creator" content="@kylnew">
-    <meta name="twitter:url" content="http://lemonstartup.com">
-    <meta name="twitter:title" content="Lemonade Startup">
-    <meta name="twitter:description" content="It's time to turn this lemonade stand into a lemonade startup!">
-    <meta name="twitter:image" content="http://lemonstartup.com/img/cover-image.png">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/hotkeys.min.css">
-  </head>
-  <body>
-    <div id="app">
+<template>
+  <div id="app">
       <div v-if="currentView == 'intro'" class="intro-view view-container">
         <h1 class="intro-title"><span data-glyph="droplet" class="lemon-drop oi"></span><br>1 Lemonade Stand<br><br>$50 Life Savings<br><br>Time to bootstrap this baby<br>into a Lemonade Startup</h1>
         <button @click="newGame()" class="game-start"><span data-glyph="check" class="title oi">&nbsp;Let's Get Agile</span></button>
@@ -49,7 +26,7 @@
           <div class="forecast">
             <h3 data-glyph="dashboard" class="sub-title oi"><br><span class="title">3-Day Forecast</span></h3>
             <div class="weather-conditions">
-              <div v-for="(weather, index) in game.forecast" class="weather-condition"><span :data-glyph="weather.icon" class="title oi">{{weather.description}}</span></div>
+              <div v-for="(weather, index) in game.forecast" :key="index" class="weather-condition"><span :data-glyph="weather.icon" class="title oi">{{weather.description}}</span></div>
             </div>
           </div>
         </div>
@@ -86,7 +63,7 @@
           <div class="assets">
             <h2 data-glyph="spreadsheet" class="section-title oi"><br><span class="title">Assets</span></h2>
             <div class="assets-container">
-              <ls-asset v-for="(asset, index) in game.assets" :key="asset.name" :asset="asset"></ls-asset>
+              <ls-asset v-for="asset in game.assets" :key="asset.name" :asset="asset"></ls-asset>
             </div><!--h3 Options
             <div :style="text-align: center;" class="debug-buttons">
               <label>Tick Speed</label>
@@ -120,9 +97,127 @@
         </div>
       </div>
     </div>
-  </body>
-  <script src="js/vendor/vue/vue.js"></script>
-  <script src="js/vendor/vue/vuex.min.js"></script>
-  <script src="js/index.js"></script>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</html>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import Vuex from 'vuex'
+import { AppState } from './State'
+import AppStore from './AppStore'
+
+import AnnouncementView from './components/Announcement.vue'
+import AssetView from './components/Asset.vue'
+import DayView from './components/Day.vue'
+import JobView from './components/Job.vue'
+import TaskView from './components/Task.vue'
+
+export default Vue.extend({
+  name: 'App',
+  components: {
+    AnnouncementView, 
+    AssetView, 
+    DayView, 
+    JobView, 
+    TaskView
+  },
+ created: function () {
+    console.log('created app');
+    document.addEventListener('keydown', (e) => {
+      if(!e.repeat) {
+        this.handleKeyDown(e.key)
+      }
+    })
+  },
+  filters: {
+    number: function (value: string, decimals: string) {
+      if (!value) { return '' } 
+      return parseInt(value).toFixed(parseInt(decimals))
+    }
+  },
+  computed: Vuex.mapState({
+    currentView: function (state: AppState) { return state.currentView },
+    tasks: function (state: AppState) { return state.tasks },
+    prices: function (state: AppState) { return state.prices },
+    price: function (state: AppState) { return state.price },
+    countdownProgress: function (state: AppState) { return state.countdownProgress },
+    progress: function (state: AppState) { return state.progress },
+    currentDay: function (state: AppState) { return state.currentDay },
+    sprint: function (state: AppState) { return state.sprint },
+    sprintDays: function (state: AppState) { return state.sprintDays },
+    maxSprints: function (state: AppState) { return state.maxSprints },
+    game: function (state: AppState) { return state.businessObject },
+    announcements: function (state: AppState) { return state.announcements },
+    ending: function (state: AppState) { return state.ending },
+
+    cashValuePositiveClass: function (state: AppState) {
+      const obj: any = {}
+      obj[`positive-${state.businessObject.stats.cash > 0}`] = true
+      return obj
+    },
+
+    projectedValuePositiveClass: function (state: AppState) {
+      const obj: any = {}
+      obj[`positive-${state.businessObject.stats.projectedValue > 0}`] = true
+      return obj
+    }
+  }),
+  methods: {
+
+    newGame: function () {
+      this.$store.commit('switchView', 'main')
+      this.$store.dispatch('startCountdown')
+    },
+
+    switchView: function (viewName: string) {
+      this.$store.commit('switchView', viewName)
+    },
+
+    handleKeyDown: function (key: string) {
+      console.log('keydown happened', key)
+      switch (key) {
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+          this.$store.commit('setSelectedTaskIndex', (parseInt(key) - 1))
+          break
+      }
+    },
+
+    priceChanged: function (event: any) {
+      const price: string | null = event?.srcElement?.value
+      this.$store.commit('updatePrice', price)
+    },
+
+    getDayPlan: function () {
+      console.log(this.sprintDays)
+    },
+
+    acceptEvent: function () {
+      this.$store.dispatch('acceptEvent')
+    },
+
+    rejectEvent: function () {
+      this.$store.dispatch('rejectEvent')
+    },
+
+    restart: function () {
+      window.location.reload()
+    }
+  }
+
+});
+</script>
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>

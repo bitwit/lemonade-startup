@@ -1,6 +1,19 @@
-##Lemonade Startup
+# lemonade-startup
 
-Developed for Toronto Game Jam #9
+## Project setup
+```
+yarn install
+```
 
-Uses AngularJS
-Icons are all [Open Iconic](https://useiconic.com/open)
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

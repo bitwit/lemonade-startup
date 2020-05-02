@@ -1,6 +1,5 @@
-Vue.component 'ls-announcement', {
-  template: """
-  <div v-bind:class="typeClass" class="announcement">
+<template>
+    <div v-bind:class="typeClass" class="announcement">
     <h2 v-bind:class="typeClass" class="event-title">
       <span class="title">{{event.name}}</span>
     </h2>
@@ -17,16 +16,29 @@ Vue.component 'ls-announcement', {
       <span class="hotkey-button">esc</span>
     </button>
   </div>
-  """
-  props:
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.component('ls-announcement', {
+  props: {
     event: Object
-  computed:
-    typeClass: () ->
-      obj = {}
-      obj["type-#{@event.id}"] = yes
-  methods:
-    acceptEvent: ->
-      @$emit 'accept-event'
-    rejectEvent: ->
-      @$emit 'reject-event'
-}
+  },
+  computed: {
+    typeClass: function () {
+      const obj: any = {}
+      obj[`type-${this.event.id}`] = true
+      return obj
+    }
+  },
+  methods: {
+    acceptEvent: function () {
+      this.$emit('accept-event')
+    },
+    rejectEvent: function () {
+      this.$emit('reject-event')
+    }
+  }
+})
+</script>
