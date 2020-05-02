@@ -39,7 +39,9 @@
             <input type="range" :value="price" @change="priceChanged" min="0" max="9" class="price-input"><strong class="price-mark high">$10</strong>
           </div>
           <div class="days">
-            <h2 class="sprint-title"><span class="title">Sprint &#35;{{sprint}} of {{maxSprints}}</span><span v-if="countdownProgress &gt; 0" class="countdown">&nbsp;starts in {{countdownProgress/1000}}s</span></h2>
+            <h2 class="sprint-title"><span class="title">Sprint &#35;{{sprint}} of {{maxSprints}}</span>
+              <span v-if="countdownProgress &gt; 0" class="countdown">&nbsp;starts in {{countdownProgress/1000 | number(2)}}s</span>
+            </h2>
             <div class="calendar">
               <ls-day v-for="(day, index) in sprintDays" :key="day.id" :index="index" :day="day" :progress="progress" :current-day="currentDay" class="day"></ls-day>
             </div>
@@ -131,7 +133,7 @@ export default Vue.extend({
   filters: {
     number: function (value: string, decimals: string) {
       if (!value) { return '' } 
-      return parseInt(value).toFixed(parseInt(decimals))
+      return parseFloat(value).toFixed(parseInt(decimals))
     }
   },
   computed: Vuex.mapState({
@@ -182,6 +184,12 @@ export default Vue.extend({
         case "5":
         case "6":
           this.$store.commit('setSelectedTaskIndex', (parseInt(key) - 1))
+          break
+        case "Escape":
+          this.rejectEvent()
+          break
+        case " ":
+          this.acceptEvent()
           break
       }
     },

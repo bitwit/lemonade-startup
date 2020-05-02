@@ -20,7 +20,7 @@ export default new Vuex.Store({
       day.isInteractive = true
     },
     resetCountdown: function (state: AppState) {
-      state.countdownProgress = 2000 //10000 
+      state.countdownProgress = 10000 
     },
     clearAnnouncements: function (state: AppState) {
       state.announcements.length = 0

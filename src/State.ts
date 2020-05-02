@@ -34,11 +34,11 @@ export class AppState {
   currentView = 'intro'
   price = 3
   sprint = 1
-  maxSprints = 1
+  maxSprints = 4
   currentDay = -1
   progress = 0
   hasStarted = false
-  tickSpeed = 30
+  tickSpeed = 25
   isPaused = false
   selectedTaskIndex = 0
   countdownProgress = 0
